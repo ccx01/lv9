@@ -1,0 +1,63 @@
+@import "compass/css3";
+@import "compass/reset";
+
+/* global */
+html {
+	width: 100%;
+	height: 100%;
+	color: #fff;
+	background-color: #2d2d2d;
+	// background-size: 100% 100%;
+	@include background(
+		radial-gradient(100% 10%, 200% 160%,#375651, #000),
+		linear-gradient(top right, #46655C, #fff)
+	);
+}
+
+$white-line: rgba(255, 255, 255, 0.6);
+
+#dial {
+	@include perspective(500px);
+}
+
+.layer {
+	position: relative;
+	margin: 0 auto;
+	width: 1000px;
+	height: 700px;
+	@include transform-style(preserve-3d);
+	@include transform(translateZ(0px) rotateX(0deg));
+}
+
+/* graph */
+.circle {
+	border: 3px solid $white-line;
+	border-radius: 50%;
+}
+.opacity .circle {
+	position: absolute;
+	top: 200px;
+	left: 350px;
+	width: 300px;
+	height: 300px;
+}
+
+/* svg */
+#path-degree {
+	color: #fff;
+	fill: none;
+}
+.svg-degree {
+	position: absolute;
+	top: 120px;
+	left: 270px;
+	width: 460px;
+	height: 460px;
+}
+.text-degree {
+	font-size: 30px;
+	letter-spacing: 74px;
+	text-anchor: start;
+	stroke: $white-line;
+	fill: none;
+}
