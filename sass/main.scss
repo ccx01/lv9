@@ -1,6 +1,42 @@
 @import "compass/css3";
 @import "compass/reset";
 
+@mixin animation($animate) {
+	$max: length($animate);
+	$animations: '';
+
+	@for $i from 1 through $max {
+		$animations: #{$animations + nth($animate, $i)};
+
+		@if $i < $max {
+			$animations: #{$animations + " "};
+		}
+	}
+	-webkit-animation: $animations;
+	-moz-animation:    $animations;
+	-o-animation:      $animations;
+	animation:         $animations;
+}
+@mixin keyframes($animationName) {
+	@-webkit-keyframes #{$animationName} {
+		$browser: '-webkit-';
+		@content;
+	}
+	@-moz-keyframes #{$animationName} {
+		$browser: '-moz-';
+		@content;
+	}
+	@-o-keyframes #{$animationName} {
+		$browser: '-o-';
+		@content;
+	}
+	@keyframes #{$animationName} {
+		$browser: '';
+		@content;
+	}
+}
+$browser: null;
+
 /* global */
 html {
 	width: 100%;
@@ -26,7 +62,7 @@ $white-line: rgba(255, 255, 255, 0.6);
 	width: 1000px;
 	height: 700px;
 	@include transform-style(preserve-3d);
-	@include transform(translateZ(0px) rotateX(0deg));
+	@include transform(rotateX(-110deg));
 }
 
 /* graph */
@@ -41,6 +77,9 @@ $white-line: rgba(255, 255, 255, 0.6);
 	width: 300px;
 	height: 300px;
 }
+.c2 {
+	@include transform(translateZ(50px) scale(1.5));
+}
 
 /* svg */
 #path-degree {
@@ -53,6 +92,7 @@ $white-line: rgba(255, 255, 255, 0.6);
 	left: 270px;
 	width: 460px;
 	height: 460px;
+	@include animation(degree 24s infinite linear);
 }
 .text-degree {
 	font-size: 30px;
@@ -60,4 +100,18 @@ $white-line: rgba(255, 255, 255, 0.6);
 	text-anchor: start;
 	stroke: $white-line;
 	fill: none;
+}
+
+/* animation */
+
+@include keyframes(degree) {
+	0% {
+		#{$browser}transform: rotateZ(0deg);
+	}
+	50% {
+		#{$browser}transform: rotateZ(180deg);
+	}
+	100% {
+		#{$browser}transform: rotateZ(360deg);
+	}
 }

@@ -85,11 +85,11 @@ html {
   -ms-transform-style: preserve-3d;
   -o-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  -webkit-transform: translateZ(0px) rotateX(0deg);
-  -moz-transform: translateZ(0px) rotateX(0deg);
-  -ms-transform: translateZ(0px) rotateX(0deg);
-  -o-transform: translateZ(0px) rotateX(0deg);
-  transform: translateZ(0px) rotateX(0deg);
+  -webkit-transform: rotateX(-110deg);
+  -moz-transform: rotateX(-110deg);
+  -ms-transform: rotateX(-110deg);
+  -o-transform: rotateX(-110deg);
+  transform: rotateX(-110deg);
 }
 
 /* graph */
@@ -106,6 +106,14 @@ html {
   height: 300px;
 }
 
+.c2 {
+  -webkit-transform: translateZ(50px) scale(1.5);
+  -moz-transform: translateZ(50px) scale(1.5);
+  -ms-transform: translateZ(50px) scale(1.5);
+  -o-transform: translateZ(50px) scale(1.5);
+  transform: translateZ(50px) scale(1.5);
+}
+
 /* svg */
 #path-degree {
   color: #fff;
@@ -118,6 +126,10 @@ html {
   left: 270px;
   width: 460px;
   height: 460px;
+  -webkit-animation: degree 24s infinite linear;
+  -moz-animation: degree 24s infinite linear;
+  -o-animation: degree 24s infinite linear;
+  animation: degree 24s infinite linear;
 }
 
 .text-degree {
@@ -126,4 +138,61 @@ html {
   text-anchor: start;
   stroke: rgba(255, 255, 255, 0.6);
   fill: none;
+}
+
+/* animation */
+@-webkit-keyframes degree {
+  0% {
+    -webkit-transform: rotateZ(0deg);
+  }
+
+  50% {
+    -webkit-transform: rotateZ(180deg);
+  }
+
+  100% {
+    -webkit-transform: rotateZ(360deg);
+  }
+}
+
+@-moz-keyframes degree {
+  0% {
+    -moz-transform: rotateZ(0deg);
+  }
+
+  50% {
+    -moz-transform: rotateZ(180deg);
+  }
+
+  100% {
+    -moz-transform: rotateZ(360deg);
+  }
+}
+
+@-o-keyframes degree {
+  0% {
+    -o-transform: rotateZ(0deg);
+  }
+
+  50% {
+    -o-transform: rotateZ(180deg);
+  }
+
+  100% {
+    -o-transform: rotateZ(360deg);
+  }
+}
+
+@keyframes degree {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  50% {
+    transform: rotateZ(180deg);
+  }
+
+  100% {
+    transform: rotateZ(360deg);
+  }
 }
