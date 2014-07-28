@@ -66,11 +66,11 @@ body {
   color: #fff;
   background-color: #2d2d2d;
   background-size: 100% 100%;
-  background: -webkit-gradient(radial, 100% 10%, 0, 100% 10%, 100, color-stop(0%, #375651), color-stop(100%, #000000)), -webkit-gradient(linear, 100% 0%, 0% 100%, color-stop(0%, #46655c), color-stop(100%, #ffffff));
-  background: -webkit-radial-gradient(100% 10%, 200% 160%, #375651, #000000), -webkit-linear-gradient(top right, #46655c, #ffffff);
-  background: -moz-radial-gradient(100% 10%, 200% 160%, #375651, #000000), -moz-linear-gradient(top right, #46655c, #ffffff);
-  background: -o-radial-gradient(100% 10%, 200% 160%, #375651, #000000), -o-linear-gradient(top right, #46655c, #ffffff);
-  background: radial-gradient(100% 10%, 200% 160%, #375651, #000000), linear-gradient(top right, #46655c, #ffffff);
+  background: -webkit-gradient(radial, 100% 10%, 0, 100% 10%, 100, color-stop(0%, #375651), color-stop(100%, #000000));
+  background: -webkit-radial-gradient(100% 10%, 200% 160%, #375651, #000000);
+  background: -moz-radial-gradient(100% 10%, 200% 160%, #375651, #000000);
+  background: -o-radial-gradient(100% 10%, 200% 160%, #375651, #000000);
+  background: radial-gradient(100% 10%, 200% 160%, #375651, #000000);
 }
 
 #main {
@@ -86,7 +86,6 @@ body {
   transform-style: preserve-3d;
   width: 100%;
   height: 100%;
-  overflow: hidden;
 }
 
 .layer {
@@ -95,28 +94,92 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
 }
 
 /* layer */
 .l1 {
-  -webkit-transform: rotateX(-110deg);
-  -moz-transform: rotateX(-110deg);
-  -ms-transform: rotateX(-110deg);
-  -o-transform: rotateX(-110deg);
-  transform: rotateX(-110deg);
-  -webkit-animation: fadein 10s 5s forwards;
-  -moz-animation: fadein 10s 5s forwards;
-  -o-animation: fadein 10s 5s forwards;
-  animation: fadein 10s 5s forwards;
+  opacity: 0;
+  -webkit-transform: rotateX(70deg) translateZ(-50px);
+  -moz-transform: rotateX(70deg) translateZ(-50px);
+  -ms-transform: rotateX(70deg) translateZ(-50px);
+  -o-transform: rotateX(70deg) translateZ(-50px);
+  transform: rotateX(70deg) translateZ(-50px);
+  -webkit-animation: degree-show 10s 5s forwards;
+  -moz-animation: degree-show 10s 5s forwards;
+  -o-animation: degree-show 10s 5s forwards;
+  animation: degree-show 10s 5s forwards;
+}
+
+@-webkit-keyframes degree-show {
+  0% {
+    -webkit-transform: rotateX(70deg) translateZ(-50px);
+    opacity: 0;
+  }
+
+  20% {
+    -webkit-transform: rotateX(70deg) translateZ(-50px);
+  }
+
+  100% {
+    -webkit-transform: rotateX(70deg) translateZ(0px);
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes degree-show {
+  0% {
+    -moz-transform: rotateX(70deg) translateZ(-50px);
+    opacity: 0;
+  }
+
+  20% {
+    -moz-transform: rotateX(70deg) translateZ(-50px);
+  }
+
+  100% {
+    -moz-transform: rotateX(70deg) translateZ(0px);
+    opacity: 1;
+  }
+}
+
+@-o-keyframes degree-show {
+  0% {
+    -o-transform: rotateX(70deg) translateZ(-50px);
+    opacity: 0;
+  }
+
+  20% {
+    -o-transform: rotateX(70deg) translateZ(-50px);
+  }
+
+  100% {
+    -o-transform: rotateX(70deg) translateZ(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes degree-show {
+  0% {
+    transform: rotateX(70deg) translateZ(-50px);
+    opacity: 0;
+  }
+
+  20% {
+    transform: rotateX(70deg) translateZ(-50px);
+  }
+
+  100% {
+    transform: rotateX(70deg) translateZ(0px);
+    opacity: 1;
+  }
 }
 
 .l2 {
-  -webkit-transform: rotateX(-110deg) translateZ(45px);
-  -moz-transform: rotateX(-110deg) translateZ(45px);
-  -ms-transform: rotateX(-110deg) translateZ(45px);
-  -o-transform: rotateX(-110deg) translateZ(45px);
-  transform: rotateX(-110deg) translateZ(45px);
+  -webkit-transform: rotateX(70deg) translateZ(-50px);
+  -moz-transform: rotateX(70deg) translateZ(-50px);
+  -ms-transform: rotateX(70deg) translateZ(-50px);
+  -o-transform: rotateX(70deg) translateZ(-50px);
+  transform: rotateX(70deg) translateZ(-50px);
   -webkit-transition: 5s;
   -moz-transition: 5s;
   -o-transition: 5s;
@@ -124,8 +187,10 @@ body {
 }
 
 .l3 {
-  /* @include transform(rotateX(-110deg) translateZ(-15px));
-  @include transition($step-1 + $step-2); */
+  -webkit-transition: 15s;
+  -moz-transition: 15s;
+  -o-transition: 15s;
+  transition: 15s;
 }
 
 /* dial */
@@ -144,16 +209,72 @@ body {
 }
 
 .degree {
-  -webkit-animation: degree 24s infinite linear;
-  -moz-animation: degree 24s infinite linear;
-  -o-animation: degree 24s infinite linear;
-  animation: degree 24s infinite linear;
+  -webkit-animation: degree-rotate 24s infinite linear;
+  -moz-animation: degree-rotate 24s infinite linear;
+  -o-animation: degree-rotate 24s infinite linear;
+  animation: degree-rotate 24s infinite linear;
 }
 .degree:hover {
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
   -o-animation-play-state: paused;
   animation-play-state: paused;
+}
+
+@-webkit-keyframes degree-rotate {
+  0% {
+    -webkit-transform: rotateZ(0deg);
+  }
+
+  50% {
+    -webkit-transform: rotateZ(180deg);
+  }
+
+  100% {
+    -webkit-transform: rotateZ(360deg);
+  }
+}
+
+@-moz-keyframes degree-rotate {
+  0% {
+    -moz-transform: rotateZ(0deg);
+  }
+
+  50% {
+    -moz-transform: rotateZ(180deg);
+  }
+
+  100% {
+    -moz-transform: rotateZ(360deg);
+  }
+}
+
+@-o-keyframes degree-rotate {
+  0% {
+    -o-transform: rotateZ(0deg);
+  }
+
+  50% {
+    -o-transform: rotateZ(180deg);
+  }
+
+  100% {
+    -o-transform: rotateZ(360deg);
+  }
+}
+
+@keyframes degree-rotate {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  50% {
+    transform: rotateZ(180deg);
+  }
+
+  100% {
+    transform: rotateZ(360deg);
+  }
 }
 
 #path-degree {
@@ -186,83 +307,6 @@ body {
   -moz-animation: border 5s ease-in forwards;
   -o-animation: border 5s ease-in forwards;
   animation: border 5s ease-in forwards;
-}
-
-.rect {
-  position: absolute;
-  top: 100px;
-  left: 100px;
-  width: 300px;
-  height: 300px;
-  stroke-dasharray: 2000;
-  stroke-dashoffset: 2000;
-  stroke: rgba(255, 255, 255, 0.6);
-  stroke-width: 2;
-  fill: none;
-}
-
-.r1 {
-  -webkit-animation: border 10s 5s ease forwards;
-  -moz-animation: border 10s 5s ease forwards;
-  -o-animation: border 10s 5s ease forwards;
-  animation: border 10s 5s ease forwards;
-}
-
-/* animation */
-@-webkit-keyframes degree {
-  0% {
-    -webkit-transform: rotateZ(0deg);
-  }
-
-  50% {
-    -webkit-transform: rotateZ(180deg);
-  }
-
-  100% {
-    -webkit-transform: rotateZ(360deg);
-  }
-}
-
-@-moz-keyframes degree {
-  0% {
-    -moz-transform: rotateZ(0deg);
-  }
-
-  50% {
-    -moz-transform: rotateZ(180deg);
-  }
-
-  100% {
-    -moz-transform: rotateZ(360deg);
-  }
-}
-
-@-o-keyframes degree {
-  0% {
-    -o-transform: rotateZ(0deg);
-  }
-
-  50% {
-    -o-transform: rotateZ(180deg);
-  }
-
-  100% {
-    -o-transform: rotateZ(360deg);
-  }
-}
-
-@keyframes degree {
-  0% {
-    transform: rotateZ(0deg);
-  }
-
-  50% {
-    transform: rotateZ(180deg);
-  }
-
-  100% {
-    transform: rotateZ(360deg);
-  }
 }
 
 @-webkit-keyframes border {
@@ -305,42 +349,28 @@ body {
   }
 }
 
-@-webkit-keyframes fadein {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
+.rect {
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  width: 300px;
+  height: 300px;
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-width: 2;
+  fill: none;
 }
 
-@-moz-keyframes fadein {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
+/* .r1 {
+	@include animation(border $step-2 $step-1 ease forwards);
 }
 
-@-o-keyframes fadein {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes fadein {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
+@include keyframes(border) {
+	0% {
+		stroke-dashoffset: 2000;
+	}
+	100% {
+		stroke-dashoffset: 0;
+	}
+} */

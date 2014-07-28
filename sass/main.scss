@@ -60,8 +60,7 @@ body {
 	background-color: #2d2d2d;
 	background-size: 100% 100%;
 	@include background(
-		radial-gradient(100% 10%, 200% 160%,#375651, #000),
-		linear-gradient(top right, #46655C, #fff)
+		radial-gradient(100% 10%, 200% 160%, #375651, #000)
 	);
 }
 
@@ -70,7 +69,6 @@ body {
 	@include transform-style(preserve-3d);
 	width: 100%;
 	height: 100%;
-	overflow: hidden;
 }
 
 .layer {
@@ -79,20 +77,33 @@ body {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	overflow: hidden;
 }
 /* layer */
 .l1 {
-	@include transform(rotateX(-110deg));
-	@include animation(fadein 10s $step-1 forwards);
+	opacity: 0;
+	@include transform(rotateX(70deg) translateZ(-50px));
+	@include animation(degree-show 10s $step-1 forwards);
+}
+@include keyframes(degree-show) {
+	0% {
+		#{$browser}transform: rotateX(70deg) translateZ(-50px);
+		opacity: 0;
+	}
+	20% {
+		#{$browser}transform: rotateX(70deg) translateZ(-50px);
+	}
+	100% {
+		#{$browser}transform: rotateX(70deg) translateZ(0px);
+		opacity: 1;
+	}
 }
 .l2 {
-	@include transform(rotateX(-110deg) translateZ(45px));
+	@include transform(rotateX(70deg) translateZ(-50px));
 	@include transition($step-1);
 }
 .l3 {
-	/* @include transform(rotateX(-110deg) translateZ(-15px));
-	@include transition($step-1 + $step-2); */
+	// @include transform(rotateX(-110deg) translateZ(-15px));
+	@include transition($step-1 + $step-2);
 }
 /* dial */
 .dial {
@@ -109,9 +120,20 @@ body {
 	}
 }
 .degree {
-	@include animation(degree 24s infinite linear);
+	@include animation(degree-rotate 24s infinite linear);
 	&:hover {
 		@include state(paused);
+	}
+}
+@include keyframes(degree-rotate) {
+	0% {
+		#{$browser}transform: rotateZ(0deg);
+	}
+	50% {
+		#{$browser}transform: rotateZ(180deg);
+	}
+	100% {
+		#{$browser}transform: rotateZ(360deg);
 	}
 }
 #path-degree {
@@ -139,6 +161,14 @@ body {
 .c1 {
 	@include animation(border $step-1 ease-in forwards);
 }
+@include keyframes(border) {
+	0% {
+		stroke-dashoffset: 2000;
+	}
+	100% {
+		stroke-dashoffset: 0;
+	}
+}
 .rect {
 	position: absolute;
 	top: 100px;
@@ -151,23 +181,10 @@ body {
 	stroke-width: 2;
 	fill: none;
 }
-.r1 {
+/* .r1 {
 	@include animation(border $step-2 $step-1 ease forwards);
 }
 
-/* animation */
-
-@include keyframes(degree) {
-	0% {
-		#{$browser}transform: rotateZ(0deg);
-	}
-	50% {
-		#{$browser}transform: rotateZ(180deg);
-	}
-	100% {
-		#{$browser}transform: rotateZ(360deg);
-	}
-}
 @include keyframes(border) {
 	0% {
 		stroke-dashoffset: 2000;
@@ -175,12 +192,4 @@ body {
 	100% {
 		stroke-dashoffset: 0;
 	}
-}
-@include keyframes(fadein) {
-	0% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
-}
+} */
