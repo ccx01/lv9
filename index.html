@@ -9,21 +9,31 @@
 <body>
 	<!-- <div class="loading">loading</div>
 -->
-<div id="dial">
-	<!-- white line -->
-	<div class="layer opacity">
-		<svg class="svg-degree">
-			<path id="path-degree" transform="translate(33, 33)" d="M 200 0
-			A 200 200 0 1 1 200 400
-			A 200 200 0 1 1 200 0"/>
-			<text class="text-degree">
-				<textPath xlink:href="#path-degree">ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ</textPath>
-			</text>
-		</svg>
-		<div class="circle c1"></div>
-		<div class="circle c2"></div>
-		<div class="rect"></div>
-		<div class="line"></div>
+<div id="main">
+	<div class="layer l1">
+		<div class="dial degree">
+			<svg class="wrap">
+				<path id="path-degree" transform="translate(33, 33)" d="M 200 0 A 200 200 0 1 1 200 400 A 200 200 0 1 1 200 0"/>
+				<text class="text-degree">
+					<textPath xlink:href="#path-degree">ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ</textPath>
+				</text>
+			</svg>
+		</div>
+
+	</div>
+	<div class="layer l2">
+		<div class="dial">
+			<svg class="wrap">
+				<path class="circle c1" transform="translate(33, 33)" d="M 200 0 A 200 200 0 1 1 200 400 A 200 200 0 1 1 200 0"/>
+			</svg>
+		</div>
+	</div>
+	<div class="layer l3">
+		<div class="dial">
+			<svg class="wrap">
+				<path class="rect r1" d="M 0 30 L 50 0 L 200 0 L 200 100 L 50 100 L 0 70"/>
+			</svg>
+		</div>
 	</div>
 </div>
 </body>
