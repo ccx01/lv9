@@ -11,30 +11,89 @@
 -->
 <div id="main">
 	<div class="layer l1">
-		<div class="dial degree">
-			<svg class="wrap">
-				<path id="path-degree" transform="translate(33, 33)" d="M 200 0 A 200 200 0 1 1 200 400 A 200 200 0 1 1 200 0"/>
+		<ul class="degree">
+			<!-- <svg class="wrap">
+				<path id="path-degree" class="path-text" transform="translate(33, 33)" d="M 200 0 A 200 200 0 1 1 200 400 A 200 200 0 1 1 200 0"/>
 				<text class="text-degree">
 					<textPath xlink:href="#path-degree">ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ</textPath>
 				</text>
-			</svg>
-		</div>
-
+			</svg> -->
+			<li class="item">
+				<span class="num">Ⅰ</span>
+			</li>
+			<li class="item">
+				<span class="num">Ⅱ</span>
+			</li>
+			<li class="item">
+				<span class="num">Ⅲ</span>
+			</li>
+			<li class="item">
+				<span class="num">Ⅳ</span>
+			</li>
+			<li class="item">
+				<span class="num">Ⅴ</span>
+			</li>
+			<li class="item">
+				<span class="num">Ⅵ</span>
+			</li>
+			<li class="item">
+				<span class="num">Ⅶ</span>
+			</li>
+			<li class="item">
+				<span class="num">Ⅷ</span>
+			</li>
+			<li class="item">
+				<span class="num">Ⅸ</span>
+			</li>
+			<li class="item">
+				<span class="num">Ⅹ</span>
+			</li>
+			<li class="item">
+				<span class="num">Ⅺ</span>
+			</li>
+			<li class="item">
+				<span class="num">Ⅻ</span>
+			</li>
+		</ul>
 	</div>
 	<div class="layer l2">
 		<div class="dial">
 			<svg class="wrap">
-				<path class="circle c1" transform="translate(33, 33)" d="M 200 0 A 200 200 0 1 1 200 400 A 200 200 0 1 1 200 0"/>
-			</svg>
-		</div>
-	</div>
-	<div class="layer l3">
-		<div class="dial">
-			<svg class="wrap">
-				<path class="rect r1" d="M 0 30 L 50 0 L 200 0 L 200 100 L 50 100 L 0 70"/>
+				<path class="circle c1" transform="translate(33, 33)" d="M 200 0 A 200 200 0 1 0 200 400 A 200 200 0 1 0 200 0"/>
 			</svg>
 		</div>
 	</div>
 </div>
+<script>
+	var r = 270;
+	var x;
+	var y;
+	var rotate;
+	var items = document.querySelectorAll('.item');
+	function circle(i){
+		if(i < 12){
+			// for(var i = 0; i < 12; i++){
+				x =  Math.sin(i * Math.PI / 6) * r;
+				y =  -Math.cos(i * Math.PI / 6) * r;
+				rotate = 30 * i;
+				(i == 6) && (x = 0);
+				(i == 9) && (y = 0);
+				items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0) rotate(' + rotate + 'deg)';
+				items[i].style.opacity = 1;
+			// }
+			setTimeout(function(){
+				circle(i + 1);
+			}, 200);
+		}else{
+			setTimeout(function(){
+				document.querySelector('.l1').style.transform = 'translate3d(0px, 0px, 0) rotate(0deg)';
+				document.querySelector('.l2').className += ' active';
+			}, 1000);
+		}
+	}
+	setTimeout(function(){
+		circle(0);
+	}, 3000);
+</script>
 </body>
 </html>
