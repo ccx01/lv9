@@ -42,10 +42,6 @@
 	}
 }
 $browser: null;
-$white-line: rgba(255, 255, 255, 0.6);
-
-$step-1: 5s;
-$step-2: 5s;
 
 /* global */
 html {
@@ -59,6 +55,8 @@ body {
 	color: #fff;
 	background-color: #2d2d2d;
 	background-size: 100% 100%;
+	overflow: hidden;
+	pointer-events: none;
 	@include background(
 		radial-gradient(100% 10%, 200% 160%, #375651, #000)
 	);
@@ -70,171 +68,107 @@ body {
 	width: 100%;
 	height: 100%;
 }
+/* navi */
+.navi {
+	position: absolute;
+	top: 5%;
+	left: 50%;
+	margin-left: -10%;
+	width: 20%;
+	height: 0%;
+	pointer-events: none;
 
+	z-index: 999;
+	opacity: 0;
+	overflow: hidden;
+
+	box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.5);
+	border: 1px solid rgba(127, 255, 255, 0.6);
+	background: rgba(0, 0, 0, 0.3);
+
+	cursor: default;
+
+	@include transition(2s);
+	@include transform(rotateX(-10deg));
+	@include transform-origin(0%, 0%);
+	&.active {
+		opacity: 1;
+		height: 100%;
+		pointer-events: painted;
+	}
+	.item {
+		width: 100%;
+		display: block;
+		padding: 20px;
+		background: rgba(255, 255, 255, 0.1);
+		box-sizing: border-box;
+		margin-bottom: 1px;
+		&:hover {
+			color: rgba(255, 255, 255, 1);
+			text-shadow: 0 0 20px rgba(0, 255, 255, 0.95);
+			background: rgba(255, 255, 255, 0.3);
+		}
+	}
+}
+
+/* layer */
 .layer {
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	@include transition(3s);
+	pointer-events: none;
+	@include transition(1s);
 	@include transform(rotateX(70deg));
-}
-/* layer */
-.l1 {
-	z-index: 99;
-	// opacity: 0;
-	@include transform(rotateX(70deg) translateZ(-50px));
-	@include transition(10s);
-	// @include animation(degree-show $step-2 ($step-1 - 2s) forwards);
-}
-@include keyframes(degree-show) {
-	0% {
-		#{$browser}transform: rotateX(70deg) translateZ(-50px);
+	&.active {
+		pointer-events: painted;
+	}
+	.item {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-top: -60px;
+		margin-left: -60px;
+		width: 120px;
+		height: 120px;
+		text-align: center;
+		cursor: default;
 		opacity: 0;
+		@include transition(2s);
+		.num {
+			font-size: 60px;
+			line-height: 120px;
+			font-weight: bold;
+			color: rgba(255, 255, 255, 0.75);
+			text-shadow: 0 0 10px rgba(0, 255, 255, 0.95);
+		}
+		&:hover .num {
+			color: rgba(255, 255, 255, 1);
+			text-shadow: 0 0 20px rgba(0, 255, 255, 0.95);
+		}
 	}
-	20% {
-		#{$browser}transform: rotateX(70deg) translateZ(-50px);
-	}
-	100% {
-		#{$browser}transform: rotateX(70deg) translateZ(0px);
-		opacity: 1;
+}
+.l1 {
+	@include transform(rotateX(70deg) translateZ(-200px));
+	&.active {
 	}
 }
 .l2 {
+	@include transition(3s);
+	@include transform(rotateX(70deg) translateZ(-100px));
 	&.active {
-		@include transform(rotateX(70deg) translateZ(50px));
 	}
 }
 .l3 {
+	@include transition(5s);
+	@include transform(rotateX(70deg) translateZ(100px));
 	&.active {
-		@include transform(rotateX(70deg) translateZ(100px));
 	}
 }
-/* dial */
-.dial {
-	position: relative;
-	margin: 100px auto;
-	width: 500px;
-	height: 500px;
-	.wrap {
-		position: absolute;
-		top: 20px;
-		left: 20px;
-		width: 460px;
-		height: 460px;
+.l4 {
+	@include transition(10s);
+	@include transform(rotateX(70deg) translateZ(300px));
+	&.active {
 	}
 }
-/* .degree {
-	@include animation(degree-rotate 24s infinite linear);
-	&:hover {
-		@include state(paused);
-	}
-}
-@include keyframes(degree-rotate) {
-	0% {
-		#{$browser}transform: rotateZ(0deg);
-	}
-	50% {
-		#{$browser}transform: rotateZ(180deg);
-	}
-	100% {
-		#{$browser}transform: rotateZ(360deg);
-	}
-}
-.path-text {
-	color: #fff;
-	fill: none;
-}
-.text-degree,
-.text-brief {
-	font-size: 30px;
-	letter-spacing: 74px;
-	text-anchor: start;
-	stroke: $white-line;
-	fill: none;
-} */
-.circle {
-	position: absolute;
-	top: 100px;
-	left: 100px;
-	width: 300px;
-	height: 300px;
-	stroke-dasharray: 2000;
-	stroke-dashoffset: 2000;
-	stroke: rgba(127, 255, 255, 0.6);
-	fill: none;
-}
-.c1 {
-	@include animation(border 3s ease-in forwards);
-}
-.active .c1{
-	@include animation(border-2 1s ease-out forwards);
-}
-@include keyframes(border-2) {
-	0% {
-		stroke-dashoffset: 0;
-	}
-	100% {
-		stroke-dashoffset: 2000;
-	}
-}
-@include keyframes(border) {
-	0% {
-		stroke-dashoffset: 2000;
-	}
-	100% {
-		stroke-dashoffset: 0;
-	}
-}
-/* .rect {
-	position: absolute;
-	top: 100px;
-	left: 100px;
-	width: 300px;
-	height: 300px;
-	stroke-dasharray: 2000;
-	stroke-dashoffset: 2000;
-	stroke: $white-line;
-	stroke-width: 2;
-	fill: none;
-} */
-.item {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-top: -60px;
-	margin-left: -60px;
-	width: 120px;
-	height: 120px;
-	text-align: center;
-	cursor: default;
-	opacity: 0;
-	@include transition(2s);
-	&:hover {
-		box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.5);
-		// border: 1px solid rgba(127, 255, 255, 0.6);
-		background: rgba(0, 0, 0, 0.1);
-	}
-	.num {
-		font-size: 60px;
-		line-height: 120px;
-		font-weight: bold;
-		color: rgba(255, 255, 255, 0.75);
-		text-shadow: 0 0 10px rgba(0, 255, 255, 0.95);
-	}
-}
-
-
-/* .r1 {
-	@include animation(border $step-2 $step-1 ease forwards);
-}
-
-@include keyframes(border) {
-	0% {
-		stroke-dashoffset: 2000;
-	}
-	100% {
-		stroke-dashoffset: 0;
-	}
-} */
