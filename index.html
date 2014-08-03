@@ -7,27 +7,61 @@
 	<meta name="description" content="just for fun,及时行乐,核心思路是以时间空间为基础元素进行制作">
 	<link rel="stylesheet" href="/lv9/css/main.css"></head>
 <body>
-	<!-- <div class="loading">loading</div>
--->
+	<!-- <div class="loading">loading</div> -->
+<!-- svg -->
+<svg display="none"  width="32" height="32" viewBox="0 0 32 32">
+	<defs>
+		<g id="icon-close">
+			<path class="path1" d="M31.708 25.708c-0-0-0-0-0-0l-9.708-9.708 9.708-9.708c0-0 0-0 0-0 0.105-0.105 0.18-0.227 0.229-0.357 0.133-0.356 0.057-0.771-0.229-1.057l-4.586-4.586c-0.286-0.286-0.702-0.361-1.057-0.229-0.13 0.048-0.252 0.124-0.357 0.228 0 0-0 0-0 0l-9.708 9.708-9.708-9.708c-0-0-0-0-0-0-0.105-0.104-0.227-0.18-0.357-0.228-0.356-0.133-0.771-0.057-1.057 0.229l-4.586 4.586c-0.286 0.286-0.361 0.702-0.229 1.057 0.049 0.13 0.124 0.252 0.229 0.357 0 0 0 0 0 0l9.708 9.708-9.708 9.708c-0 0-0 0-0 0-0.104 0.105-0.18 0.227-0.229 0.357-0.133 0.355-0.057 0.771 0.229 1.057l4.586 4.586c0.286 0.286 0.702 0.361 1.057 0.229 0.13-0.049 0.252-0.124 0.357-0.229 0-0 0-0 0-0l9.708-9.708 9.708 9.708c0 0 0 0 0 0 0.105 0.105 0.227 0.18 0.357 0.229 0.356 0.133 0.771 0.057 1.057-0.229l4.586-4.586c0.286-0.286 0.362-0.702 0.229-1.057-0.049-0.13-0.124-0.252-0.229-0.357z"></path>
+		</g>
+	</defs>
+</svg>
+
 <div id="main">
 	<ul class="navi">
-		<li class="item">menu1</li>
-		<li class="item">menu1</li>
-		<li class="item">menu1</li>
-		<li class="item">menu1</li>
+		<li class="item" data-page="nothing">nothing</li>
+		<li class="item" data-page="random"><strong>time & space</strong></li>
+		<li class="item" data-page="recent">recent</li>
+		<li class="item" data-page="about">hi, I'm <strong>Sign</strong></li>
+		<li class="close">
+			<svg class="icon icon-close" viewBox="0 0 32 32">
+				<use xlink:href="#icon-close"></use>
+			</svg>
+		</li>
 	</ul>
-	<div class="layer l1"></div>
-	<div class="layer l2"></div>
-	<div class="layer l3"></div>
-	<div class="layer l4"></div>
+	<div class="layer l1 about"></div>
+	<div class="layer l2 recent"></div>
+	<div class="layer l3 random"></div>
+	<div class="layer l4 nothing"></div>
 </div>
-<script type="text/template" id="tpl">
-	<div class="item">
-		<span class="num">{#n}</span>
+<!-- tamplate -->
+<div id="content">
+	<svg class="icon icon-close" viewBox="0 0 32 32">
+		<use xlink:href="#icon-close"></use>
+	</svg>
+	<div class="wrap">
+		<p>数据正在接入</p>	
 	</div>
-</script>
+</div>
+<template id="tpl">
+	<div class="item">
+		<span class="num" data-index="{#index}">{#n}</span>
+	</div>
+</template>
 <script>
-	var tpl = document.querySelector('#tpl').innerHTML;
+	var $ = function(dom){
+		var ret = document.querySelectorAll(dom);
+		return ret.length == 1 ? ret[0] : ret;
+	}
+
+	/* init layout */
+	var $content = $('#content');
+	var $navi = $('.navi');
+	var $l1 = $('.l1');
+	var $l2 = $('.l2');
+	var $l3 = $('.l3');
+	var $l4 = $('.l4');
+	var tpl = $('#tpl').innerHTML;
 	var sign = ["Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ"];
 	var l1 = function(){
 		var items = initHTML('.l1', 12);
@@ -44,17 +78,63 @@
 	var l4 = function(){
 		var items = initHTML('.l4', 48);
 		circle(items, 550, 50, function(){
-			document.querySelector('.navi').className += ' active';
+			switchState([$navi], 1);
+			switchState([$l1, $l2, $l3, $l4], 0);
 		});
 	}
 
 	l1();
 
+	/* init menu */
+	var menu = $('.navi .item');
+	for(var i = 0; i < menu.length; i++){
+		menu[i].onclick = function(){
+			callPage(this.dataset['page'])
+		}
+	}
+	$('.navi .close').onclick = function(){
+		switchState([$navi], 1);
+		switchState([$l1, $l2, $l3, $l4], 0);
+	}
+
+	$l1.onclick = function(e){
+		// console.log(e);
+		$('#content .wrap').innerHTML += e.target.dataset['index'] + ':' + e.target.innerText +'<br>';
+		switchState([$content], 1);
+	}
+
+	$('#content .icon-close').onclick = function(){
+		switchState([$content], 0);
+	}
+
+
+	function switchState(doms, num){
+		for(var i = 0; i < doms.length; i++){
+			doms[i].dataset['state'] = num;
+		}
+	}
+
+	function callPage(page){
+		switchState([$l1, $l2, $l3, $l4], 2);
+		$('.navi').dataset['state'] = 0;
+		switch(page){
+			case 'nothing':
+				alert('I told u.');
+				break;
+			case 'about':
+				switchState([$l1], 1);
+				break;
+		}
+	}
+
 	function initHTML(layer, num){
-		var dom = document.querySelector(layer);
+		var dom = $(layer);
 		var html = '';
 		for (var i = 0; i < num; i++) {
-			data = {n: sign[i % sign.length]};
+			data = {
+				index: i,
+				n: sign[i % sign.length]
+			};
 			html += tplEngine(tpl, data);
 		}
 		dom.innerHTML = html;
