@@ -69,10 +69,10 @@ body {
   overflow: hidden;
   pointer-events: none;
   background: -webkit-gradient(radial, 100% 10%, 0, 100% 10%, 100, color-stop(0%, #375651), color-stop(100%, #000000));
-  background: -webkit-radial-gradient(100% 10%, 200% 160%, #375651, #000000);
-  background: -moz-radial-gradient(100% 10%, 200% 160%, #375651, #000000);
-  background: -o-radial-gradient(100% 10%, 200% 160%, #375651, #000000);
-  background: radial-gradient(100% 10%, 200% 160%, #375651, #000000);
+  background: -webkit-radial-gradient(100% 10%, ellipse, #375651, #000000);
+  background: -moz-radial-gradient(100% 10%, ellipse, #375651, #000000);
+  background: -o-radial-gradient(100% 10%, ellipse, #375651, #000000);
+  background: radial-gradient(100% 10%, ellipse, #375651, #000000);
 }
 
 #main {

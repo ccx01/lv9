@@ -58,7 +58,7 @@ body {
 	overflow: hidden;
 	pointer-events: none;
 	@include background(
-		radial-gradient(100% 10%, 200% 160%, #375651, #000)
+		radial-gradient(100% 10%, ellipse, #375651, #000)
 	);
 }
 
