@@ -228,18 +228,18 @@ body {
 }
 
 .l1[data-state='0'], .l1[data-state='2'] {
-  -webkit-transform: rotateX(70deg) translateZ(-200px);
-  -moz-transform: rotateX(70deg) translateZ(-200px);
-  -ms-transform: rotateX(70deg) translateZ(-200px);
-  -o-transform: rotateX(70deg) translateZ(-200px);
-  transform: rotateX(70deg) translateZ(-200px);
+  -webkit-transform: rotateX(70deg) rotateZ(0deg) translateZ(-200px);
+  -moz-transform: rotateX(70deg) rotateZ(0deg) translateZ(-200px);
+  -ms-transform: rotateX(70deg) rotateZ(0deg) translateZ(-200px);
+  -o-transform: rotateX(70deg) rotateZ(0deg) translateZ(-200px);
+  transform: rotateX(70deg) rotateZ(0deg) translateZ(-200px);
 }
 .l1[data-state='1'] {
-  -webkit-transform: translateZ(0px);
-  -moz-transform: translateZ(0px);
-  -ms-transform: translateZ(0px);
-  -o-transform: translateZ(0px);
-  transform: translateZ(0px);
+  -webkit-transform: rotateX(0deg) rotateZ(390deg) translateZ(0px);
+  -moz-transform: rotateX(0deg) rotateZ(390deg) translateZ(0px);
+  -ms-transform: rotateX(0deg) rotateZ(390deg) translateZ(0px);
+  -o-transform: rotateX(0deg) rotateZ(390deg) translateZ(0px);
+  transform: rotateX(0deg) rotateZ(390deg) translateZ(0px);
 }
 
 .l2 {

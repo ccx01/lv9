@@ -186,10 +186,10 @@ body {
 .l1 {
 	&[data-state='0'],
 	&[data-state='2'] {
-		@include transform(rotateX($rotate) translateZ(-200px));
+		@include transform(rotateX($rotate) rotateZ(0deg) translateZ(-200px));
 	}
 	&[data-state='1'] {
-		@include transform(translateZ(0px));
+		@include transform(rotateX(0deg) rotateZ(390deg) translateZ(0px));
 	}
 }
 .l2 {
