@@ -144,6 +144,7 @@ body {
 /* layer */
 .layer {
 	@include transform-style(preserve-3d);
+	@include perspective(0px);
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -201,6 +202,11 @@ body {
 	}
 	&[data-state='1'] {
 		@include transform(translateZ(0px));
+		@include perspective(0px);
+	}
+	&[data-state='3'] {
+		@include transform(translateZ(0px));
+		@include perspective(300px);
 	}
 }
 .l3 {
