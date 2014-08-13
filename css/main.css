@@ -253,12 +253,17 @@ body {
 }
 
 .l2 {
-  -webkit-transition: 4s;
-  -moz-transition: 4s;
-  -o-transition: 4s;
-  transition: 4s;
+  -webkit-transition: 2s;
+  -moz-transition: 2s;
+  -o-transition: 2s;
+  transition: 2s;
 }
 .l2[data-state='0'], .l2[data-state='2'] {
+  -webkit-perspective: 1px;
+  -moz-perspective: 1px;
+  -ms-perspective: 1px;
+  -o-perspective: 1px;
+  perspective: 1px;
   -webkit-transform: rotateX(70deg) translateZ(-100px);
   -moz-transform: rotateX(70deg) translateZ(-100px);
   -ms-transform: rotateX(70deg) translateZ(-100px);
@@ -271,11 +276,11 @@ body {
   -ms-transform: translateZ(0px);
   -o-transform: translateZ(0px);
   transform: translateZ(0px);
-  -webkit-perspective: 0px;
-  -moz-perspective: 0px;
-  -ms-perspective: 0px;
-  -o-perspective: 0px;
-  perspective: 0px;
+  -webkit-perspective: 1px;
+  -moz-perspective: 1px;
+  -ms-perspective: 1px;
+  -o-perspective: 1px;
+  perspective: 1px;
 }
 .l2[data-state='3'] {
   -webkit-transform: translateZ(0px);

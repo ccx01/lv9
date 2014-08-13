@@ -67,12 +67,12 @@
 			var sign = ["Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ"];
 			var l1 = function(){
 				var items = initHTML('.l1', 12);
-				circle(items, 270, 80, l2);
+				circle(items, 270, 50, l2);
 			}
 			var l2_items;
 			var l2 = function(){
 				l2_items = initHTML('.l2', 24);
-				circle(l2_items, 340, 80, l3);
+				circle(l2_items, 340, 50, l3);
 			}
 			var l3 = function(){
 				var items = initHTML('.l3', 36);
@@ -96,6 +96,7 @@
 				}
 			}
 			$('.navi .close').onclick = function(){
+				circle(l2_items, 340, 50);
 				switchState([$navi], 1);
 				switchState([$l1, $l2, $l3, $l4], 0);
 			}
@@ -126,7 +127,7 @@
 						break;
 					case 'recent':
 						scat(l2_items);
-						switchState([$l2], 1);
+						// switchState([$l2], 1);
 						break;
 					case 'about':
 						switchState([$l1], 1);
@@ -182,19 +183,17 @@
 
 				(function fn(i){
 					if(i < items.length){
-						setTimeout(function(){
-							x = (i % 6 - 3) * 200;
-							y = ((i / 6 | 0) - 1) * 100;
-							z = Math.random() * 100 | 0;
-							items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px)';
-							//某些国产套壳浏览器 --> 丑哭，网站完成后，进一步判断让低版本webkit无法进入这页面
-							items[i].style.webkitTransform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px)';
-							fn(i + 1);
-						}, 10);
+						x = (i % 6 - 3) * 200;
+						y = ((i / 6 | 0) - 1) * 100;
+						z = Math.random() * 100 | 0;
+						items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px)';
+						//某些国产套壳浏览器 --> 丑哭，网站完成后，进一步判断让低版本webkit无法进入这页面
+						items[i].style.webkitTransform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px)';
+						fn(i + 1);
 					}else{
 						setTimeout(function(){
 							switchState([$l2], 3);
-						}, 2000);
+						}, 1000);
 					}
 				}(0));
 			}

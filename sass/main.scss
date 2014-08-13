@@ -195,14 +195,15 @@ body {
 	}
 }
 .l2 {
-	@include transition(4s);
+	@include transition(2s);
 	&[data-state='0'],
 	&[data-state='2'] {
+		@include perspective(1px);
 		@include transform(rotateX($rotate) translateZ(-100px));
 	}
 	&[data-state='1'] {
 		@include transform(translateZ(0px));
-		@include perspective(0px);
+		@include perspective(1px);
 	}
 	&[data-state='3'] {
 		@include transform(translateZ(0px));

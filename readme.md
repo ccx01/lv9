@@ -15,3 +15,5 @@
 	初始值与结束角度都需要设定值，如初始值rotateZ(0deg) -> rotateZ(360deg)
 	此时如果存在其他rotate如rotateX也需要为其设定完整的初始值与结束值，否则所有rotate动画都会走最短路径
 	rotate3d设0无效
+###20140813
+	perspective: 0px; 动画时会有个初始化效果，300px->0px 过程与终点不同
