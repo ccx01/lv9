@@ -113,8 +113,12 @@
 
 
 			function switchState(doms, num){
-				for(var i = 0; i < doms.length; i++){
-					doms[i].dataset['state'] = num;
+				if(doms.length){
+					for(var i = 0; i < doms.length; i++){
+						doms[i].dataset['state'] = num;
+					}
+				}else{
+					doms.dataset['state'] = num;
 				}
 			}
 
@@ -126,8 +130,7 @@
 						alert('I told u.');
 						break;
 					case 'recent':
-						scat(l2_items);
-						// switchState([$l2], 1);
+						scat($l2, l2_items);
 						break;
 					case 'about':
 						switchState([$l1], 1);
@@ -179,12 +182,12 @@
 				}(0));
 			}
 
-			function scat(items){
-
+			function scat(layer, items){
+				switchState(layer, 1);
 				(function fn(i){
 					if(i < items.length){
-						x = (i % 6 - 3) * 200;
-						y = ((i / 6 | 0) - 1) * 100;
+						x = (i % 6 - 3) * screen.width / 6;
+						y = ((i / 6 | 0) - 2) * 100;
 						z = Math.random() * 100 | 0;
 						items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px)';
 						//某些国产套壳浏览器 --> 丑哭，网站完成后，进一步判断让低版本webkit无法进入这页面
@@ -192,7 +195,7 @@
 						fn(i + 1);
 					}else{
 						setTimeout(function(){
-							switchState([$l2], 3);
+							switchState(layer, 3);
 						}, 1000);
 					}
 				}(0));

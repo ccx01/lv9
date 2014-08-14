@@ -203,7 +203,7 @@ body {
   -o-transform: rotateX(70deg);
   transform: rotateX(70deg);
 }
-.layer[data-state='0'] .item, .layer[data-state='1'] .item {
+.layer[data-state='0'] .item, .layer[data-state='1'] .item, .layer[data-state='3'] .item {
   pointer-events: painted;
 }
 .layer[data-state='2'] {
@@ -288,11 +288,11 @@ body {
   -ms-transform: translateZ(0px);
   -o-transform: translateZ(0px);
   transform: translateZ(0px);
-  -webkit-perspective: 300px;
-  -moz-perspective: 300px;
-  -ms-perspective: 300px;
-  -o-perspective: 300px;
-  perspective: 300px;
+  -webkit-perspective: 400px;
+  -moz-perspective: 400px;
+  -ms-perspective: 400px;
+  -o-perspective: 400px;
+  perspective: 400px;
 }
 
 .l3 {

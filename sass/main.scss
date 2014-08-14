@@ -154,7 +154,8 @@ body {
 	@include transition(2s);
 	@include transform(rotateX($rotate));
 	&[data-state='0'] .item,
-	&[data-state='1'] .item {
+	&[data-state='1'] .item,
+	&[data-state='3'] .item {
 		pointer-events: painted;
 	}
 	&[data-state='2'] {
@@ -207,7 +208,7 @@ body {
 	}
 	&[data-state='3'] {
 		@include transform(translateZ(0px));
-		@include perspective(300px);
+		@include perspective(400px);
 	}
 }
 .l3 {
