@@ -59,28 +59,33 @@
 			/* init layout */
 			var $content = $('#content');
 			var $navi = $('.navi');
+			var tpl = $('#tpl').innerHTML;
+			var sign = ["Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ"];
+
 			var $l1 = $('.l1');
 			var $l2 = $('.l2');
 			var $l3 = $('.l3');
 			var $l4 = $('.l4');
-			var tpl = $('#tpl').innerHTML;
-			var sign = ["Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ"];
+			var l1_items;
+			var	l2_items;
+			var	l3_items;
+			var	l4_items;
+
 			var l1 = function(){
-				var items = initHTML('.l1', 12);
-				circle(items, 270, 50, l2);
+				l1_items = initHTML('.l1', 12);
+				circle(l1_items, 270, 50, l2);
 			}
-			var l2_items;
 			var l2 = function(){
 				l2_items = initHTML('.l2', 24);
 				circle(l2_items, 340, 50, l3);
 			}
 			var l3 = function(){
-				var items = initHTML('.l3', 36);
-				circle(items, 450, 50, l4);
+				l3_items = initHTML('.l3', 36);
+				circle(l3_items, 450, 30, l4);
 			}
 			var l4 = function(){
-				var items = initHTML('.l4', 48);
-				circle(items, 550, 50, function(){
+				l4_items = initHTML('.l4', 48);
+				circle(l4_items, 550, 30, function(){
 					switchState([$navi], 1);
 					switchState([$l1, $l2, $l3, $l4], 0);
 				});
@@ -130,10 +135,15 @@
 						alert('I told u.');
 						break;
 					case 'recent':
-						scat($l2, l2_items);
+						switchState($l2, 1);
+						scat($l2, l2_items, function(){
+							setTimeout(function(){
+								switchState($l2, 3);
+							}, 1000);
+						});
 						break;
 					case 'about':
-						switchState([$l1], 1);
+						switchState($l1, 1);
 						break;
 				}
 			}
@@ -171,8 +181,6 @@
 							y =  (i == items.length * 0.75 || i == items.length * 0.25) ? 0 : -Math.cos(i * 2 *  Math.PI / items.length) * r;
 							rotate = deg * i;
 							items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0) rotate(' + rotate + 'deg)';
-							//某些国产套壳浏览器 --> 丑哭，网站完成后，进一步判断让低版本webkit无法进入这页面
-							items[i].style.webkitTransform = 'translate3d(' + x + 'px, ' + y + 'px, 0) rotate(' + rotate + 'deg)';
 							items[i].style.opacity = 1;
 							fn(i + 1);
 						}, t);
@@ -182,21 +190,17 @@
 				}(0));
 			}
 
-			function scat(layer, items){
-				switchState(layer, 1);
+			function scat(layer, items, callback){
+				console.log(layer, items);
 				(function fn(i){
 					if(i < items.length){
 						x = (i % 6 - 3) * screen.width / 6;
 						y = ((i / 6 | 0) - 2) * 100;
 						z = Math.random() * 100 | 0;
 						items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px)';
-						//某些国产套壳浏览器 --> 丑哭，网站完成后，进一步判断让低版本webkit无法进入这页面
-						items[i].style.webkitTransform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px)';
 						fn(i + 1);
 					}else{
-						setTimeout(function(){
-							switchState(layer, 3);
-						}, 1000);
+						callback && callback();
 					}
 				}(0));
 			}
