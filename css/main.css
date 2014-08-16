@@ -137,7 +137,7 @@ body {
 .navi[data-state='1'] .close {
   display: none;
 }
-.navi[data-state='0'] {
+.navi[data-state='0'], .navi[data-state='recent'], .navi[data-state='about'] {
   opacity: 1;
   width: 100px;
   height: 100px;
@@ -151,14 +151,19 @@ body {
   transform: rotateX(0deg);
   pointer-events: all;
 }
-.navi[data-state='0'] .item {
+.navi[data-state='0'] .item, .navi[data-state='recent'] .item, .navi[data-state='about'] .item {
   display: none;
 }
-.navi[data-state='0'] .close {
+.navi[data-state='0'] .close, .navi[data-state='recent'] .close, .navi[data-state='about'] .close {
   display: block;
   line-height: 100px;
   text-align: center;
   font-size: 45px;
+}
+.navi[data-state='recent'] {
+  top: 80%;
+  left: 10%;
+  margin: 0px;
 }
 .navi .item {
   display: block;

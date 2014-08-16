@@ -106,7 +106,9 @@ body {
 			display: none;
 		}
 	}
-	&[data-state='0'] {
+	&[data-state='0'],
+	&[data-state='recent'],
+	&[data-state='about'] {
 		opacity: 1;
 		width: 100px;
 		height: 100px;
@@ -124,6 +126,11 @@ body {
 			text-align: center;
 			font-size: 45px;
 		}
+	}
+	&[data-state='recent'] {
+		top: 80%;
+		left: 10%;
+		margin: 0px;
 	}
 	.item {
 		display: block;

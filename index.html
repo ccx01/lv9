@@ -94,15 +94,20 @@
 			l1();
 
 			/* init menu */
-			var menu = $('.navi .item');
-			for(var i = 0; i < menu.length; i++){
-				menu[i].onclick = function(){
+			var $menu = $('.navi .item');
+			for(var i = 0; i < $menu.length; i++){
+				$menu[i].onclick = function(){
 					callPage(this.dataset['page'])
 				}
 			}
-			$('.navi .close').onclick = function(){
-				circle(l2_items, 340, 50);
-				switchState([$navi], 1);
+			var $navi_close = $('.navi .close');
+			$navi_close.onclick = function(){
+				switch($navi.dataset['state']){
+					case 'recent':
+						circle(l2_items, 340, 50);
+						break;
+				}
+				switchState($navi, 1);
 				switchState([$l1, $l2, $l3, $l4], 0);
 			}
 
@@ -129,13 +134,13 @@
 
 			function callPage(page){
 				switchState([$l1, $l2, $l3, $l4], 2);
-				$('.navi').dataset['state'] = 0;
 				switch(page){
 					case 'nothing':
 						alert('I told u.');
 						break;
 					case 'recent':
 						switchState($l2, 1);
+						switchState($navi, 'recent');
 						scat($l2, l2_items, function(){
 							setTimeout(function(){
 								switchState($l2, 3);
@@ -144,6 +149,7 @@
 						break;
 					case 'about':
 						switchState($l1, 1);
+						switchState($navi, 'about');
 						break;
 				}
 			}
