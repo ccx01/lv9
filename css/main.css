@@ -76,6 +76,10 @@ body {
 }
 
 #main {
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  -o-transition: 1s;
+  transition: 1s;
   -webkit-perspective: 500px;
   -moz-perspective: 500px;
   -ms-perspective: 500px;
@@ -367,6 +371,12 @@ body {
   opacity: 1;
   margin-left: -55%;
   width: 110%;
+}
+#content[data-state='2'] {
+  opacity: 1;
+  width: 900px;
+  height: 600px;
+  margin-left: -450px;
 }
 #content .icon-close {
   position: absolute;

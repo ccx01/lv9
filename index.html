@@ -93,6 +93,20 @@
 
 			l1();
 
+			$l1.onclick = function(e){
+				// console.log(e);
+				$('#content .wrap').innerHTML += e.target.dataset['index'] + ':' + e.target.innerText +'<br>';
+				switchState([$content], 1);
+			}
+
+			$l2.onclick = function(e){
+				var pos = e.target.parentNode.style.transform.replace(/(-*\d+)px/g, function(m, s){
+					return (-1 * s) + 'px';
+				});
+				$l2.style.transform = pos;
+				switchState([$content], 2);
+			}
+
 			/* init menu */
 			var $menu = $('.navi .item');
 			for(var i = 0; i < $menu.length; i++){
@@ -105,16 +119,11 @@
 				switch($navi.dataset['state']){
 					case 'recent':
 						circle(l2_items, 340, 50);
+						$l2.style.transform = '';
 						break;
 				}
 				switchState($navi, 1);
 				switchState([$l1, $l2, $l3, $l4], 0);
-			}
-
-			$l1.onclick = function(e){
-				// console.log(e);
-				$('#content .wrap').innerHTML += e.target.dataset['index'] + ':' + e.target.innerText +'<br>';
-				switchState([$content], 1);
 			}
 
 			$('#content .icon-close').onclick = function(){
@@ -197,7 +206,6 @@
 			}
 
 			function scat(layer, items, callback){
-				console.log(layer, items);
 				(function fn(i){
 					if(i < items.length){
 						x = (i % 6 - 3) * screen.width / 6;

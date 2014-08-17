@@ -63,6 +63,7 @@ body {
 }
 
 #main {
+	@include transition(1s);
 	@include perspective(500px);
 	@include transform-style(preserve-3d);
 	width: 100%;
@@ -260,6 +261,12 @@ body {
 		opacity: 1;
 		margin-left: -55%;
 		width: 110%;
+	}
+	&[data-state='2']{
+		opacity: 1;
+		width: 900px;
+		height: 600px;
+		margin-left: -450px;
 	}
 	.icon-close {
 		position: absolute;
