@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>the day of sign</title>
+		<title>the day of sign lv9</title>
 		<meta name ="keywords" content="Sign,ccx01,sign,the day of sign,signXday,沙因,游戏,银河,宇宙,时间">
 		<meta name="description" content="just for fun,及时行乐,核心思路是以时间空间为基础元素进行制作">
 		<link rel="stylesheet" href="/lv9/css/main.css">
@@ -161,11 +161,11 @@
 			}
 
 			function ajax(data, callback) {
-				var url = window.location.href + "lv9/data/data.php";
+				var url = "/data/data.php?" + data;
 				var xmlhttp = new XMLHttpRequest();
 					xmlhttp.open("POST", url, true);
-					xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-					xmlhttp.send(data);
+					// xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+					xmlhttp.send();
 
 				xmlhttp.onreadystatechange = function() {
 					if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
