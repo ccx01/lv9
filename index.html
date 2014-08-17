@@ -20,10 +20,10 @@
 
 		<div id="main">
 			<ul class="navi">
-				<li class="item" data-page="nothing">nothing</li>
-				<li class="item" data-page="random"><strong>time & space</strong></li>
+				<!-- <li class="item" data-page="nothing">nothing</li>
+				<li class="item" data-page="random"><strong>time & space</strong></li> -->
 				<li class="item" data-page="recent">recent</li>
-				<li class="item" data-page="about">hi, I'm <strong>Sign</strong></li>
+				<li class="item" data-page="about"><h1>hi, I'm <strong>Sign</strong></h1></li>
 				<li class="close">
 					<svg class="icon icon-close" viewBox="0 0 32 32">
 						<use xlink:href="#icon-close"></use>
@@ -44,6 +44,11 @@
 				<p>数据正在接入</p>	
 			</div>
 		</div>
+		<template id="l1-tpl">
+			<h2 class="title">{#words}</h2>
+			<p class="info" data-info='{"id": {#id}, "toid": {#tid}}'>{#name} @ {#time}</p>
+			<div class="media">{#other}</div>
+		</template>
 		<template id="tpl">
 			<div class="item">
 				<span class="num" data-index="{#index}">{#n}</span>
@@ -93,13 +98,38 @@
 
 			l1();
 
+			var ajax_data = {
+				'l1': [],
+				'l2': []
+			};
+			var l1_tpl = $('#l1-tpl').innerHTML;
 			$l1.onclick = function(e){
-				// console.log(e);
-				$('#content .wrap').innerHTML += e.target.dataset['index'] + ':' + e.target.innerText +'<br>';
-				switchState([$content], 1);
+				var ajax_index = e.target.dataset['index'];
+				if(ajax_data.l1[ajax_index]) {
+					$('#content .wrap').innerHTML = e.target.innerText + ':<br>' + ajax_data.l1[ajax_index];
+					switchState([$content], 1);
+				} else {
+					ajax("sort=words&index=" + ajax_index, function(data) {
+						data = tplEngine(l1_tpl, data);
+						ajax_data.l1[ajax_index] = data;
+						$('#content .wrap').innerHTML = e.target.innerText + ':<br>' + data;
+						switchState([$content], 1);
+					});
+				}
 			}
 
 			$l2.onclick = function(e){
+				var ajax_index = e.target.dataset['index'];
+				if(ajax_data.l2[ajax_index]) {
+					$('#content .wrap').innerHTML = e.target.innerText + ':<br>' + ajax_data.l2[ajax_index];
+				} else {
+					ajax("sort=video&index=" + ajax_index, function(data) {
+						data = tplEngine(l1_tpl, data);
+						ajax_data.l2[ajax_index] = data;
+						$('#content .wrap').innerHTML = e.target.innerText + ':<br>' + data;
+					});
+				}
+
 				var pos = e.target.parentNode.style.transform.replace(/(-*\d+)px/g, function(m, s){
 					return (-1 * s) + 'px';
 				});
@@ -130,6 +160,19 @@
 				switchState([$content], 0);
 			}
 
+			function ajax(data, callback) {
+				var url = window.location.href + "lv9/data/data.php";
+				var xmlhttp = new XMLHttpRequest();
+					xmlhttp.open("POST", url, true);
+					xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+					xmlhttp.send(data);
+
+				xmlhttp.onreadystatechange = function() {
+					if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+						callback && callback(JSON.parse(xmlhttp.responseText));
+					}
+				}
+			}
 
 			function switchState(doms, num){
 				if(doms.length){

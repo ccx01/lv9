@@ -374,9 +374,9 @@ body {
 }
 #content[data-state='2'] {
   opacity: 1;
-  width: 900px;
-  height: 600px;
-  margin-left: -450px;
+  width: 1000px;
+  height: 700px;
+  margin-left: -500px;
 }
 #content .icon-close {
   position: absolute;
