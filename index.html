@@ -129,12 +129,13 @@
 						$('#content .wrap').innerHTML = e.target.innerText + ':<br>' + data;
 					});
 				}
-
+				switchState([$content], 2);
+			}
+			$l2.onmouseover = function(e) {
 				var pos = e.target.parentNode.style.transform.replace(/(-*\d+)px/g, function(m, s){
 					return (-1 * s) + 'px';
 				});
 				$l2.style.transform = pos;
-				switchState([$content], 2);
 			}
 
 			/* init menu */
