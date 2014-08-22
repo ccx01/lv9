@@ -142,7 +142,7 @@
 			var $menu = $('.navi .item');
 			for(var i = 0; i < $menu.length; i++){
 				$menu[i].onclick = function(){
-					callPage(this.dataset['page'])
+					callPage(this.dataset['page']);
 				}
 			}
 			var $navi_close = $('.navi .close');
@@ -214,7 +214,7 @@
 					data = {
 						index: i,
 						n: sign[i % sign.length]
-					};
+					}
 					html += tplEngine(tpl, data);
 				}
 				dom.innerHTML = html;
@@ -238,8 +238,9 @@
 						setTimeout(function(){
 							x =  (i == items.length * 0.5) ? 0 : Math.sin(i * 2 * Math.PI / items.length) * r;
 							y =  (i == items.length * 0.75 || i == items.length * 0.25) ? 0 : -Math.cos(i * 2 *  Math.PI / items.length) * r;
+							z =  -10 * i;
 							rotate = deg * i;
-							items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, 0) rotate(' + rotate + 'deg)';
+							items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px) rotate(' + rotate + 'deg)';
 							items[i].style.opacity = 1;
 							fn(i + 1);
 						}, t);
