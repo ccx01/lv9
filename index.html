@@ -78,19 +78,19 @@
 
 			var l1 = function(){
 				l1_items = initHTML('.l1', 12);
-				circle(l1_items, 270, 50, l2);
+				circle(l1_items, 270, 10, l2);
 			}
 			var l2 = function(){
 				l2_items = initHTML('.l2', 24);
-				circle(l2_items, 340, 50, l3);
+				circle(l2_items, 340, 10, l3);
 			}
 			var l3 = function(){
 				l3_items = initHTML('.l3', 36);
-				circle(l3_items, 450, 30, l4);
+				circle(l3_items, 450, 10, l4);
 			}
 			var l4 = function(){
 				l4_items = initHTML('.l4', 48);
-				circle(l4_items, 550, 30, function(){
+				circle(l4_items, 550, 10, function(){
 					switchState([$navi], 1);
 					switchState([$l1, $l2, $l3, $l4], 0);
 				});
@@ -194,7 +194,7 @@
 					case 'recent':
 						switchState($l2, 1);
 						switchState($navi, 'recent');
-						scat($l2, l2_items, function(){
+						scat(l2_items, 6, 100, function(){
 							setTimeout(function(){
 								switchState($l2, 3);
 							}, 1000);
@@ -238,7 +238,7 @@
 						setTimeout(function(){
 							x =  (i == items.length * 0.5) ? 0 : Math.sin(i * 2 * Math.PI / items.length) * r;
 							y =  (i == items.length * 0.75 || i == items.length * 0.25) ? 0 : -Math.cos(i * 2 *  Math.PI / items.length) * r;
-							z =  -10 * i;
+							z =  0;
 							rotate = deg * i;
 							items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px) rotate(' + rotate + 'deg)';
 							items[i].style.opacity = 1;
@@ -250,16 +250,19 @@
 				}(0));
 			}
 
-			function scat(layer, items, callback){
+			function scat(items, col, height, callback){
+				var callback = callback || function(){};
+				var col = col || 6;
+				var height = height || 100;
 				(function fn(i){
 					if(i < items.length){
-						x = (i % 6 - 3) * screen.width / 6;
-						y = ((i / 6 | 0) - 2) * 100;
-						z = Math.random() * 100 | 0;
+						x = (i % col - 3) * screen.width / col;
+						y = ((i / col | 0) - 2) * height;
+						z = Math.random() * height | 0;
 						items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px)';
 						fn(i + 1);
 					}else{
-						callback && callback();
+						callback();
 					}
 				}(0));
 			}
