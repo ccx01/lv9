@@ -194,7 +194,7 @@
 					case 'recent':
 						switchState($l2, 1);
 						switchState($navi, 'recent');
-						scat(l2_items, 6, 100, function(){
+						scat(l2_items, 6, function(){
 							setTimeout(function(){
 								switchState($l2, 3);
 							}, 1000);
@@ -250,15 +250,17 @@
 				}(0));
 			}
 
-			function scat(items, col, height, callback){
+			function scat(items, col, callback){
 				var callback = callback || function(){};
 				var col = col || 6;
-				var height = height || 100;
+				var row = items.length / col;
+				var w = window.innerWidth / col;
+				var h = window.innerHeight / row;
 				(function fn(i){
 					if(i < items.length){
-						x = (i % col - 3) * screen.width / col;
-						y = ((i / col | 0) - 2) * height;
-						z = Math.random() * height | 0;
+						var x = (i % col - col / 2) * w | 0;
+						var y = (i % row - row / 2) * h | 0;
+						var z = (Math.random() * 500 - 250) | 0;
 						items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px)';
 						fn(i + 1);
 					}else{
