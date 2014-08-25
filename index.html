@@ -78,11 +78,11 @@
 
 			var l1 = function(){
 				l1_items = initHTML('.l1', 12);
-				circle(l1_items, 270, 10, l2);
+				circle(l1_items, 270, 50, l2);
 			}
 			var l2 = function(){
 				l2_items = initHTML('.l2', 24);
-				circle(l2_items, 340, 10, l3);
+				circle(l2_items, 340, 30, l3);
 			}
 			var l3 = function(){
 				l3_items = initHTML('.l3', 36);
@@ -91,7 +91,7 @@
 			var l4 = function(){
 				l4_items = initHTML('.l4', 48);
 				circle(l4_items, 550, 10, function(){
-					switchState([$navi], 1);
+					switchState($navi, 1);
 					switchState([$l1, $l2, $l3, $l4], 0);
 				});
 			}
