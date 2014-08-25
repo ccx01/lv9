@@ -229,10 +229,10 @@ body {
   text-align: center;
   cursor: default;
   opacity: 0;
-  -webkit-transition: 2s;
-  -moz-transition: 2s;
-  -o-transition: 2s;
-  transition: 2s;
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  -o-transition: 1s;
+  transition: 1s;
 }
 .layer .item .num {
   font-size: 60px;
@@ -266,6 +266,12 @@ body {
   -moz-transition: 2s;
   -o-transition: 2s;
   transition: 2s;
+}
+.l2 .item {
+  -webkit-transition: 1s cubic-bezier(0.5, 0, 0.5, 0.5);
+  -moz-transition: 1s cubic-bezier(0.5, 0, 0.5, 0.5);
+  -o-transition: 1s cubic-bezier(0.5, 0, 0.5, 0.5);
+  transition: 1s cubic-bezier(0.5, 0, 0.5, 0.5);
 }
 .l2[data-state='0'], .l2[data-state='2'] {
   -webkit-perspective: 1px;

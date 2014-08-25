@@ -180,7 +180,7 @@ body {
 		text-align: center;
 		cursor: default;
 		opacity: 0;
-		@include transition(2s);
+		@include transition(1s);
 		.num {
 			font-size: 60px;
 			line-height: 60px;
@@ -205,6 +205,9 @@ body {
 }
 .l2 {
 	@include transition(2s);
+	.item {
+		@include transition(1s cubic-bezier(.5, 0, .5, .5));
+	}
 	&[data-state='0'],
 	&[data-state='2'] {
 		@include perspective(1px);
