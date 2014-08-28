@@ -61,6 +61,23 @@
 				return ret.length == 1 ? ret[0] : ret;
 			}
 
+			/* gesture */
+			document.onselectstart = function() {
+				return false;
+			}
+			var gesture = 0;
+			var x = 0;
+			var y = 0;
+			$('#main').onmousedown = function(e) {
+				x = e.layerX;
+				y = e.layerY;
+			}
+			$('#main').onmouseup = function(e) {
+				x = e.layerX - x;
+				y = e.layerY - y;
+				$('#main').style.transform = 'rotateX(' + y + 'deg) rotateY(' + x + 'deg)';
+			}
+
 			/* init layout */
 			var $content = $('#content');
 			var $navi = $('.navi');
