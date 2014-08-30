@@ -67,12 +67,27 @@ body {
   background-color: #2d2d2d;
   background-size: 100% 100%;
   overflow: hidden;
-  pointer-events: none;
   background: -webkit-gradient(radial, 100% 10%, 0, 100% 10%, 100, color-stop(0%, #375651), color-stop(100%, #000000));
   background: -webkit-radial-gradient(100% 10%, ellipse, #375651, #000000);
   background: -moz-radial-gradient(100% 10%, ellipse, #375651, #000000);
   background: -o-radial-gradient(100% 10%, ellipse, #375651, #000000);
   background: radial-gradient(100% 10%, ellipse, #375651, #000000);
+}
+
+#view {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  -webkit-perspective: 500px;
+  -moz-perspective: 500px;
+  -ms-perspective: 500px;
+  -o-perspective: 500px;
+  perspective: 500px;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 
 #main {
@@ -122,11 +137,6 @@ body {
   -moz-transition: 1s;
   -o-transition: 1s;
   transition: 1s;
-  -webkit-transform: rotateX(-20deg);
-  -moz-transform: rotateX(-20deg);
-  -ms-transform: rotateX(-20deg);
-  -o-transform: rotateX(-20deg);
-  transform: rotateX(-20deg);
   -webkit-transform-origin: 0% 0%;
   -moz-transform-origin: 0% 0%;
   -ms-transform-origin: 0% 0%;
@@ -206,13 +216,8 @@ body {
   -moz-transition: 2s;
   -o-transition: 2s;
   transition: 2s;
-  -webkit-transform: rotateX(70deg);
-  -moz-transform: rotateX(70deg);
-  -ms-transform: rotateX(70deg);
-  -o-transform: rotateX(70deg);
-  transform: rotateX(70deg);
 }
-.layer[data-state='0'] .item, .layer[data-state='1'] .item, .layer[data-state='3'] .item {
+.layer[data-state='1'] .item, .layer[data-state='3'] .item {
   pointer-events: painted;
 }
 .layer[data-state='2'] {
@@ -246,19 +251,14 @@ body {
   text-shadow: 0 0 20px rgba(0, 255, 255, 0.95);
 }
 
-.l1[data-state='0'], .l1[data-state='2'] {
-  -webkit-transform: rotateX(70deg) rotateZ(0deg) translateZ(-200px);
-  -moz-transform: rotateX(70deg) rotateZ(0deg) translateZ(-200px);
-  -ms-transform: rotateX(70deg) rotateZ(0deg) translateZ(-200px);
-  -o-transform: rotateX(70deg) rotateZ(0deg) translateZ(-200px);
-  transform: rotateX(70deg) rotateZ(0deg) translateZ(-200px);
-}
-.l1[data-state='1'] {
-  -webkit-transform: rotateX(0deg) rotateZ(390deg) translateZ(0px);
-  -moz-transform: rotateX(0deg) rotateZ(390deg) translateZ(0px);
-  -ms-transform: rotateX(0deg) rotateZ(390deg) translateZ(0px);
-  -o-transform: rotateX(0deg) rotateZ(390deg) translateZ(0px);
-  transform: rotateX(0deg) rotateZ(390deg) translateZ(0px);
+.l1 {
+  /* &[data-state='0'],
+  &[data-state='2'] {
+  	@include transform(rotateX($rotate) rotateZ(0deg) translateZ(-200px));
+  }
+  &[data-state='1'] {
+  	@include transform(rotateX(0deg) rotateZ(390deg) translateZ(0px));
+  } */
 }
 
 .l2 {
@@ -266,6 +266,19 @@ body {
   -moz-transition: 2s;
   -o-transition: 2s;
   transition: 2s;
+  /* &[data-state='0'],
+  &[data-state='2'] {
+  	@include perspective(1px);
+  	@include transform(rotateX($rotate) translateZ(-100px));
+  }
+  &[data-state='1'] {
+  	@include transform(translateZ(0px));
+  	@include perspective(1px);
+  }
+  &[data-state='3'] {
+  	@include transform(translateZ(0px));
+  	@include perspective(400px);
+  } */
 }
 .l2 .item {
   -webkit-transition: 1s cubic-bezier(0.5, 0, 0.5, 0.5);
@@ -273,62 +286,19 @@ body {
   -o-transition: 1s cubic-bezier(0.5, 0, 0.5, 0.5);
   transition: 1s cubic-bezier(0.5, 0, 0.5, 0.5);
 }
-.l2[data-state='0'], .l2[data-state='2'] {
-  -webkit-perspective: 1px;
-  -moz-perspective: 1px;
-  -ms-perspective: 1px;
-  -o-perspective: 1px;
-  perspective: 1px;
-  -webkit-transform: rotateX(70deg) translateZ(-100px);
-  -moz-transform: rotateX(70deg) translateZ(-100px);
-  -ms-transform: rotateX(70deg) translateZ(-100px);
-  -o-transform: rotateX(70deg) translateZ(-100px);
-  transform: rotateX(70deg) translateZ(-100px);
-}
-.l2[data-state='1'] {
-  -webkit-transform: translateZ(0px);
-  -moz-transform: translateZ(0px);
-  -ms-transform: translateZ(0px);
-  -o-transform: translateZ(0px);
-  transform: translateZ(0px);
-  -webkit-perspective: 1px;
-  -moz-perspective: 1px;
-  -ms-perspective: 1px;
-  -o-perspective: 1px;
-  perspective: 1px;
-}
-.l2[data-state='3'] {
-  -webkit-transform: translateZ(0px);
-  -moz-transform: translateZ(0px);
-  -ms-transform: translateZ(0px);
-  -o-transform: translateZ(0px);
-  transform: translateZ(0px);
-  -webkit-perspective: 400px;
-  -moz-perspective: 400px;
-  -ms-perspective: 400px;
-  -o-perspective: 400px;
-  perspective: 400px;
-}
 
 .l3 {
   -webkit-transition: 3s;
   -moz-transition: 3s;
   -o-transition: 3s;
   transition: 3s;
-}
-.l3[data-state='0'], .l3[data-state='2'] {
-  -webkit-transform: rotateX(70deg) translateZ(100px);
-  -moz-transform: rotateX(70deg) translateZ(100px);
-  -ms-transform: rotateX(70deg) translateZ(100px);
-  -o-transform: rotateX(70deg) translateZ(100px);
-  transform: rotateX(70deg) translateZ(100px);
-}
-.l3[data-state='1'] {
-  -webkit-transform: translateZ(0px);
-  -moz-transform: translateZ(0px);
-  -ms-transform: translateZ(0px);
-  -o-transform: translateZ(0px);
-  transform: translateZ(0px);
+  /* &[data-state='0'],
+  &[data-state='2'] {
+  	@include transform(rotateX($rotate) translateZ(100px));
+  }
+  &[data-state='1'] {
+  	@include transform(translateZ(0px));
+  } */
 }
 
 .l4 {
@@ -336,20 +306,13 @@ body {
   -moz-transition: 2s;
   -o-transition: 2s;
   transition: 2s;
-}
-.l4[data-state='0'], .l4[data-state='2'] {
-  -webkit-transform: rotateX(70deg) translateZ(300px);
-  -moz-transform: rotateX(70deg) translateZ(300px);
-  -ms-transform: rotateX(70deg) translateZ(300px);
-  -o-transform: rotateX(70deg) translateZ(300px);
-  transform: rotateX(70deg) translateZ(300px);
-}
-.l4[data-state='1'] {
-  -webkit-transform: translateZ(0px);
-  -moz-transform: translateZ(0px);
-  -ms-transform: translateZ(0px);
-  -o-transform: translateZ(0px);
-  transform: translateZ(0px);
+  /* &[data-state='0'],
+  &[data-state='2'] {
+  	@include transform(rotateX($rotate) translateZ(300px));
+  }
+  &[data-state='1'] {
+  	@include transform(translateZ(0px));
+  } */
 }
 
 /* content */

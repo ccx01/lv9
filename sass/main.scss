@@ -56,10 +56,17 @@ body {
 	background-color: #2d2d2d;
 	background-size: 100% 100%;
 	overflow: hidden;
-	pointer-events: none;
 	@include background(
 		radial-gradient(100% 10%, ellipse, #375651, #000)
 	);
+}
+
+#view {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	@include perspective(500px);
+	@include transform-style(preserve-3d);
 }
 
 #main {
@@ -97,7 +104,7 @@ body {
 	cursor: default;
 
 	@include transition(1s);
-	@include transform(rotateX($rotate - 90));
+	// @include transform(rotateX($rotate - 90));
 	@include transform-origin(0%, 0%);
 	&[data-state='1'] {
 		opacity: 1;
@@ -160,8 +167,8 @@ body {
 	height: 100%;
 	pointer-events: none;
 	@include transition(2s);
-	@include transform(rotateX($rotate));
-	&[data-state='0'] .item,
+	// @include transform(rotateX($rotate));
+	// &[data-state='0'] .item,
 	&[data-state='1'] .item,
 	&[data-state='3'] .item {
 		pointer-events: painted;
@@ -195,20 +202,20 @@ body {
 	}
 }
 .l1 {
-	&[data-state='0'],
+	/* &[data-state='0'],
 	&[data-state='2'] {
 		@include transform(rotateX($rotate) rotateZ(0deg) translateZ(-200px));
 	}
 	&[data-state='1'] {
 		@include transform(rotateX(0deg) rotateZ(390deg) translateZ(0px));
-	}
+	} */
 }
 .l2 {
 	@include transition(2s);
 	.item {
 		@include transition(1s cubic-bezier(.5, 0, .5, .5));
 	}
-	&[data-state='0'],
+	/* &[data-state='0'],
 	&[data-state='2'] {
 		@include perspective(1px);
 		@include transform(rotateX($rotate) translateZ(-100px));
@@ -220,27 +227,27 @@ body {
 	&[data-state='3'] {
 		@include transform(translateZ(0px));
 		@include perspective(400px);
-	}
+	} */
 }
 .l3 {
 	@include transition(3s);
-	&[data-state='0'],
+	/* &[data-state='0'],
 	&[data-state='2'] {
 		@include transform(rotateX($rotate) translateZ(100px));
 	}
 	&[data-state='1'] {
 		@include transform(translateZ(0px));
-	}
+	} */
 }
 .l4 {
 	@include transition(2s);
-	&[data-state='0'],
+	/* &[data-state='0'],
 	&[data-state='2'] {
 		@include transform(rotateX($rotate) translateZ(300px));
 	}
 	&[data-state='1'] {
 		@include transform(translateZ(0px));
-	}
+	} */
 }
 /* content */
 #content {

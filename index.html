@@ -18,22 +18,25 @@
 			</defs>
 		</svg>
 
-		<div id="main">
-			<ul class="navi">
-				<!-- <li class="item" data-page="nothing">nothing</li>
-				<li class="item" data-page="random"><strong>time & space</strong></li> -->
-				<li class="item" data-page="recent">recent</li>
-				<li class="item" data-page="about"><h1>hi, I'm <strong>Sign</strong></h1></li>
-				<li class="close">
-					<svg class="icon icon-close" viewBox="0 0 32 32">
-						<use xlink:href="#icon-close"></use>
-					</svg>
-				</li>
-			</ul>
-			<div class="layer l1 about"></div>
-			<div class="layer l2 recent"></div>
-			<div class="layer l3 random"></div>
-			<div class="layer l4 nothing"></div>
+		<div id="view">
+			<div id="main">
+				<ul class="navi">
+					<!-- <li class="item" data-page="nothing">nothing</li>
+					<li class="item" data-page="random"><strong>time & space</strong></li> -->
+					<li class="item" data-page="recent">recent</li>
+					<li class="item" data-page="about"><h1>hi, I'm <strong>Sign</strong></h1></li>
+					<li class="close">
+						X
+						<!-- <svg class="icon icon-close" viewBox="0 0 32 32">
+							<use xlink:href="#icon-close"></use>
+						</svg> -->
+					</li>
+				</ul>
+				<div class="layer l1 about"></div>
+				<div class="layer l2 recent"></div>
+				<div class="layer l3 random"></div>
+				<div class="layer l4 nothing"></div>
+			</div>
 		</div>
 		<!-- tamplate -->
 		<div id="content">
@@ -56,9 +59,15 @@
 		</template>
 		<!-- tamplate end -->
 		<script>
-			var $ = function(dom){
-				var ret = document.querySelectorAll(dom);
+			var $ = function(elem){
+				var ret = document.querySelectorAll(elem);
 				return ret.length == 1 ? ret[0] : ret;
+			}
+
+			function transformValue(elem, prop) {
+				var tf = elem.style.transform;
+				var re = new RegExp(prop + "\\((-*\\d+\\.*\\d*)deg\\)","g");
+				return re.exec(tf);
 			}
 
 			/* gesture */
@@ -68,14 +77,26 @@
 			var gesture = 0;
 			var x = 0;
 			var y = 0;
-			$('#main').onmousedown = function(e) {
+			$('#view').onmousedown = function(e) {
 				x = e.layerX;
 				y = e.layerY;
 			}
-			$('#main').onmouseup = function(e) {
-				x = e.layerX - x;
-				y = e.layerY - y;
-				$('#main').style.transform = 'rotateX(' + y + 'deg) rotateY(' + x + 'deg)';
+			var $main = $('#main');
+			$('#view').onmouseup = function(e) {
+				x = (e.layerX - x) / 10;
+				y = (e.layerY - y) / 10;
+				var rx = transformValue($main, 'rotateX');
+				rx = rx ? (rx[1] | 0) - y : y;
+				var ry = transformValue($main, 'rotateY');
+				ry = ry ? (ry[1] | 0) + x : x;
+
+				$main.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
+			}
+			document.onmousewheel = function(e) {
+				var tz = transformValue($main, 'translateZ');
+				tz = tz ? (tz[1] | 0) + e.wheelDelta : e.wheelDelta;
+				console.log(tz,e.wheelDelta)
+				$main.style.transform += " translateZ(" + tz + "px)";
 			}
 
 			/* init layout */
@@ -149,7 +170,7 @@
 				switchState([$content], 2);
 			}
 			$l2.onmouseover = function(e) {
-				var pos = e.target.parentNode.style.transform.replace(/(-*\d+)px/g, function(m, s){
+				var pos = e.target.parentNode.style.transform.replace(/(-*\d+\.*\d+)px/g, function(m, s){
 					return (-1 * s) + 'px';
 				});
 				$l2.style.transform = pos;
@@ -192,13 +213,13 @@
 				}
 			}
 
-			function switchState(doms, num){
-				if(doms.length){
-					for(var i = 0; i < doms.length; i++){
-						doms[i].dataset['state'] = num;
+			function switchState(elems, num){
+				if(elems.length){
+					for(var i = 0; i < elems.length; i++){
+						elems[i].dataset['state'] = num;
 					}
 				}else{
-					doms.dataset['state'] = num;
+					elems.dataset['state'] = num;
 				}
 			}
 
@@ -275,9 +296,9 @@
 				var h = window.innerHeight / row;
 				(function fn(i){
 					if(i < items.length){
-						var x = (i % col - col / 2) * w | 0;
-						var y = (i % row - row / 2) * h | 0;
-						var z = (Math.random() * 500 - 250) | 0;
+						var x = (i % col - col / 2) * w;
+						var y = (i % row - row / 2) * h;
+						var z = (Math.random() * 500 - 250);
 						items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px)';
 						fn(i + 1);
 					}else{
