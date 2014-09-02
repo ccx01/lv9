@@ -85,37 +85,60 @@ body {
 }
 /* navi */
 .navi {
-	position: absolute;
-	top: 5%;
-	left: 50%;
-	margin-left: -10%;
-	width: 20%;
-	height: 0%;
-	pointer-events: none;
+	position: fixed;
+	top: 0;
+	left: -1px;
 
 	z-index: 99;
-	opacity: 0;
 	overflow: hidden;
 
-	box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.5);
-	border: 1px solid rgba(127, 255, 255, 0.6);
+	border-right: 1px solid rgba(127, 255, 255, 0.7);
 	background: rgba(0, 0, 0, 0.3);
 
 	cursor: default;
 
-	@include transition(1s);
-	// @include transform(rotateX($rotate - 90));
+	@include transition(.3s cubic-bezier(.58,.24,.84,.61));
 	@include transform-origin(0%, 0%);
+	.item {
+		margin-bottom: 1px;
+		width: 0%;
+		padding: 20px 0;
+		background: rgba(255, 255, 255, 0.1);
+		box-sizing: border-box;
+		text-align: center;
+		white-space: nowrap;
+		&:hover {
+			color: rgba(255, 255, 255, 1);
+			text-shadow: 0 0 20px rgba(0, 255, 255, 0.95);
+			background: rgba(255, 255, 255, 0.3);
+		}
+		@include transition(.3s cubic-bezier(.58,.24,.84,.61));
+	}
+	&[data-state='0'] {
+		opacity: 0;
+		height: 0%;
+		.item {
+			opacity: 0;
+		}
+	}
 	&[data-state='1'] {
 		opacity: 1;
 		height: 100%;
-		pointer-events: painted;
-		.close {
-			display: none;
+		.item {
+			opacity: 0;
 		}
 	}
-	&[data-state='0'],
-	&[data-state='recent'],
+	&[data-state='2'] {
+		opacity: 1;
+		height: 100%;
+		box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.5);
+		.item {
+			width: 100%;
+			padding: 20px;
+			opacity: 1;
+		}
+	}
+	/* &[data-state='recent'],
 	&[data-state='about'] {
 		opacity: 1;
 		width: 100px;
@@ -139,21 +162,7 @@ body {
 		top: 80%;
 		left: 10%;
 		margin: 0px;
-	}
-	.item {
-		display: block;
-		margin-bottom: 1px;
-		width: 100%;
-		padding: 20px;
-		background: rgba(255, 255, 255, 0.1);
-		box-sizing: border-box;
-		text-align: center;
-		&:hover {
-			color: rgba(255, 255, 255, 1);
-			text-shadow: 0 0 20px rgba(0, 255, 255, 0.95);
-			background: rgba(255, 255, 255, 0.3);
-		}
-	}
+	} */
 }
 
 /* layer */
