@@ -122,8 +122,9 @@ body {
   position: fixed;
   top: 0;
   left: -1px;
+  width: 200px;
+  height: 1600px;
   z-index: 99;
-  overflow: hidden;
   border-right: 1px solid rgba(127, 255, 255, 0.7);
   background: rgba(0, 0, 0, 0.3);
   cursor: default;
@@ -163,17 +164,45 @@ body {
   } */
 }
 .navi .item {
+  position: absolute;
+  left: 1920px;
   margin-bottom: 1px;
-  width: 0%;
+  width: 100%;
   padding: 20px 0;
   background: rgba(255, 255, 255, 0.1);
   box-sizing: border-box;
   text-align: center;
   white-space: nowrap;
-  -webkit-transition: 0.3s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  -moz-transition: 0.3s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  -o-transition: 0.3s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  transition: 0.3s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  padding: 20px;
+  opacity: 1;
+}
+.navi .item:nth-child(1) {
+  top: 0px;
+  -webkit-transition: 0.3s 0.2s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  -moz-transition: 0.3s 0.2s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  -o-transition: 0.3s 0.2s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  transition: 0.3s 0.2s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+}
+.navi .item:nth-child(2) {
+  top: 56px;
+  -webkit-transition: 0.3s 0.4s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  -moz-transition: 0.3s 0.4s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  -o-transition: 0.3s 0.4s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  transition: 0.3s 0.4s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+}
+.navi .item:nth-child(3) {
+  top: 112px;
+  -webkit-transition: 0.3s 0.6s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  -moz-transition: 0.3s 0.6s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  -o-transition: 0.3s 0.6s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  transition: 0.3s 0.6s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+}
+.navi .item:nth-child(4) {
+  top: 168px;
+  -webkit-transition: 0.3s 0.8s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  -moz-transition: 0.3s 0.8s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  -o-transition: 0.3s 0.8s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  transition: 0.3s 0.8s cubic-bezier(0.58, 0.24, 0.84, 0.61);
 }
 .navi .item:hover {
   color: white;
@@ -192,17 +221,8 @@ body {
   height: 100%;
 }
 .navi[data-state='1'] .item {
-  opacity: 0;
-}
-.navi[data-state='2'] {
   opacity: 1;
-  height: 100%;
-  box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.5);
-}
-.navi[data-state='2'] .item {
-  width: 100%;
-  padding: 20px;
-  opacity: 1;
+  left: 0px;
 }
 
 /* layer */

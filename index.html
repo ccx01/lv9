@@ -15,7 +15,7 @@
 			<li class="item" data-page="random"><strong>time & space</strong></li> -->
 			<li class="item" data-page="recent">recent</li>
 			<li class="item" data-page="about"><h1>hi, I'm <strong>Sign</strong></h1></li>
-			<li class="close">
+			<li class="item close">
 				X
 			</li>
 		</ul>
@@ -80,7 +80,7 @@
 						x = (e.layerX - x) / 10;
 						y = (e.layerY - y) / 10;
 						var rx = transformValue($main, 'rotateX');
-						rx = rx ? (rx[1] | 0) + y : y;
+						rx = rx ? (rx[1] | 0) - y : y;
 						var ry = transformValue($main, 'rotateY');
 						ry = ry ? (ry[1] | 0) + x : x;
 
@@ -127,7 +127,6 @@
 				circle(l1_items, 270, 50, l2);
 			}
 			var l2 = function(){
-				switchState($navi, 2);
 				l2_items = initHTML('.l2', 24);
 				circle(l2_items, 340, 30, l3);
 			}
@@ -142,7 +141,7 @@
 				});
 			}
 
-			l1();
+			// l1();
 
 			var ajax_data = {
 				'l1': [],
