@@ -184,21 +184,21 @@ body {
   transition: 0.3s 0.2s cubic-bezier(0.58, 0.24, 0.84, 0.61);
 }
 .navi .item:nth-child(2) {
-  top: 56px;
+  top: 57px;
   -webkit-transition: 0.3s 0.4s cubic-bezier(0.58, 0.24, 0.84, 0.61);
   -moz-transition: 0.3s 0.4s cubic-bezier(0.58, 0.24, 0.84, 0.61);
   -o-transition: 0.3s 0.4s cubic-bezier(0.58, 0.24, 0.84, 0.61);
   transition: 0.3s 0.4s cubic-bezier(0.58, 0.24, 0.84, 0.61);
 }
 .navi .item:nth-child(3) {
-  top: 112px;
+  top: 114px;
   -webkit-transition: 0.3s 0.6s cubic-bezier(0.58, 0.24, 0.84, 0.61);
   -moz-transition: 0.3s 0.6s cubic-bezier(0.58, 0.24, 0.84, 0.61);
   -o-transition: 0.3s 0.6s cubic-bezier(0.58, 0.24, 0.84, 0.61);
   transition: 0.3s 0.6s cubic-bezier(0.58, 0.24, 0.84, 0.61);
 }
 .navi .item:nth-child(4) {
-  top: 168px;
+  top: 171px;
   -webkit-transition: 0.3s 0.8s cubic-bezier(0.58, 0.24, 0.84, 0.61);
   -moz-transition: 0.3s 0.8s cubic-bezier(0.58, 0.24, 0.84, 0.61);
   -o-transition: 0.3s 0.8s cubic-bezier(0.58, 0.24, 0.84, 0.61);

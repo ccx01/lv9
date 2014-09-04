@@ -114,7 +114,7 @@ body {
 		opacity: 1;
 		@for $i from 1 through 4 {
 			&:nth-child(#{$i}) {
-				top: ($i - 1) * 56px;
+				top: ($i - 1) * 57px;
 				@include transition(0.3s $i * 0.2s cubic-bezier(.58,.24,.84,.61));
 			}
 		}
