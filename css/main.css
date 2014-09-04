@@ -137,35 +137,8 @@ body {
   -ms-transform-origin: 0% 0%;
   -o-transform-origin: 0% 0%;
   transform-origin: 0% 0%;
-  /* &[data-state='recent'],
-  &[data-state='about'] {
-  	opacity: 1;
-  	width: 100px;
-  	height: 100px;
-  	top: 50%;
-  	margin: -50px;
-  	border-radius: 50%;
-  	@include transform(rotateX(0deg));
-  	pointer-events: all;
-  	.item {
-  		display: none;
-  	}
-  	.close {
-  		display: block;
-  		line-height: 100px;
-  		text-align: center;
-  		font-size: 45px;
-  	}
-  }
-  &[data-state='recent'] {
-  	top: 80%;
-  	left: 10%;
-  	margin: 0px;
-  } */
 }
 .navi .item {
-  position: absolute;
-  left: 1920px;
   margin-bottom: 1px;
   width: 100%;
   padding: 20px 0;
@@ -174,35 +147,36 @@ body {
   text-align: center;
   white-space: nowrap;
   padding: 20px;
-  opacity: 1;
+  opacity: 0;
+  margin-left: 0px;
+  -webkit-transition: 0.3s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  -moz-transition: 0.3s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  -o-transition: 0.3s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  transition: 0.3s cubic-bezier(0.58, 0.24, 0.84, 0.61);
 }
 .navi .item:nth-child(1) {
-  top: 0px;
-  -webkit-transition: 0.3s 0.2s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  -moz-transition: 0.3s 0.2s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  -o-transition: 0.3s 0.2s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  transition: 0.3s 0.2s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  -webkit-animation: 0.3s 0.2s navi 1 forwards;
+  -moz-animation: 0.3s 0.2s navi 1 forwards;
+  -o-animation: 0.3s 0.2s navi 1 forwards;
+  animation: 0.3s 0.2s navi 1 forwards;
 }
 .navi .item:nth-child(2) {
-  top: 57px;
-  -webkit-transition: 0.3s 0.4s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  -moz-transition: 0.3s 0.4s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  -o-transition: 0.3s 0.4s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  transition: 0.3s 0.4s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  -webkit-animation: 0.3s 0.4s navi 1 forwards;
+  -moz-animation: 0.3s 0.4s navi 1 forwards;
+  -o-animation: 0.3s 0.4s navi 1 forwards;
+  animation: 0.3s 0.4s navi 1 forwards;
 }
 .navi .item:nth-child(3) {
-  top: 114px;
-  -webkit-transition: 0.3s 0.6s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  -moz-transition: 0.3s 0.6s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  -o-transition: 0.3s 0.6s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  transition: 0.3s 0.6s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  -webkit-animation: 0.3s 0.6s navi 1 forwards;
+  -moz-animation: 0.3s 0.6s navi 1 forwards;
+  -o-animation: 0.3s 0.6s navi 1 forwards;
+  animation: 0.3s 0.6s navi 1 forwards;
 }
 .navi .item:nth-child(4) {
-  top: 171px;
-  -webkit-transition: 0.3s 0.8s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  -moz-transition: 0.3s 0.8s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  -o-transition: 0.3s 0.8s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  transition: 0.3s 0.8s cubic-bezier(0.58, 0.24, 0.84, 0.61);
+  -webkit-animation: 0.3s 0.8s navi 1 forwards;
+  -moz-animation: 0.3s 0.8s navi 1 forwards;
+  -o-animation: 0.3s 0.8s navi 1 forwards;
+  animation: 0.3s 0.8s navi 1 forwards;
 }
 .navi .item:hover {
   color: white;
@@ -213,16 +187,57 @@ body {
   opacity: 0;
   height: 0%;
 }
-.navi[data-state='0'] .item {
-  opacity: 0;
-}
 .navi[data-state='1'] {
   opacity: 1;
   height: 100%;
 }
-.navi[data-state='1'] .item {
-  opacity: 1;
-  left: 0px;
+
+@-webkit-keyframes navi {
+  0% {
+    margin-left: 1920px;
+    opacity: 0;
+  }
+
+  100% {
+    margin-left: 0px;
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes navi {
+  0% {
+    margin-left: 1920px;
+    opacity: 0;
+  }
+
+  100% {
+    margin-left: 0px;
+    opacity: 1;
+  }
+}
+
+@-o-keyframes navi {
+  0% {
+    margin-left: 1920px;
+    opacity: 0;
+  }
+
+  100% {
+    margin-left: 0px;
+    opacity: 1;
+  }
+}
+
+@keyframes navi {
+  0% {
+    margin-left: 1920px;
+    opacity: 0;
+  }
+
+  100% {
+    margin-left: 0px;
+    opacity: 1;
+  }
 }
 
 /* layer */

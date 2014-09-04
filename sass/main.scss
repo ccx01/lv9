@@ -101,8 +101,6 @@ body {
 	@include transition(.3s cubic-bezier(.58,.24,.84,.61));
 	@include transform-origin(0%, 0%);
 	.item {
-		position: absolute;
-		left: 1920px;
 		margin-bottom: 1px;
 		width: 100%;
 		padding: 20px 0;
@@ -111,13 +109,15 @@ body {
 		text-align: center;
 		white-space: nowrap;
 		padding: 20px;
-		opacity: 1;
+		opacity: 0;
+		margin-left: 0px;
 		@for $i from 1 through 4 {
 			&:nth-child(#{$i}) {
-				top: ($i - 1) * 57px;
-				@include transition(0.3s $i * 0.2s cubic-bezier(.58,.24,.84,.61));
+				@include animation(0.3s $i * 0.2s navi 1 forwards);
 			}
 		}
+		@include transition(0.3s cubic-bezier(.58,.24,.84,.61));
+		
 		&:hover {
 			color: rgba(255, 255, 255, 1);
 			text-shadow: 0 0 20px rgba(0, 255, 255, 0.95);
@@ -127,43 +127,21 @@ body {
 	&[data-state='0'] {
 		opacity: 0;
 		height: 0%;
-		.item {
-			opacity: 0;
-		}
 	}
 	&[data-state='1'] {
 		opacity: 1;
 		height: 100%;
-		.item {
-			opacity: 1;
-			left: 0px;
-		}
 	}
-	/* &[data-state='recent'],
-	&[data-state='about'] {
+}
+@include keyframes(navi) {
+	0% {
+		margin-left: 1920px;
+		opacity: 0;
+	}
+	100% {
+		margin-left: 0px;
 		opacity: 1;
-		width: 100px;
-		height: 100px;
-		top: 50%;
-		margin: -50px;
-		border-radius: 50%;
-		@include transform(rotateX(0deg));
-		pointer-events: all;
-		.item {
-			display: none;
-		}
-		.close {
-			display: block;
-			line-height: 100px;
-			text-align: center;
-			font-size: 45px;
-		}
 	}
-	&[data-state='recent'] {
-		top: 80%;
-		left: 10%;
-		margin: 0px;
-	} */
 }
 
 /* layer */
