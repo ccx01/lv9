@@ -60,6 +60,7 @@
 			}
 
 			/* gesture */
+			var $main = $('#main');
 			document.onselectstart = function() {
 				return false;
 			}
@@ -73,7 +74,6 @@
 				x = e.layerX;
 				y = e.layerY;
 			}
-			var $main = $('#main');
 			$('#view').onmouseup = function(e) {
 				switch(e.which) {
 					case 1:
@@ -141,7 +141,8 @@
 				});
 			}
 
-			// l1();
+			l1();
+			// $main.style.transform = 'rotateX(-45deg) rotateY(-35deg)';
 
 			var ajax_data = {
 				'l1': [],
@@ -206,11 +207,12 @@
 				switchState([$content], 0);
 			}
 
+			/* function */
+
 			function ajax(data, callback) {
 				var url = "/data/data.php?" + data;
 				var xmlhttp = new XMLHttpRequest();
 					xmlhttp.open("POST", url, true);
-					// xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 					xmlhttp.send();
 
 				xmlhttp.onreadystatechange = function() {
@@ -283,9 +285,16 @@
 						setTimeout(function(){
 							x =  (i == items.length * 0.5) ? 0 : Math.sin(i * 2 * Math.PI / items.length) * r;
 							y =  (i == items.length * 0.75 || i == items.length * 0.25) ? 0 : -Math.cos(i * 2 *  Math.PI / items.length) * r;
-							z =  0;
-							rotate = deg * i;
-							items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px) rotate(' + rotate + 'deg)';
+							/*z = (i == items.length * 0.5) ? 0 : Math.sin(i * 2 * Math.PI / items.length) * r * 0.5;
+							z += (i == items.length * 0.75 || i == items.length * 0.25) ? 0 : Math.cos(i * 2 *  Math.PI / items.length) * r * 0.5;
+							rx = -30;
+							ry = -30;*/
+							z = 0;
+							rx = 0;
+							ry = 0;
+							rz = deg * i;
+							items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) rotateZ(' + rz + 'deg)';
+							console.log();
 							items[i].style.opacity = 1;
 							fn(i + 1);
 						}, t);

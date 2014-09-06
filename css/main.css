@@ -138,6 +138,14 @@ body {
   -o-transform-origin: 0% 0%;
   transform-origin: 0% 0%;
 }
+.navi[data-state='0'] {
+  opacity: 0;
+  height: 0%;
+}
+.navi[data-state='1'] {
+  opacity: 1;
+  height: 100%;
+}
 .navi .item {
   margin-bottom: 1px;
   width: 100%;
@@ -182,14 +190,6 @@ body {
   color: white;
   text-shadow: 0 0 20px rgba(0, 255, 255, 0.95);
   background: rgba(255, 255, 255, 0.3);
-}
-.navi[data-state='0'] {
-  opacity: 0;
-  height: 0%;
-}
-.navi[data-state='1'] {
-  opacity: 1;
-  height: 100%;
 }
 
 @-webkit-keyframes navi {

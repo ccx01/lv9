@@ -100,6 +100,15 @@ body {
 
 	@include transition(.3s cubic-bezier(.58,.24,.84,.61));
 	@include transform-origin(0%, 0%);
+	
+	&[data-state='0'] {
+		opacity: 0;
+		height: 0%;
+	}
+	&[data-state='1'] {
+		opacity: 1;
+		height: 100%;
+	}
 	.item {
 		margin-bottom: 1px;
 		width: 100%;
@@ -123,14 +132,6 @@ body {
 			text-shadow: 0 0 20px rgba(0, 255, 255, 0.95);
 			background: rgba(255, 255, 255, 0.3);
 		}
-	}
-	&[data-state='0'] {
-		opacity: 0;
-		height: 0%;
-	}
-	&[data-state='1'] {
-		opacity: 1;
-		height: 100%;
 	}
 }
 @include keyframes(navi) {
