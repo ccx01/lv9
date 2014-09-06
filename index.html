@@ -271,6 +271,8 @@
 			function circle(items, r, t, callback){
 				var x;
 				var y;
+				var cos;
+				var sin;
 				var rotate;
 				var deg = 360 / items.length;
 				var deg2 = 2 * Math.PI / items.length;
@@ -284,20 +286,23 @@
 				(function fn(i){
 					if(i < items.length){
 						setTimeout(function(){
-							x = (i == items.length * 0.5) ? 0 : Math.sin(i * deg2) * r;
-							y = (i == items.length * 0.75 || i == items.length * 0.25) ? 0 : -Math.cos(i * deg2) * r;
-							z1 = ((i == items.length * 0.5) ? 0 : Math.sin(i * deg2) * r * Math.sin(30 / 180 * Math.PI)) | 0;
-							z2 = ((i == items.length * 0.75 || i == items.length * 0.25) ? 0 : Math.cos(i * deg2) * r * Math.sin(30 / 180 * Math.PI)) | 0;
+							cos = Math.cos(i * deg2).toFixed(3);
+							sin = Math.sin(i * deg2).toFixed(3);
+							x = (i == items.length * 0.5) ? 0 : sin * r;
+							y = (i == items.length * 0.75 || i == items.length * 0.25) ? 0 : -cos * r;
+							/*z1 = ((i == items.length * 0.5) ? 0 : sin * r * Math.sin(30 / 180 * Math.PI)) | 0;
+							z2 = ((i == items.length * 0.75 || i == items.length * 0.25) ? 0 : cos * r * Math.sin(30 / 180 * Math.PI)) | 0;
 							z = z1 + z2;
-							
+
 							ry = -30;
-							rx = -30;
+							rx = -30;*/
 							/*z = 0;
 							rx = 0;
 							ry = 0;*/
 							rz = deg * i;
-							items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) rotateZ(' + rz + 'deg)';
-							console.log();
+							// items[i].style.transform = "matrix3d(" + cos + ", " + sin + ", 0, " + sin * (-1) + ", " + cos + ", 0, 0, 0, 0, " + x.toFixed(3) + ", " + y.toFixed(3) + ", 0, 0, 0, 0, 1)";
+							items[i].style.transform = "matrix(" + cos + ", " + sin + ", " + sin * (-1) + ", " + cos + ", " + x.toFixed(3) + ", " + y.toFixed(3) + ")";
+							// items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) rotateZ(' + rz + 'deg)';
 							items[i].style.opacity = 1;
 							fn(i + 1);
 						}, t);
