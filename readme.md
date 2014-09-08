@@ -79,3 +79,17 @@ perspective比translateZ帅多了
 ##20140908
 
 matrix3d貌似没有系统的教程，不过three.js倒是实现了3d的算法。
+
+初步实验matrix3d单个值修改时大概长这样
+
+------
+scaleX skewX  rotateX 0
+
+skewY  scaleY rotateY 0
+
+unknow unknow unknow  unknow
+
+translateX tanslateY tanslateZ scaleZ
+------
+
+3d转换好像需要7个矩阵相乘。。。
