@@ -75,3 +75,7 @@ perspective比translateZ帅多了
 ##20140905
 
 熬夜毁一周
+
+##20140908
+
+matrix3d貌似没有系统的教程，不过three.js倒是实现了3d的算法。
