@@ -82,7 +82,6 @@ matrix3d貌似没有系统的教程，不过three.js倒是实现了3d的算法�
 
 初步实验matrix3d单个值修改时大概长这样
 
-------
 scaleX skewX  rotateX 0
 
 skewY  scaleY rotateY 0
@@ -90,6 +89,46 @@ skewY  scaleY rotateY 0
 unknow unknow unknow  unknow
 
 translateX tanslateY tanslateZ scaleZ
-------
 
 3d转换好像需要7个矩阵相乘。。。
+
+##20140909
+
+3d转换的公式是这个：
+
+	var sl = [
+		[s,0,0,0],
+		[0,s,0,0],
+		[0,0,s,0],
+		[0,0,0,1]
+	];
+
+	var rx = [
+		[1,0,0,0],
+		[0,Math.cos(a), Math.sin(-a), 0],
+		[0,Math.sin(a), Math.cos( a), 0],
+		[0,0,0,1]
+	];
+
+	var ry = [
+		[Math.cos( b), 0, Math.sin(b),0],
+		[0,1,0,0],
+		[Math.sin(-b), 0, Math.cos(b), 0],
+		[0,0,0,1]
+	];
+
+	var rz = [
+		[Math.cos(c), Math.sin(-c), 0, 0],
+		[Math.sin(c), Math.cos( c), 0, 0],
+		[0,0,1,0],
+		[0,0,0,1]
+	];
+
+	var tr = [
+		[1,0,0,0],
+		[0,1,0,0],
+		[0,0,1,0],
+		[x,y,z,1]
+	];
+
+然后把5个矩阵相乘就是最后的matrix3d了，具体的矩阵乘积公式见本次提交。或者引入sylvester.js

@@ -290,19 +290,43 @@
 							sin = Math.sin(i * deg2).toFixed(3);
 							x = (i == items.length * 0.5) ? 0 : sin * r;
 							y = (i == items.length * 0.75 || i == items.length * 0.25) ? 0 : -cos * r;
-							/*z1 = ((i == items.length * 0.5) ? 0 : sin * r * Math.sin(30 / 180 * Math.PI)) | 0;
-							z2 = ((i == items.length * 0.75 || i == items.length * 0.25) ? 0 : cos * r * Math.sin(30 / 180 * Math.PI)) | 0;
-							z = z1 + z2;
+							z = 0;
 
-							ry = -30;
-							rx = -30;*/
-							/*z = 0;
-							rx = 0;
-							ry = 0;*/
-							rz = deg * i;
-							// items[i].style.transform = "matrix3d(" + cos + ", " + sin + ", 0, " + sin * (-1) + ", " + cos + ", 0, 0, 0, 0, " + x.toFixed(3) + ", " + y.toFixed(3) + ", 0, 0, 0, 0, 1)";
-							items[i].style.transform = "matrix(" + cos + ", " + sin + ", " + sin * (-1) + ", " + cos + ", " + x.toFixed(3) + ", " + y.toFixed(3) + ")";
-							// items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) rotateZ(' + rz + 'deg)';
+							var a = Math.PI / 3;
+							var b = 0;
+							var c = - i * deg2;
+
+							var rx = [
+							  [1,0,0,0],
+							  [0,Math.cos(a), Math.sin(-a), 0],
+							  [0,Math.sin(a), Math.cos( a), 0],
+							  [0,0,0,1]
+							];
+
+							var ry = [
+							  [Math.cos( b), 0, Math.sin(b),0],
+							  [0,1,0,0],
+							  [Math.sin(-b), 0, Math.cos(b), 0],
+							  [0,0,0,1]
+							];
+
+							var rz = [
+							  [Math.cos(c), Math.sin(-c), 0, 0],
+							  [Math.sin(c), Math.cos( c), 0, 0],
+							  [0,0,1,0],
+							  [0,0,0,1]
+							];
+
+							var tr = [
+							  [1,0,0,0],
+							  [0,1,0,0],
+							  [0,0,1,0],
+							  [x,y,z,1]
+							];
+
+							var ro = matrixX(matrixX(matrixX(rx, ry), rz), tr);
+
+							items[i].style.transform = "matrix3d(" + ro.join(",") + ")";
 							items[i].style.opacity = 1;
 							fn(i + 1);
 						}, t);
@@ -329,6 +353,37 @@
 						callback();
 					}
 				}(0));
+			}
+
+			function matrixX(a, b) {
+				var i = 0,
+					j = 0,
+					k = 0;
+
+				var m = a.length, //col
+					n = b.length, //common
+					p = b[0].length; //row
+
+				var sum = 0;
+				var c = [];
+
+				while (i < m) {
+					c[i] = [];
+					j = 0;
+					while (j < p) {
+						k = 0;
+						sum = 0;
+						while (k < n) {
+							sum += a[i][k] * b[k][j];
+							k++;
+						}
+						c[i][j] = sum;
+						j++;
+					}
+					i++;
+				}
+
+				return c;
 			}
 
 			function tplEngine(tpl, data) {
