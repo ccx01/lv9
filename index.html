@@ -269,8 +269,8 @@
 			}
 
 			function circle(items, r, t, callback){
-				var x;
-				var y;
+				var x, y, z;
+				var a, b, c;
 				var cos;
 				var sin;
 				var rotate;
@@ -286,42 +286,87 @@
 				(function fn(i){
 					if(i < items.length){
 						setTimeout(function(){
-							cos = Math.cos(i * deg2).toFixed(3);
+							// default
+							a = 0;
+							b = 0;
+							c = 0;
+
+							// helix
+							/*var phi = i * 0.175 + Math.PI;
+
+							x = 200 * Math.sin( phi );
+							y = - ( i * 8 ) + 100;
+							z = 200 * Math.cos( phi );
+
+							a = x / Math.sqrt(x * x + y * y);
+							b = y / Math.sqrt(y * y + z * z);
+							c = z / Math.sqrt(x * x + z * z);*/
+
+
+							// sphere
+							var phi = Math.acos( -1 + ( 2 * i ) / items.length );
+							var theta = Math.sqrt( items.length * Math.PI ) * phi;
+
+							x = 250 * Math.cos( theta ) * Math.sin( phi ).toFixed(3);
+							y = 250 * Math.sin( theta ) * Math.sin( phi ).toFixed(3);
+							z = 250 * Math.cos( phi ).toFixed(3);
+
+							a = -theta;
+							// b = phi;
+							// c = z / Math.sqrt(x * x + z * z);
+
+							// circle
+							/*cos = Math.cos(i * deg2).toFixed(3);
 							sin = Math.sin(i * deg2).toFixed(3);
 							x = (i == items.length * 0.5) ? 0 : sin * r;
 							y = (i == items.length * 0.75 || i == items.length * 0.25) ? 0 : -cos * r;
-							z = 0;
+							z = 0;*/
 
-							var a = Math.PI / 3;
+							/*var a = Math.PI / 3;
 							var b = 0;
-							var c = - i * deg2;
+							var c = - i * deg2;*/
+
+							var sa = Math.sin(a);
+							var ca = Math.cos(a);
+							var sb = Math.sin(b);
+							var cb = Math.cos(b);
+							var sc = Math.sin(c);
+							var cc = Math.cos(c);
+
+							//toFixed 会导致l1的7 啪唧 一下，原因不明
+							var sa = Math.sin(a);
+							var ca = Math.cos(a);
+							var sb = Math.sin(b);
+							var cb = Math.cos(b);
+							var sc = Math.sin(c);
+							var cc = Math.cos(c);
 
 							var rx = [
-							  [1,0,0,0],
-							  [0,Math.cos(a), Math.sin(-a), 0],
-							  [0,Math.sin(a), Math.cos( a), 0],
-							  [0,0,0,1]
+								[1, 0, 0, 0],
+								[0, ca, -sa, 0],
+								[0, sa, ca, 0],
+								[0, 0, 0, 1]
 							];
 
 							var ry = [
-							  [Math.cos( b), 0, Math.sin(b),0],
-							  [0,1,0,0],
-							  [Math.sin(-b), 0, Math.cos(b), 0],
-							  [0,0,0,1]
+								[cb, 0, sb, 0],
+								[0, 1, 0, 0],
+								[-sb, 0, cb, 0],
+								[0, 0, 0, 1]
 							];
 
 							var rz = [
-							  [Math.cos(c), Math.sin(-c), 0, 0],
-							  [Math.sin(c), Math.cos( c), 0, 0],
-							  [0,0,1,0],
-							  [0,0,0,1]
+								[cc, -sc, 0, 0],
+								[sc, cc, 0, 0],
+								[0, 0, 1, 0],
+								[0, 0, 0, 1]
 							];
 
 							var tr = [
-							  [1,0,0,0],
-							  [0,1,0,0],
-							  [0,0,1,0],
-							  [x,y,z,1]
+								[1, 0, 0, 0],
+								[0, 1, 0, 0],
+								[0, 0, 1, 0],
+								[x, y, z, 1]
 							];
 
 							var ro = matrixX(matrixX(matrixX(rx, ry), rz), tr);
