@@ -125,7 +125,7 @@
 			var l1 = function(){
 				// l1_items = initHTML('.l1', 12);
 				// circle(l1_items, 270, 50, l2);
-				l1_items = initHTML('.l1', 108);
+				l1_items = initHTML('.l1', 12);
 				circle(l1_items, 550, 10);
 			}
 			var l2 = function(){
@@ -294,28 +294,31 @@
 							c = 0;
 
 							// helix
-							/*var phi = i * 0.175 + Math.PI;
+							var phi = i / 6 * Math.PI;
 
-							x = 200 * Math.sin( phi );
-							y = - ( i * 8 ) + 100;
-							z = 200 * Math.cos( phi );
+							x = 200 * Math.sin( phi ).toFixed(9);
+							y = 0;
+							z = 200 * Math.cos( phi ).toFixed(9);
 
-							a = x / Math.sqrt(x * x + y * y);
-							b = y / Math.sqrt(y * y + z * z);
-							c = z / Math.sqrt(x * x + z * z);*/
+							var r = Math.sqrt(x * x + y * y + z * z);
 
+							r = z < 0 ? r : -r;
+
+							// a = Math.PI * 0.125;
+							b = Math.asin(x / r);
+							console.log(x,r,b)
 
 							// sphere
-							var phi = Math.acos( -1 + ( 2 * i ) / items.length );
+							/*var phi = Math.acos( -1 + ( 2 * i ) / items.length );
 							var theta = Math.sqrt( items.length * Math.PI ) * phi;
 
 							x = 200 * Math.cos( theta ) * Math.sin( phi ).toFixed(3);
 							y = 200 * Math.sin( theta ) * Math.sin( phi ).toFixed(3);
 							z = 200 * Math.cos( phi ).toFixed(3);
 
-							a = theta;
+							// a = y / Math.sqrt(x * x + y * y + z * z);
 							// b = phi;
-							// c = z / Math.sqrt(x * x + z * z);
+							// c = z / Math.sqrt(x * x + z * z);*/
 
 							// circle
 							/*cos = Math.cos(i * deg2).toFixed(3);
@@ -328,20 +331,13 @@
 							var b = 0;
 							var c = - i * deg2;*/
 
-							var sa = Math.sin(a);
-							var ca = Math.cos(a);
-							var sb = Math.sin(b);
-							var cb = Math.cos(b);
-							var sc = Math.sin(c);
-							var cc = Math.cos(c);
-
 							//toFixed 会导致l1的7 啪唧 一下，原因不明
-							var sa = Math.sin(a);
-							var ca = Math.cos(a);
-							var sb = Math.sin(b);
-							var cb = Math.cos(b);
-							var sc = Math.sin(c);
-							var cc = Math.cos(c);
+							var sa = Math.sin(a).toFixed(9);
+							var ca = Math.cos(a).toFixed(9);
+							var sb = Math.sin(b).toFixed(9);
+							var cb = Math.cos(b).toFixed(9);
+							var sc = Math.sin(c).toFixed(9);
+							var cc = Math.cos(c).toFixed(9);
 
 							var rx = [
 								[1, 0, 0, 0],
@@ -373,7 +369,7 @@
 
 							var ro = matrixX(matrixX(matrixX(rx, ry), rz), tr);
 
-							items[i].style.transform = "matrix3d(" + ro.join(",") + ")";
+							items[i].style.transform = "translate3d(-50%,-50%,0px) matrix3d(" + ro.join(",") + ")";
 							items[i].style.opacity = 1;
 							fn(i + 1);
 						}, t);
