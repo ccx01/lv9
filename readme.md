@@ -136,3 +136,7 @@ translateX tanslateY tanslateZ scaleZ
 ##20140913
 
 感冒灌开水中
+
+##20140914
+
+readme这样弄也不是办法，难道还是要开个博客？或者内部建个记事本，不过那样的话还不如readme直接写
