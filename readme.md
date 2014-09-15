@@ -140,3 +140,7 @@ translateX tanslateY tanslateZ scaleZ
 ##20140914
 
 readme这样弄也不是办法，难道还是要开个博客？或者内部建个记事本，不过那样的话还不如readme直接写
+
+##20140915
+
+课前练习，喉咙很痛
