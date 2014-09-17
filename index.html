@@ -366,8 +366,8 @@
 								[0, 0, 1, 0],
 								[x, y, z, 1]
 							];
-							
-							var ro = rx.X(ry.X(rz.X(tr)));
+
+							var ro = matrixX([rx, ry, rz, tr]);
 
 							// items[i].style.transformOrigin = x * -1 + "px " + y * -1 + "px " + z * -1 + "px";
 							items[i].style.transform = "translate3d(-50%,-50%,0px) matrix3d(" + ro.join(",") + ")";
@@ -400,35 +400,44 @@
 				}(0));
 			}
 
-			Array.prototype.X = function(matrix) {
-				var i = 0,
-					j = 0,
-					k = 0;
+			function matrixX(matrixs) {
 
-				var m = this.length, //col
-					n = matrix.length, //common
-					p = matrix[0].length; //row
+				var a = matrixs[0];
 
-				var sum = 0;
-				var c = [];
+				for(var mtx = 1; mtx < matrixs.length; mtx++) {
+					var b = matrixs[mtx];
 
-				while (i < m) {
-					c[i] = [];
-					j = 0;
-					while (j < p) {
+					var i = 0,
+						j = 0,
 						k = 0;
-						sum = 0;
-						while (k < n) {
-							sum += this[i][k] * matrix[k][j];
-							k++;
+
+					var m = a.length, //col
+						n = b.length, //common
+						p = b[0].length; //row
+
+					var sum = 0;
+					var c = [];
+
+					while (i < m) {
+						c[i] = [];
+						j = 0;
+						while (j < p) {
+							k = 0;
+							sum = 0;
+							while (k < n) {
+								sum += a[i][k] * b[k][j];
+								k++;
+							}
+							c[i][j] = sum;
+							j++;
 						}
-						c[i][j] = sum;
-						j++;
+						i++;
 					}
-					i++;
+
+					a = c;
 				}
 
-				return c;
+				return a;
 			}
 
 			function tplEngine(tpl, data) {
