@@ -306,7 +306,7 @@
 
 							// a = Math.PI * 0.125;
 							b = Math.asin(x / r);
-							console.log(x,r,b)
+							// console.log(x,r,b)
 
 							// sphere
 							/*var phi = Math.acos( -1 + ( 2 * i ) / items.length );
@@ -366,11 +366,13 @@
 								[0, 0, 1, 0],
 								[x, y, z, 1]
 							];
+							
+							var ro = rx.X(ry.X(rz.X(tr)));
 
-							var ro = matrixX(matrixX(matrixX(rx, ry), rz), tr);
-
+							// items[i].style.transformOrigin = x * -1 + "px " + y * -1 + "px " + z * -1 + "px";
 							items[i].style.transform = "translate3d(-50%,-50%,0px) matrix3d(" + ro.join(",") + ")";
 							items[i].style.opacity = 1;
+							console.log(x,y,z)
 							fn(i + 1);
 						}, t);
 					}else{
@@ -398,14 +400,14 @@
 				}(0));
 			}
 
-			function matrixX(a, b) {
+			Array.prototype.X = function(matrix) {
 				var i = 0,
 					j = 0,
 					k = 0;
 
-				var m = a.length, //col
-					n = b.length, //common
-					p = b[0].length; //row
+				var m = this.length, //col
+					n = matrix.length, //common
+					p = matrix[0].length; //row
 
 				var sum = 0;
 				var c = [];
@@ -417,7 +419,7 @@
 						k = 0;
 						sum = 0;
 						while (k < n) {
-							sum += a[i][k] * b[k][j];
+							sum += this[i][k] * matrix[k][j];
 							k++;
 						}
 						c[i][j] = sum;
