@@ -20,12 +20,7 @@
 			</li>
 		</ul>
 		<div id="view">
-			<div id="main">
-				<div class="layer l1 about"></div>
-				<div class="layer l2 recent"></div>
-				<div class="layer l3 random"></div>
-				<div class="layer l4 nothing"></div>
-			</div>
+			<div id="main" class="layer"></div>
 		</div>
 		<!-- tamplate -->
 		<div id="content">
@@ -123,24 +118,8 @@
 				switchState($navi, 1);
 			}, 100);
 			var l1 = function(){
-				// l1_items = initHTML('.l1', 12);
-				// circle(l1_items, 270, 50, l2);
-				l1_items = initHTML('.l1', 12);
+				l1_items = initHTML('#main', 12);
 				circle(l1_items, 550, 10);
-			}
-			var l2 = function(){
-				l2_items = initHTML('.l2', 24);
-				circle(l2_items, 340, 30, l3);
-			}
-			var l3 = function(){
-				l3_items = initHTML('.l3', 36);
-				circle(l3_items, 450, 10, l4);
-			}
-			var l4 = function(){
-				l4_items = initHTML('.l4', 48);
-				circle(l4_items, 550, 10, function(){
-					switchState([$l1, $l2, $l3, $l4], 0);
-				});
 			}
 
 			l1();
@@ -296,16 +275,16 @@
 							// helix
 							var phi = i / 6 * Math.PI;
 
-							x = 200 * Math.sin( phi ).toFixed(9);
+							x = 200 * Math.sin( phi ).toFixed(3);
 							y = 0;
-							z = 200 * Math.cos( phi ).toFixed(9);
+							z = 200 * Math.cos( phi ).toFixed(3);
 
 							var r = Math.sqrt(x * x + y * y + z * z);
 
 							r = z < 0 ? r : -r;
 
-							// a = Math.PI * 0.125;
-							b = Math.asin(x / r);
+							a = Math.PI * 0.125;
+							// b = Math.asin(x / r);
 							// console.log(x,r,b)
 
 							// sphere
@@ -370,7 +349,8 @@
 							var ro = matrixX([rx, ry, rz, tr]);
 
 							// items[i].style.transformOrigin = x * -1 + "px " + y * -1 + "px " + z * -1 + "px";
-							items[i].style.transform = "translate3d(-50%,-50%,0px) matrix3d(" + ro.join(",") + ")";
+							items[i].style.transform = "translate3d(-50%, -50%, 0) matrix3d(" + ro.join(",") + ")";
+							items[i].style.transformOrigin = x * 2 + "px " + y + "px " + z * 2 + "px";
 							items[i].style.opacity = 1;
 							console.log(x,y,z)
 							fn(i + 1);

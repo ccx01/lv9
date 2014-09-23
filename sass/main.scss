@@ -65,13 +65,12 @@ body {
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
-	@include perspective(500px);
+	@include perspective(1000px);
 	@include transform-style(preserve-3d);
 }
 
 #main {
 	@include transition(1s);
-	@include perspective(500px);
 	@include transform-style(preserve-3d);
 	width: 100%;
 	height: 100%;
@@ -147,8 +146,6 @@ body {
 
 /* layer */
 .layer {
-	@include transform-style(preserve-3d);
-	@include perspective(0px);
 	position: absolute;
 	top: 0;
 	left: 0;
