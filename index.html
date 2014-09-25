@@ -72,24 +72,26 @@
 			$('#view').onmouseup = function(e) {
 				switch(e.which) {
 					case 1:
-						x = (e.layerX - x) / 10;
-						y = (e.layerY - y) / 10;
-						var rx = transformValue($main, 'rotateX');
-						rx = rx ? (rx[1] | 0) - y : y;
-						var ry = transformValue($main, 'rotateY');
-						ry = ry ? (ry[1] | 0) + x : x;
+						a = (e.layerY - y) / 10;
+						b = (e.layerX - x) / 10;
+						c = 0;
+						x = 0;
+						y = 0;
+						z = 0;
 
-						$main.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
+						var ro = toMatrix3d(x, y, z, a, b, c);
+						$main.style.transform = "matrix3d(" + ro.join(",") + ")";
 					break;
 					case 3:
-						x = (e.layerX - x);
-						y = (e.layerY - y);
-						var tx = transformValue($main, 'translateX');
-						tx = tx ? (tx[1] | 0) + x : x;
-						var ty = transformValue($main, 'translateY');
-						ty = ty ? (ty[1] | 0) + y : y;
+						a = 0;
+						b = 0;
+						c = 0;
+						x = e.layerX - x;
+						y = e.layerY - y;
+						z = 0;
 
-						$main.style.transform = 'translateX(' + tx + 'px) translateY(' + ty + 'px)';
+						var ro = toMatrix3d(x, y, z, a, b, c);
+						$main.style.transform = "matrix3d(" + ro.join(",") + ")";
 					break;
 				}
 			}
@@ -283,7 +285,7 @@
 
 							r = z < 0 ? r : -r;
 
-							a = Math.PI * 0.125;
+							// a = Math.PI * 0.125;
 							// b = Math.asin(x / r);
 							// console.log(x,r,b)
 
@@ -311,48 +313,14 @@
 							var c = - i * deg2;*/
 
 							//toFixed 会导致l1的7 啪唧 一下，原因不明
-							var sa = Math.sin(a).toFixed(9);
-							var ca = Math.cos(a).toFixed(9);
-							var sb = Math.sin(b).toFixed(9);
-							var cb = Math.cos(b).toFixed(9);
-							var sc = Math.sin(c).toFixed(9);
-							var cc = Math.cos(c).toFixed(9);
 
-							var rx = [
-								[1, 0, 0, 0],
-								[0, ca, -sa, 0],
-								[0, sa, ca, 0],
-								[0, 0, 0, 1]
-							];
-
-							var ry = [
-								[cb, 0, sb, 0],
-								[0, 1, 0, 0],
-								[-sb, 0, cb, 0],
-								[0, 0, 0, 1]
-							];
-
-							var rz = [
-								[cc, -sc, 0, 0],
-								[sc, cc, 0, 0],
-								[0, 0, 1, 0],
-								[0, 0, 0, 1]
-							];
-
-							var tr = [
-								[1, 0, 0, 0],
-								[0, 1, 0, 0],
-								[0, 0, 1, 0],
-								[x, y, z, 1]
-							];
-
-							var ro = matrixX([rx, ry, rz, tr]);
+							var ro = toMatrix3d(x, y, z, a, b, c);
 
 							// items[i].style.transformOrigin = x * -1 + "px " + y * -1 + "px " + z * -1 + "px";
 							items[i].style.transform = "translate3d(-50%, -50%, 0) matrix3d(" + ro.join(",") + ")";
 							items[i].style.transformOrigin = x * 2 + "px " + y + "px " + z * 2 + "px";
 							items[i].style.opacity = 1;
-							console.log(x,y,z)
+							// console.log(x,y,z)
 							fn(i + 1);
 						}, t);
 					}else{
@@ -378,6 +346,47 @@
 						callback();
 					}
 				}(0));
+			}
+
+			function toMatrix3d(x, y, z, a, b, c) {
+				var sa = Math.sin(a).toFixed(3);
+				var ca = Math.cos(a).toFixed(3);
+				var sb = Math.sin(b).toFixed(3);
+				var cb = Math.cos(b).toFixed(3);
+				var sc = Math.sin(c).toFixed(3);
+				var cc = Math.cos(c).toFixed(3);
+
+				var rx = [
+					[1, 0, 0, 0],
+					[0, ca, -sa, 0],
+					[0, sa, ca, 0],
+					[0, 0, 0, 1]
+				];
+
+				var ry = [
+					[cb, 0, sb, 0],
+					[0, 1, 0, 0],
+					[-sb, 0, cb, 0],
+					[0, 0, 0, 1]
+				];
+
+				var rz = [
+					[cc, -sc, 0, 0],
+					[sc, cc, 0, 0],
+					[0, 0, 1, 0],
+					[0, 0, 0, 1]
+				];
+
+				var tl = [
+					[1, 0, 0, 0],
+					[0, 1, 0, 0],
+					[0, 0, 1, 0],
+					[x, y, z, 1]
+				];
+
+				var ro = matrixX([rx, ry, rz, tl]);
+
+				return ro;
 			}
 
 			function matrixX(matrixs) {
