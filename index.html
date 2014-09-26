@@ -98,7 +98,16 @@
 			document.onmousewheel = function(e) {
 				var tz = transformValue($main, 'translateZ');
 				tz = tz ? (tz[1] | 0) + e.wheelDelta : e.wheelDelta;
-				$main.style.transform += " translateZ(" + tz + "px)";
+				// $main.style.transform += " translateZ(" + tz + "px)";
+				a = 0;
+				b = 0;
+				c = 0;
+				x = 0;
+				y = 0;
+				z = tz;
+
+				var ro = toMatrix3d(x, y, z, a, b, c);
+				$main.style.transform = "matrix3d(" + ro.join(",") + ")";
 			}
 
 			/* init layout */
