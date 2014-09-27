@@ -63,48 +63,58 @@
 				return false;
 			}
 			var gesture = 0;
-			var x = 0;
-			var y = 0;
+			var ex = 0;
+			var ey = 0;
+
+			var	la = a = 0;
+			var	lb = b = 0;
+			var	lc = c = 0;
+			var	lx = x = 0;
+			var	ly = y = 0;
+			var	lz = z = 0;
+
+			$('#view').style.width = document.body.offsetWidth + "px";
+			$('#view').style.height = document.body.offsetHeight + "px";
+			
 			$('#view').onmousedown = function(e) {
-				x = e.layerX;
-				y = e.layerY;
+				ex = e.layerX;
+				ey = e.layerY;
+				gesture = 1;
 			}
-			$('#view').onmouseup = function(e) {
-				switch(e.which) {
-					case 1:
-						a = (e.layerY - y) / 10;
-						b = (e.layerX - x) / 10;
-						c = 0;
-						x = 0;
-						y = 0;
-						z = 0;
+			$('#view').onmousemove = function(e) {
+				if(gesture) {
+					switch(e.which) {
+						case 1:
+							a = la + (ey - e.layerY) / 100;
+							b = lb + (ex - e.layerX) / 100;
+							console.log(ey - e.layerY,a,b)
+							var ro = toMatrix3d(x, y, z, a, b, c);
+							$main.style.transform = "matrix3d(" + ro.join(",") + ")";
+						break;
+						case 3:
+							x = lx + e.layerX - ex;
+							y = ly + e.layerY - ey;
 
-						var ro = toMatrix3d(x, y, z, a, b, c);
-						$main.style.transform = "matrix3d(" + ro.join(",") + ")";
-					break;
-					case 3:
-						a = 0;
-						b = 0;
-						c = 0;
-						x = e.layerX - x;
-						y = e.layerY - y;
-						z = 0;
-
-						var ro = toMatrix3d(x, y, z, a, b, c);
-						$main.style.transform = "matrix3d(" + ro.join(",") + ")";
-					break;
+							var ro = toMatrix3d(x, y, z, a, b, c);
+							$main.style.transform = "matrix3d(" + ro.join(",") + ")";
+						break;
+					}
 				}
 			}
+			$('#view').onmouseup = function(e) {
+				la = a;
+				lb = b;
+				lc = c;
+				lx = x;
+				ly = y;
+				gesture = 0;
+			}
+
 			document.onmousewheel = function(e) {
 				var tz = transformValue($main, 'translateZ');
 				tz = tz ? (tz[1] | 0) + e.wheelDelta : e.wheelDelta;
 				// $main.style.transform += " translateZ(" + tz + "px)";
-				a = 0;
-				b = 0;
-				c = 0;
-				x = 0;
-				y = 0;
-				z = tz;
+				z += tz;
 
 				var ro = toMatrix3d(x, y, z, a, b, c);
 				$main.style.transform = "matrix3d(" + ro.join(",") + ")";
