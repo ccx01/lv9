@@ -289,7 +289,7 @@
 					if(i < items.length){
 						setTimeout(function(){
 							// default
-							a = 0;
+							a = Math.PI * 0.25;
 							b = 0;
 							c = 0;
 
@@ -297,47 +297,14 @@
 							var phi = i / 6 * Math.PI;
 
 							x = 200 * Math.sin( phi ).toFixed(3);
-							y = 0;
+							y = 200 * Math.cos( phi ).toFixed(3);
 							z = 200 * Math.cos( phi ).toFixed(3);
-
-							var r = Math.sqrt(x * x + y * y + z * z);
-
-							r = z < 0 ? r : -r;
-
-							// a = Math.PI * 0.125;
-							// b = Math.asin(x / r);
-							// console.log(x,r,b)
-
-							// sphere
-							/*var phi = Math.acos( -1 + ( 2 * i ) / items.length );
-							var theta = Math.sqrt( items.length * Math.PI ) * phi;
-
-							x = 200 * Math.cos( theta ) * Math.sin( phi ).toFixed(3);
-							y = 200 * Math.sin( theta ) * Math.sin( phi ).toFixed(3);
-							z = 200 * Math.cos( phi ).toFixed(3);
-
-							// a = y / Math.sqrt(x * x + y * y + z * z);
-							// b = phi;
-							// c = z / Math.sqrt(x * x + z * z);*/
-
-							// circle
-							/*cos = Math.cos(i * deg2).toFixed(3);
-							sin = Math.sin(i * deg2).toFixed(3);
-							x = (i == items.length * 0.5) ? 0 : sin * r;
-							y = (i == items.length * 0.75 || i == items.length * 0.25) ? 0 : -cos * r;
-							z = 0;*/
-
-							/*var a = Math.PI / 3;
-							var b = 0;
-							var c = - i * deg2;*/
-
-							//toFixed 会导致l1的7 啪唧 一下，原因不明
 
 							var ro = toMatrix3d(x, y, z, a, b, c);
 
 							// items[i].style.transformOrigin = x * -1 + "px " + y * -1 + "px " + z * -1 + "px";
 							items[i].style.transform = "translate3d(-50%, -50%, 0) matrix3d(" + ro.join(",") + ")";
-							items[i].style.transformOrigin = x * 2 + "px " + y + "px " + z * 2 + "px";
+							// items[i].style.transformOrigin = x * 2 + "px " + y + "px " + z * 2 + "px";
 							items[i].style.opacity = 1;
 							// console.log(x,y,z)
 							fn(i + 1);
