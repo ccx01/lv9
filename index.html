@@ -31,7 +31,7 @@
 				<p>数据正在接入</p>	
 			</div>
 		</div>
-		<template id="l1-tpl">
+		<template id="layout-tpl">
 			<h2 class="title">{#words}</h2>
 			<p class="info" data-info='{"id": {#id}, "toid": {#tid}}'>{#name} @ {#time}</p>
 			<div class="media">{#other}</div>
@@ -43,35 +43,35 @@
 		</template>
 		<!-- tamplate end -->
 		<script>
+			/* common */
 			var $ = function(elem){
 				var ret = document.querySelectorAll(elem);
 				return ret.length == 1 ? ret[0] : ret;
 			}
-
-			function transformValue(elem, prop) {
-				var tf = elem.style.transform;
-				var re = new RegExp(prop + "\\((-*\\d+\\.*\\d*)deg\\)","g");
-				return re.exec(tf);
-			}
-
-			/* gesture */
-			var $main = $('#main');
 			document.onselectstart = function() {
 				return false;
 			}
 			document.oncontextmenu = function() {
 				return false;
 			}
+
+			/* gesture */
+			var $main = $('#main');
 			var gesture = 0;
 			var ex = 0;
 			var ey = 0;
 
-			var	la = a = 0;
-			var	lb = b = 0;
-			var	lc = c = 0;
-			var	lx = x = 0;
-			var	ly = y = 0;
-			var	lz = z = 0;
+			var layout = (function() {
+				var I = {};
+				I.la = I.a = 0;
+				I.lb = I.b = 0;
+				I.lc = I.c = 0;
+				I.lx = I.x = 0;
+				I.ly = I.y = 0;
+				I.lz = I.z = 0;
+
+				return I;
+			}());
 
 			$('#view').style.width = document.body.offsetWidth + "px";
 			$('#view').style.height = document.body.offsetHeight + "px";
@@ -85,36 +85,34 @@
 				if(gesture) {
 					switch(e.which) {
 						case 1:
-							a = la + (ey - e.layerY) / 100;
-							b = lb + (ex - e.layerX) / 100;
+							layout.a = layout.la + (ey - e.layerY) / 100;
+							layout.b = layout.lb + (ex - e.layerX) / 100;
 							// c = lc + (ex - e.layerY) / 100;
-							var ro = toMatrix3d(x, y, z, a, b, c);
+							var ro = toMatrix3d(layout);
 							$main.style.transform = "matrix3d(" + ro.join(",") + ")";
 						break;
 						case 3:
-							x = lx + e.layerX - ex;
-							y = ly + e.layerY - ey;
+							layout.x = layout.lx + e.layerX - ex;
+							layout.y = layout.ly + e.layerY - ey;
 
-							var ro = toMatrix3d(x, y, z, a, b, c);
+							var ro = toMatrix3d(layout);
 							$main.style.transform = "matrix3d(" + ro.join(",") + ")";
 						break;
 					}
 				}
 			}
 			$('#view').onmouseup = function(e) {
-				la = a;
-				lb = b;
-				lc = c;
-				lx = x;
-				ly = y;
+				layout.la = layout.a;
+				layout.lb = layout.b;
+				layout.lc = layout.c;
+				layout.lx = layout.x;
+				layout.ly = layout.y;
 				gesture = 0;
 			}
 
 			document.onmousewheel = function(e) {
-				var tz = transformValue($main, 'translateZ');
-				tz = tz ? (tz[1] | 0) + e.wheelDelta : e.wheelDelta;
-				z += tz;
-				var ro = toMatrix3d(x, y, z, a, b, c);
+				layout.z += e.wheelDelta;
+				var ro = toMatrix3d(layout);
 				$main.style.transform = "matrix3d(" + ro.join(",") + ")";
 			}
 
@@ -125,13 +123,7 @@
 			var sign = ["Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ"];
 
 			var $l1 = $('.l1');
-			var $l2 = $('.l2');
-			var $l3 = $('.l3');
-			var $l4 = $('.l4');
 			var l1_items;
-			var	l2_items;
-			var	l3_items;
-			var	l4_items;
 
 			setTimeout(function() {
 				switchState($navi, 1);
@@ -142,13 +134,12 @@
 			}
 
 			l1();
-			// $main.style.transform = 'rotateX(-45deg) rotateY(-35deg)';
 
 			var ajax_data = {
 				'l1': [],
 				'l2': []
 			};
-			var l1_tpl = $('#l1-tpl').innerHTML;
+			var l1_tpl = $('#layout-tpl').innerHTML;
 			$l1.onclick = function(e){
 				var ajax_index = e.target.dataset['index'];
 				if(ajax_data.l1[ajax_index]) {
@@ -164,48 +155,7 @@
 				}
 			}
 
-			$l2.onclick = function(e){
-				var ajax_index = e.target.dataset['index'];
-				if(ajax_data.l2[ajax_index]) {
-					$('#content .wrap').innerHTML = e.target.innerText + ':<br>' + ajax_data.l2[ajax_index];
-				} else {
-					ajax("sort=video&index=" + ajax_index, function(data) {
-						data = tplEngine(l1_tpl, data);
-						ajax_data.l2[ajax_index] = data;
-						$('#content .wrap').innerHTML = e.target.innerText + ':<br>' + data;
-					});
-				}
-				switchState([$content], 2);
-			}
-			$l2.onmouseover = function(e) {
-				var pos = e.target.parentNode.style.transform.replace(/(-*\d+\.*\d+)px/g, function(m, s){
-					return (-1 * s) + 'px';
-				});
-				$l2.style.transform = pos;
-			}
-
 			/* init menu */
-			var $menu = $('.navi .item');
-			for(var i = 0; i < $menu.length; i++){
-				$menu[i].onclick = function(){
-					callPage(this.dataset['page']);
-				}
-			}
-			var $navi_close = $('.navi .close');
-			$navi_close.onclick = function(){
-				switch($navi.dataset['state']){
-					case 'recent':
-						circle(l2_items, 340, 50);
-						$l2.style.transform = '';
-						break;
-				}
-				switchState($navi, 1);
-				switchState([$l1, $l2, $l3, $l4], 0);
-			}
-
-			$('#content .icon-close').onclick = function(){
-				switchState([$content], 0);
-			}
 
 			/* function */
 
@@ -269,13 +219,6 @@
 			}
 
 			function circle(items, r, t, callback){
-				var x = y = z = 0;
-				var a = b = c = 0;
-				var cos;
-				var sin;
-				var rotate;
-				var deg = 360 / items.length;
-				var deg2 = 2 * Math.PI / items.length;
 				if(typeof(arguments[2]) == 'function'){
 					var callback = arguments[2];
 					var t = 100;
@@ -283,29 +226,27 @@
 					var callback = callback || function(){};
 					var t = t || 100;
 				}
+				var cir = {};
 				(function fn(i){
 					if(i < items.length){
 						setTimeout(function(){
-							// default
-							// a = 0;
-							a = Math.PI / 6;
-							b = 0;
-							c = 0;
-
 							// helix
-							var phi = i / 6 * Math.PI;
+							var phi = 2 * Math.PI * i / items.length;
 
-							x = 200 * Math.sin( phi ).toFixed(3);
-							y = 200 * Math.sin( a ) * Math.cos( phi ).toFixed(3);
-							z = 200 * Math.cos( phi ).toFixed(3);
+							// item rotate
+							cir.a = Math.PI / 2;
+							cir.b = 0;
+							cir.c = 0;
 
-							var ro = toMatrix3d(x, y, z, a, b, c);
+							// layout rotate
+							cir.x = 200 * Math.sin( phi );
+							cir.y = 200 * Math.sin( cir.a - Math.PI / 2 ) * Math.cos( phi );
+							cir.z = 200 * Math.cos( phi );
 
-							// items[i].style.transformOrigin = x * -1 + "px " + y * -1 + "px " + z * -1 + "px";
+							var ro = toMatrix3d(cir);
+
 							items[i].style.transform = "translate3d(-50%, -50%, 0) matrix3d(" + ro.join(",") + ")";
-							// items[i].style.transformOrigin = x * 2 + "px " + y + "px " + z * 2 + "px";
-							items[i].style.opacity = 1;
-							// console.log(x,y,z)
+
 							fn(i + 1);
 						}, t);
 					}else{
@@ -333,13 +274,17 @@
 				}(0));
 			}
 
-			function toMatrix3d(x, y, z, a, b, c) {
-				var sa = Math.sin(a).toFixed(3);
-				var ca = Math.cos(a).toFixed(3);
-				var sb = Math.sin(b).toFixed(3);
-				var cb = Math.cos(b).toFixed(3);
-				var sc = Math.sin(c).toFixed(3);
-				var cc = Math.cos(c).toFixed(3);
+			function toMatrix3d(m) {
+				var sa = Math.sin(m.a).toFixed(3);
+				var ca = Math.cos(m.a).toFixed(3);
+				var sb = Math.sin(m.b).toFixed(3);
+				var cb = Math.cos(m.b).toFixed(3);
+				var sc = Math.sin(m.c).toFixed(3);
+				var cc = Math.cos(m.c).toFixed(3);
+
+				var x = m.x.toFixed(3);
+				var y = m.y.toFixed(3);
+				var z = m.z.toFixed(3);
 
 				var rx = [
 					[1, 0, 0, 0],
