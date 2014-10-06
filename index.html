@@ -234,13 +234,16 @@
 							var phi = 2 * Math.PI * i / items.length;
 
 							// item rotate
-							cir.a = Math.PI / 2;
+							cir.a = Math.PI / 6;
 							cir.b = 0;
 							cir.c = 0;
 
 							// layout rotate
+							cir.y = 200 * Math.abs(Math.sin( cir.a ));
+
 							cir.x = 200 * Math.sin( phi );
-							cir.y = 200 * Math.sin( cir.a - Math.PI / 2 ) * Math.cos( phi );
+							cir.y *= Math.cos( phi );
+							// cir.y = 0;
 							cir.z = 200 * Math.cos( phi );
 
 							var ro = toMatrix3d(cir);
