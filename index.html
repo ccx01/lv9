@@ -253,6 +253,10 @@
 							cir.a = Math.atan2(cir.y, cir.z);
 							cir.b = Math.atan2(cir.z, cir.x) - Math.PI * 0.5;
 							cir.c = Math.atan2(cir.x, cir.y);
+							
+							if(cir.a > Math.PI * 0.5) {
+								cir.a *= -1;
+							}
 							// cir.a = 0;
 							// cir.b = 0;
 							cir.c = 0;
