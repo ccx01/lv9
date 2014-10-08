@@ -129,7 +129,7 @@
 				switchState($navi, 1);
 			}, 100);
 			var l1 = function(){
-				l1_items = initHTML('#main', 12);
+				l1_items = initHTML('#main', 68);
 				circle(l1_items, 550, 10);
 			}
 
@@ -233,18 +233,30 @@
 							// helix
 							var phi = 2 * Math.PI * i / items.length;
 
-							// item rotate
-							cir.a = Math.PI / 6;
-							cir.b = 0;
-							cir.c = 0;
+							var phi = Math.acos( -1 + ( 2 * i ) / items.length );
+							var theta = Math.sqrt( items.length * Math.PI ) * phi;
+
+							cir.x = 250 * Math.cos( theta ) * Math.sin( phi );
+							cir.y = 250 * Math.sin( theta ) * Math.sin( phi );
+							cir.z = 250 * Math.cos( phi );
+							// cir.x = 0;
+							// cir.y = 0;
+							// cir.z = 0;
 
 							// layout rotate
-							cir.y = 200 * Math.abs(Math.sin( cir.a ));
 
-							cir.x = 200 * Math.sin( phi );
-							cir.y *= Math.cos( phi );
-							// cir.y = 0;
-							cir.z = 200 * Math.cos( phi );
+							// cir.x = 200 * Math.sin( phi );
+							// cir.y = 200 * Math.cos( phi );
+							// cir.z = 200 * Math.cos( phi );
+
+							// item rotate
+							cir.a = Math.atan2(cir.y, cir.z);
+							cir.b = Math.atan2(cir.z, cir.x) - Math.PI * 0.5;
+							cir.c = Math.atan2(cir.x, cir.y);
+							// cir.a = 0;
+							// cir.b = 0;
+							cir.c = 0;
+							// console.log(cir.a,cir.b,cir.c,cir.x,cir.y,cir.z)
 
 							var ro = toMatrix3d(cir);
 
