@@ -22,6 +22,64 @@
 		<div id="view">
 			<div id="main" class="layer"></div>
 		</div>
+		<!-- test -->
+		<div class="test" style=" position: fixed; z-index: 99; bottom: 0;">
+			rx: <input type="number" value="0">
+			ry: <input type="number" value="0">
+			rz: <input type="number" value="0">
+			ra: <input type="number" value="0">
+			rb: <input type="number" value="0">
+			rc: <input type="number" value="0">
+		</div>
+		<script type="text/javascript">
+			var input = document.querySelectorAll(".test input");
+			var val = [];
+			(function change(i) {
+				if(i < input.length) {
+					input[i].onchange = function() {
+						val[i] = this.value | 0;
+						test( val );
+					}
+					change( i + 1 );
+				}
+			}(0));
+			function test(arr){
+				var cir = {};
+				var items = l1_items;
+				var r = 250;
+				var t = Math.random * 20;
+
+				var rx = arr[0] * Math.PI / 180 || 0;
+				var ry = arr[1] * Math.PI / 180 || 0;
+				var rz = arr[2] * Math.PI / 180 || 0;
+
+				(function fn(i){
+					if(i < items.length){
+						setTimeout(function(){
+							// helix
+							var phi = 2 * Math.PI * i / items.length;
+
+							cir.x = r * Math.sin( phi );
+							cir.y = r * Math.cos( phi ) * Math.sin( rx );
+							cir.z = r * Math.cos( phi ) * Math.cos( rx );
+							
+							cir.a = arr[3] * Math.PI / 180 || 0;
+							cir.b = arr[4] * Math.PI / 180 || 0;
+							cir.c = arr[5] * Math.PI / 180 || 0;
+							// console.log(cir.a,cir.b,cir.c,cir.x,cir.y,cir.z)
+
+							var ro = toMatrix3d(cir);
+
+							items[i].style.transform = "translate3d(-50%, -50%, 0) matrix3d(" + ro.join(",") + ")";
+
+							fn(i + 1);
+						}, t);
+					}
+				}(0));
+			}
+
+		</script>
+
 		<!-- tamplate -->
 		<div id="content">
 			<svg class="icon icon-close" viewBox="0 0 32 32">
@@ -230,22 +288,13 @@
 				(function fn(i){
 					if(i < items.length){
 						setTimeout(function(){
-							// ring
-							var phi = 2 * Math.PI * i / items.length;
-							cir.x = 250 * Math.sin( phi );
-							cir.y = 250 * Math.cos( phi );
-							cir.z = 0;
 
-							// ball
-							/*var phi = Math.acos( -1 + ( 2 * i ) / items.length );
+							var phi = Math.acos( -1 + ( 2 * i ) / items.length );
 							var theta = Math.sqrt( items.length * Math.PI ) * phi;
 
 							cir.x = 250 * Math.cos( theta ) * Math.sin( phi );
 							cir.y = 250 * Math.sin( theta ) * Math.sin( phi );
-							cir.z = 250 * Math.cos( phi );*/
-							// cir.x = 0;
-							// cir.y = 0;
-							// cir.z = 0;
+							cir.z = 250 * Math.cos( phi );
 
 							// layout rotate
 
@@ -257,13 +306,13 @@
 							cir.a = Math.atan2(cir.y, cir.z);
 							cir.b = Math.atan2(cir.z, cir.x) - Math.PI * 0.5;
 							cir.c = Math.atan2(cir.x, cir.y);
-							console.log(cir.a,cir.b,cir.c)
-							/*if(cir.a > Math.PI * 0.5) {
+							
+							if(cir.a > Math.PI * 0.5) {
 								cir.a *= -1;
-							}*/
+							}
 							// cir.a = 0;
-							cir.b = 0;
-							// cir.c = 0;
+							// cir.b = 0;
+							cir.c = 0;
 							// console.log(cir.a,cir.b,cir.c,cir.x,cir.y,cir.z)
 
 							var ro = toMatrix3d(cir);
