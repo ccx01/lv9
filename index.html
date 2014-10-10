@@ -129,7 +129,7 @@
 				switchState($navi, 1);
 			}, 100);
 			var l1 = function(){
-				l1_items = initHTML('#main', 68);
+				l1_items = initHTML('#main', 12);
 				circle(l1_items, 550, 10);
 			}
 
@@ -230,15 +230,19 @@
 				(function fn(i){
 					if(i < items.length){
 						setTimeout(function(){
-							// helix
+							// ring
 							var phi = 2 * Math.PI * i / items.length;
+							cir.x = 250 * Math.sin( phi );
+							cir.y = 250 * Math.cos( phi );
+							cir.z = 0;
 
-							var phi = Math.acos( -1 + ( 2 * i ) / items.length );
+							// ball
+							/*var phi = Math.acos( -1 + ( 2 * i ) / items.length );
 							var theta = Math.sqrt( items.length * Math.PI ) * phi;
 
 							cir.x = 250 * Math.cos( theta ) * Math.sin( phi );
 							cir.y = 250 * Math.sin( theta ) * Math.sin( phi );
-							cir.z = 250 * Math.cos( phi );
+							cir.z = 250 * Math.cos( phi );*/
 							// cir.x = 0;
 							// cir.y = 0;
 							// cir.z = 0;
@@ -253,13 +257,13 @@
 							cir.a = Math.atan2(cir.y, cir.z);
 							cir.b = Math.atan2(cir.z, cir.x) - Math.PI * 0.5;
 							cir.c = Math.atan2(cir.x, cir.y);
-							
-							if(cir.a > Math.PI * 0.5) {
+							console.log(cir.a,cir.b,cir.c)
+							/*if(cir.a > Math.PI * 0.5) {
 								cir.a *= -1;
-							}
+							}*/
 							// cir.a = 0;
-							// cir.b = 0;
-							cir.c = 0;
+							cir.b = 0;
+							// cir.c = 0;
 							// console.log(cir.a,cir.b,cir.c,cir.x,cir.y,cir.z)
 
 							var ro = toMatrix3d(cir);
