@@ -59,9 +59,9 @@
 							// helix
 							var phi = 2 * Math.PI * i / items.length;
 
-							cir.x = r * Math.sin( phi );
-							cir.y = r * Math.cos( phi ) * Math.sin( rx );
-							cir.z = r * Math.cos( phi ) * Math.cos( rx );
+							cir.x = r * Math.sin( phi - rz );
+							cir.y = r * Math.cos( phi - rz ) * Math.cos( rx );
+							cir.z = r * Math.cos( phi - rz ) * Math.sin( rx );
 							
 							cir.a = arr[3] * Math.PI / 180 || 0;
 							cir.b = arr[4] * Math.PI / 180 || 0;
