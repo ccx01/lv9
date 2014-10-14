@@ -62,13 +62,22 @@
 							cir.x = r * Math.sin( phi - rz );
 							cir.y = r * Math.cos( phi - rz ) * Math.cos( rx );
 							cir.z = r * Math.cos( phi - rz ) * Math.sin( rx );
+
+							/*cir.x = Math.random() * 300 - 150;
+							cir.y = Math.random() * 300 - 150;
+							cir.z = 0;*/
 							
 							cir.a = arr[3] * Math.PI / 180 || 0;
 							cir.b = arr[4] * Math.PI / 180 || 0;
 							cir.c = arr[5] * Math.PI / 180 || 0;
-							// console.log(cir.a,cir.b,cir.c,cir.x,cir.y,cir.z)
 
-							var ro = toMatrix3d(cir);
+
+							/*cir.a = Math.atan2(cir.y, cir.z);
+							cir.b = Math.atan2(cir.z, cir.x) - Math.PI * 0.5;
+							cir.c = Math.atan2(cir.x, cir.y) - Math.PI * 0.5;*/
+							console.log(cir.a,cir.b,cir.c,cir.x,cir.y,cir.z)
+
+							var ro = toMatrix3d(cir, cir.a);
 
 							items[i].style.transform = "translate3d(-50%, -50%, 0) matrix3d(" + ro.join(",") + ")";
 
@@ -146,14 +155,15 @@
 							layout.a = layout.la + (ey - e.layerY) / 100;
 							layout.b = layout.lb + (ex - e.layerX) / 100;
 							// c = lc + (ex - e.layerY) / 100;
-							var ro = toMatrix3d(layout);
+							var ro = toMatrix3d(layout, ey - e.layerY);
+							
 							$main.style.transform = "matrix3d(" + ro.join(",") + ")";
 						break;
 						case 3:
 							layout.x = layout.lx + e.layerX - ex;
 							layout.y = layout.ly + e.layerY - ey;
 
-							var ro = toMatrix3d(layout);
+							var ro = toMatrix3d(layout, 0);
 							$main.style.transform = "matrix3d(" + ro.join(",") + ")";
 						break;
 					}
@@ -315,7 +325,7 @@
 							cir.c = 0;
 							// console.log(cir.a,cir.b,cir.c,cir.x,cir.y,cir.z)
 
-							var ro = toMatrix3d(cir);
+							var ro = toMatrix3d(cir, phi);
 
 							items[i].style.transform = "translate3d(-50%, -50%, 0) matrix3d(" + ro.join(",") + ")";
 
@@ -346,7 +356,7 @@
 				}(0));
 			}
 
-			function toMatrix3d(m) {
+			/*function toMatrix3d(m) {
 				var sa = Math.sin(m.a).toFixed(3);
 				var ca = Math.cos(m.a).toFixed(3);
 				var sb = Math.sin(m.b).toFixed(3);
@@ -389,10 +399,36 @@
 				var ro = matrixX([rx, ry, rz, tl]);
 
 				return ro;
+			}*/
+
+			function toMatrix3d(vector, angle) {
+				var x = vector.a,
+					y = vector.b,
+					z = vector.c,
+					tx = vector.x,
+					ty = vector.y,
+					tz = vector.z,
+					sin = Math.sin(angle),
+					cos = Math.cos(angle),
+					cosmin = 1 - cos;
+
+				var length = Math.sqrt( x * x + y * y + z * z ),
+					x = x / length,
+					y = y / length,
+					z = z / length;
+
+				var	matrix = [
+						(cos + x * x * cosmin), (y * x * cosmin + z * sin), (z * x * cosmin - y * sin), 0,
+						(x * y * cosmin - z * sin), (cos + y * y * cosmin), (z * y * cosmin + x * sin), 0,
+						(x * z * cosmin + y * sin), (y * z * cosmin - x * sin), (cos + z * z * cosmin), 0,
+						tx, ty, tz, 1
+					];
+
+				return matrix;
 			}
 
 			function matrixX(matrixs) {
-
+				// matrix multiplication
 				var a = matrixs[0];
 
 				for(var mtx = 1; mtx < matrixs.length; mtx++) {
