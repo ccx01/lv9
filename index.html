@@ -165,17 +165,17 @@
 					switch(e.which) {
 						case 1:
 							var radius = document.body.offsetHeight;
-							layout.a = (ey - e.layerY) / radius;
-							layout.b = (ex - e.layerX) / radius;
+							layout.b = (e.layerY - ey) / radius;
+							layout.a = (e.layerX - ex) / radius;
 							layout.c = 1 - layout.a * layout.a - layout.b * layout.b;
 							layout.c= layout.c > 0 ? Math.sqrt(layout.c) : 0;
 
 							var numerator = layout.la * layout.a + layout.lb * layout.b + layout.lc * layout.c,
 								denominator = Math.sqrt(layout.la * layout.la + layout.lb * layout.lb + layout.lc * layout.lc) * Math.sqrt(layout.a * layout.a + layout.b * layout.b + layout.c * layout.c),
 								angle = Math.acos(numerator / denominator) || 0;
-							ro = matrixX([lro, toMatrix3d(layout, angle)]);
 
-							$main.style.transform = "matrix3d(" + ro.join(",") + ")";
+							$main.style.transform = "rotate3d("+ layout.a+","+ layout.b+","+ layout.c+","+angle+"rad) matrix3d(" + ro.join(",") + ")";
+							lro = toMatrix3d(layout, angle);
 						break;
 						case 3:
 							layout.x = e.layerX - ex;
@@ -188,7 +188,7 @@
 				}
 			}
 			$('#view').onmouseup = function(e) {
-				lro = ro;
+				ro = matrixX([lro, ro]);
 				layout.la = layout.a;
 				layout.lb = layout.b;
 				layout.lc = layout.c;
