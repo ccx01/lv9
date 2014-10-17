@@ -67,9 +67,11 @@
 							cir.y = Math.random() * 300 - 150;
 							cir.z = 0;*/
 							
-							cir.a = arr[3]/100;
-							cir.b = arr[4]/100;
-							cir.c = arr[5]/100;
+							cir.a = arr[3]/100 || 0;
+							cir.b = arr[4]/100 || 0;
+							cir.c = arr[5]/100 || 0;
+
+							var pi = arr[0]/100 || 0;
 
 
 							/*cir.a = Math.atan2(cir.y, cir.z);
@@ -77,9 +79,9 @@
 							cir.c = Math.atan2(cir.x, cir.y) - Math.PI * 0.5;*/
 							console.log(cir.a,cir.b,cir.c,cir.x,cir.y,cir.z)
 
-							// var ro = toMatrix3d(cir, 90);
+							var ro = toMatrix3d(cir, Math.PI * pi);
 
-							items[i].style.transform = "rotate3d("+ cir.a+","+ cir.b+","+ cir.c+", 90rad) translate3d(-50%, -50%, 0)";
+							items[i].style.transform = "translate3d(-50%, -50%, 0) matrix3d(" + ro.join(",") + ")";
 
 							fn(i + 1);
 						}, t);
@@ -438,10 +440,9 @@
 					cosmin = 1 - cos;
 
 				var length = Math.sqrt( x * x + y * y + z * z ),
-					x = x / length,
-					y = y / length,
-					z = z / length;
-					console.log(x,y,z)
+					x = x / length || 0,
+					y = y / length || 0,
+					z = z / length || 0;
 
 				var	matrix = [
 						[(cos + x * x * cosmin), (y * x * cosmin + z * sin), (z * x * cosmin - y * sin), 0],
