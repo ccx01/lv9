@@ -59,17 +59,17 @@
 							// helix
 							var phi = 2 * Math.PI * i / items.length;
 
-							cir.x = r * Math.sin( phi - rz );
-							cir.y = r * Math.cos( phi - rz ) * Math.cos( rx );
-							cir.z = r * Math.cos( phi - rz ) * Math.sin( rx );
+							cir.x = (r * Math.sin( phi - rz )).toFixed(3);
+							cir.y = (r * Math.cos( phi - rz ) * Math.cos( rx )).toFixed(3);
+							cir.z = (r * Math.cos( phi - rz ) * Math.sin( rx )).toFixed(3);
 
 							/*cir.x = Math.random() * 300 - 150;
 							cir.y = Math.random() * 300 - 150;
 							cir.z = 0;*/
 							
-							cir.a = arr[3] * Math.PI / 180 || 0;
-							cir.b = arr[4] * Math.PI / 180 || 0;
-							cir.c = arr[5] * Math.PI / 180 || 0;
+							cir.a = arr[3]/100;
+							cir.b = arr[4]/100;
+							cir.c = arr[5]/100;
 
 
 							/*cir.a = Math.atan2(cir.y, cir.z);
@@ -77,9 +77,9 @@
 							cir.c = Math.atan2(cir.x, cir.y) - Math.PI * 0.5;*/
 							console.log(cir.a,cir.b,cir.c,cir.x,cir.y,cir.z)
 
-							var ro = toMatrix3d(cir, cir.a);
+							// var ro = toMatrix3d(cir, 90);
 
-							items[i].style.transform = "translate3d(-50%, -50%, 0) matrix3d(" + ro.join(",") + ")";
+							items[i].style.transform = "rotate3d("+ cir.a+","+ cir.b+","+ cir.c+", 90rad) translate3d(-50%, -50%, 0)";
 
 							fn(i + 1);
 						}, t);
@@ -154,21 +154,27 @@
 
 			$('#view').style.width = document.body.offsetWidth + "px";
 			$('#view').style.height = document.body.offsetHeight + "px";
-			
+
+			var radius = document.body.offsetHeight;
 			$('#view').onmousedown = function(e) {
-				ex = e.layerX;
-				ey = e.layerY;
-				gesture = 1;
+				ex = e.layerX / radius - 1;
+				ey = e.layerY / radius - 1;
+				ez = 1 - ex * ex - ey * ey;
+				ez = ez > 0 ? Math.sqrt(ez) : 0;
 			}
 			$('#view').onmousemove = function(e) {
-				if(gesture) {
+				// if(gesture) {
 					switch(e.which) {
 						case 1:
-							var radius = document.body.offsetHeight;
-							layout.b = (e.layerY - ey) / radius;
-							layout.a = (e.layerX - ex) / radius;
-							layout.c = 1 - layout.a * layout.a - layout.b * layout.b;
-							layout.c= layout.c > 0 ? Math.sqrt(layout.c) : 0;
+							
+							ex1 = e.layerX / radius - 1;
+							ey1 = e.layerY / radius - 1;
+							ez1 = 1 - ex1 * ex1 - ey1 * ey1;
+							ez1 = ez1 > 0 ? Math.sqrt(ez1) : 0;
+
+							layout.a = ex1;
+							layout.b = ey1;
+							layout.c = ez1;
 
 							var numerator = layout.la * layout.a + layout.lb * layout.b + layout.lc * layout.c,
 								denominator = Math.sqrt(layout.la * layout.la + layout.lb * layout.lb + layout.lc * layout.lc) * Math.sqrt(layout.a * layout.a + layout.b * layout.b + layout.c * layout.c),
@@ -178,17 +184,17 @@
 							lro = toMatrix3d(layout, angle);
 						break;
 						case 3:
-							layout.x = e.layerX - ex;
-							layout.y = e.layerY - ey;
+							layout.x = e.layerX;
+							layout.y = e.layerY;
 
 							ro = matrixX([lro, toMatrix3d(layout, 0)]);
 							$main.style.transform = "matrix3d(" + ro.join(",") + ")";
 						break;
 					}
-				}
+				// }
 			}
 			$('#view').onmouseup = function(e) {
-				ro = matrixX([lro, ro]);
+				lro = ro;
 				layout.la = layout.a;
 				layout.lb = layout.b;
 				layout.lc = layout.c;
@@ -435,6 +441,7 @@
 					x = x / length,
 					y = y / length,
 					z = z / length;
+					console.log(x,y,z)
 
 				var	matrix = [
 						[(cos + x * x * cosmin), (y * x * cosmin + z * sin), (z * x * cosmin - y * sin), 0],
