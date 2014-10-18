@@ -59,17 +59,19 @@
 							// helix
 							var phi = 2 * Math.PI * i / items.length;
 
-							cir.x = (r * Math.sin( phi - rz )).toFixed(3);
-							cir.y = (r * Math.cos( phi - rz ) * Math.cos( rx )).toFixed(3);
-							cir.z = (r * Math.cos( phi - rz ) * Math.sin( rx )).toFixed(3);
+							var pos = [];
+							pos[0] = (r * Math.sin( phi - rz )).toFixed(3);
+							pos[1] = (r * Math.cos( phi - rz ) * Math.cos( rx )).toFixed(3);
+							pos[2] = (r * Math.cos( phi - rz ) * Math.sin( rx )).toFixed(3);
 
 							/*cir.x = Math.random() * 300 - 150;
 							cir.y = Math.random() * 300 - 150;
 							cir.z = 0;*/
-							
-							cir.a = arr[3]/100 || 0;
-							cir.b = arr[4]/100 || 0;
-							cir.c = arr[5]/100 || 0;
+
+							var axis = [];
+							axis[0] = arr[3] || 0;
+							axis[1] = arr[4] || 0;
+							axis[2] = arr[5] || 0;
 
 							var pi = arr[0]/100 || 0;
 
@@ -77,11 +79,10 @@
 							/*cir.a = Math.atan2(cir.y, cir.z);
 							cir.b = Math.atan2(cir.z, cir.x) - Math.PI * 0.5;
 							cir.c = Math.atan2(cir.x, cir.y) - Math.PI * 0.5;*/
-							console.log(cir.a,cir.b,cir.c,cir.x,cir.y,cir.z)
 
-							var ro = toMatrix3d(cir, Math.PI * pi);
+							var ro = toMatrix3d(axis, pos, Math.PI * pi);
 
-							items[i].style.transform = "translate3d(-50%, -50%, 0) matrix3d(" + ro.join(",") + ")";
+							items[i].style.transform = "matrix3d(" + ro + ")";
 
 							fn(i + 1);
 						}, t);
@@ -126,84 +127,11 @@
 
 			/* gesture */
 			var $main = $('#main');
-			var gesture = 0;
-			var ex = 0;
-			var ey = 0;
-			var lro = [
-					[1, 0, 0, 0],
-					[0, 1, 0, 0],
-					[0, 0, 1, 0],
-					[0, 0, 0, 1]
-				];
-			var ro = [
-					[1, 0, 0, 0],
-					[0, 1, 0, 0],
-					[0, 0, 1, 0],
-					[0, 0, 0, 1]
-				];
-
-			var layout = (function() {
-				var I = {};
-				I.la = I.a = 0;
-				I.lb = I.b = 0;
-				I.lc = I.c = 0;
-				I.lx = I.x = 0;
-				I.ly = I.y = 0;
-				I.lz = I.z = 0;
-
-				return I;
-			}());
 
 			$('#view').style.width = document.body.offsetWidth + "px";
 			$('#view').style.height = document.body.offsetHeight + "px";
 
 			var radius = document.body.offsetHeight;
-			$('#view').onmousedown = function(e) {
-				ex = e.layerX / radius - 1;
-				ey = e.layerY / radius - 1;
-				ez = 1 - ex * ex - ey * ey;
-				ez = ez > 0 ? Math.sqrt(ez) : 0;
-			}
-			$('#view').onmousemove = function(e) {
-				// if(gesture) {
-					switch(e.which) {
-						case 1:
-							
-							ex1 = e.layerX / radius - 1;
-							ey1 = e.layerY / radius - 1;
-							ez1 = 1 - ex1 * ex1 - ey1 * ey1;
-							ez1 = ez1 > 0 ? Math.sqrt(ez1) : 0;
-
-							layout.a = ex1;
-							layout.b = ey1;
-							layout.c = ez1;
-
-							var numerator = layout.la * layout.a + layout.lb * layout.b + layout.lc * layout.c,
-								denominator = Math.sqrt(layout.la * layout.la + layout.lb * layout.lb + layout.lc * layout.lc) * Math.sqrt(layout.a * layout.a + layout.b * layout.b + layout.c * layout.c),
-								angle = Math.acos(numerator / denominator) || 0;
-
-							$main.style.transform = "rotate3d("+ layout.a+","+ layout.b+","+ layout.c+","+angle+"rad) matrix3d(" + ro.join(",") + ")";
-							lro = toMatrix3d(layout, angle);
-						break;
-						case 3:
-							layout.x = e.layerX;
-							layout.y = e.layerY;
-
-							ro = matrixX([lro, toMatrix3d(layout, 0)]);
-							$main.style.transform = "matrix3d(" + ro.join(",") + ")";
-						break;
-					}
-				// }
-			}
-			$('#view').onmouseup = function(e) {
-				lro = ro;
-				layout.la = layout.a;
-				layout.lb = layout.b;
-				layout.lc = layout.c;
-				layout.lx = layout.x;
-				layout.ly = layout.y;
-				gesture = 0;
-			}
 
 			document.onmousewheel = function(e) {
 				layout.z += e.wheelDelta;
@@ -329,32 +257,19 @@
 							var phi = Math.acos( -1 + ( 2 * i ) / items.length );
 							var theta = Math.sqrt( items.length * Math.PI ) * phi;
 
-							cir.x = 250 * Math.cos( theta ) * Math.sin( phi );
-							cir.y = 250 * Math.sin( theta ) * Math.sin( phi );
-							cir.z = 250 * Math.cos( phi );
+							var pos = [];
+							pos[0] = 250 * Math.cos( theta ) * Math.sin( phi );
+							pos[1] = 250 * Math.sin( theta ) * Math.sin( phi );
+							pos[2] = 250 * Math.cos( phi );
 
-							// layout rotate
+							var axis = [];
+							axis[0] = Math.atan2(cir.y, cir.z);
+							axis[1] = Math.atan2(cir.z, cir.x) - Math.PI * 0.5;
+							axis[2] = Math.atan2(cir.x, cir.y);
 
-							// cir.x = 200 * Math.sin( phi );
-							// cir.y = 200 * Math.cos( phi );
-							// cir.z = 200 * Math.cos( phi );
+							var ro = toMatrix3d(axis, pos, 0);
 
-							// item rotate
-							cir.a = Math.atan2(cir.y, cir.z);
-							cir.b = Math.atan2(cir.z, cir.x) - Math.PI * 0.5;
-							cir.c = Math.atan2(cir.x, cir.y);
-							
-							if(cir.a > Math.PI * 0.5) {
-								cir.a *= -1;
-							}
-							// cir.a = 0;
-							// cir.b = 0;
-							cir.c = 0;
-							// console.log(cir.a,cir.b,cir.c,cir.x,cir.y,cir.z)
-
-							var ro = toMatrix3d(cir, phi);
-
-							items[i].style.transform = "translate3d(-50%, -50%, 0) matrix3d(" + ro.join(",") + ")";
+							items[i].style.transform = "matrix3d(" + ro + ")";
 
 							fn(i + 1);
 						}, t);
@@ -383,58 +298,13 @@
 				}(0));
 			}
 
-			/*function toMatrix3d(m) {
-				var sa = Math.sin(m.a).toFixed(3);
-				var ca = Math.cos(m.a).toFixed(3);
-				var sb = Math.sin(m.b).toFixed(3);
-				var cb = Math.cos(m.b).toFixed(3);
-				var sc = Math.sin(m.c).toFixed(3);
-				var cc = Math.cos(m.c).toFixed(3);
-
-				var x = m.x.toFixed(3);
-				var y = m.y.toFixed(3);
-				var z = m.z.toFixed(3);
-
-				var rx = [
-					[1, 0, 0, 0],
-					[0, ca, -sa, 0],
-					[0, sa, ca, 0],
-					[0, 0, 0, 1]
-				];
-
-				var ry = [
-					[cb, 0, sb, 0],
-					[0, 1, 0, 0],
-					[-sb, 0, cb, 0],
-					[0, 0, 0, 1]
-				];
-
-				var rz = [
-					[cc, -sc, 0, 0],
-					[sc, cc, 0, 0],
-					[0, 0, 1, 0],
-					[0, 0, 0, 1]
-				];
-
-				var tl = [
-					[1, 0, 0, 0],
-					[0, 1, 0, 0],
-					[0, 0, 1, 0],
-					[x, y, z, 1]
-				];
-
-				var ro = matrixX([rx, ry, rz, tl]);
-
-				return ro;
-			}*/
-
-			function toMatrix3d(vector, angle) {
-				var x = vector.a,
-					y = vector.b,
-					z = vector.c,
-					tx = vector.x,
-					ty = vector.y,
-					tz = vector.z,
+			function toMatrix3d(axis, pos, angle) {
+				var x = axis[0],
+					y = axis[1],
+					z = axis[2],
+					tx = pos[0],
+					ty = pos[1],
+					tz = pos[2],
 					sin = Math.sin(angle),
 					cos = Math.cos(angle),
 					cosmin = 1 - cos;
@@ -493,11 +363,101 @@
 
 				return a;
 			}
+			/* track ball */
+			var THIS = this,
+				radius,
+				stage,
+				axis = [],
+				mouseDownVect = [],
+				mouseMoveVect = [],
+				startMatrix = [],
+				delta = 0,
+				pos, angle;
+
+			stage = $("#view");
+
+			pos = [0, 0, 0];
+
+			angle = 0;
+
+			radius = stage.offsetWidth / 2;
+
+			THIS.box = $("#main");
+
+			axis = [1, 0, 0];
+			angle = 0;
+
+			startMatrix = toMatrix3d(axis, pos, angle);
+
+			THIS.box.style["transform"] = "matrix3d(" + startMatrix + ")";
+
+			document.addEventListener("mousedown", startrotation);
+
+			function startrotation(e) {
+
+				mouseDownVect = calcZvector([e.pageX, e.pageY]);
+
+				document.removeEventListener("mousedown", startrotation);
+				document.addEventListener("mousemove", rotate);
+				document.addEventListener("mouseup", finishrotation);
+			}
+
+			function finishrotation(e) {
+				var stopMatrix;
+
+				document.addEventListener("mousedown", startrotation);
+				document.removeEventListener("mousemove", rotate);
+				document.removeEventListener("mouseup", finishrotation);
+
+				stopMatrix = toMatrix3d(axis, pos, angle);
+				startMatrix = matrixX([startMatrix, stopMatrix]);
+			}
+
+			function rotate(e) {
+				mouseMoveVect = calcZvector([e.pageX, e.pageY]);
+
+				var r3d = calcAngle(mouseDownVect, mouseMoveVect);
+				axis = r3d[0];
+				angle = r3d[1];
+
+				THIS.box.style["transform"] = "rotate3d(" + axis + "," + angle + "rad) matrix3d(" + startMatrix + ")";
+			}
+
+			function calcZvector(coords) {
+				var x = coords[0],
+					y = coords[1],
+					vector = [(x / radius - 1), (y / radius - 1)],
+					z = 1 - vector[0] * vector[0] - vector[1] * vector[1];
+
+				vector[2] = z > 0 ? Math.sqrt(z) : 0;
+
+				return vector;
+			}
+
+			function calcAngle(vect_1, vect_2) {
+				var axis = [];
+				axis[0] = vect_1[1] * vect_2[2] - vect_1[2] * vect_2[1];
+				axis[1] = vect_1[2] * vect_2[0] - vect_1[0] * vect_2[2];
+				axis[2] = vect_1[0] * vect_2[1] - vect_1[1] * vect_2[0];
+
+				var length = Math.sqrt(axis[0] * axis[0] + axis[1] * axis[1] + axis[2] * axis[2]);
+
+				axis[0] /= length;
+				axis[1] /= length;
+				axis[2] /= length;
+
+				var numerator = vect_1[0] * vect_2[0] + vect_1[1] * vect_2[1] + vect_1[2] * vect_2[2],
+					denominator = Math.sqrt(vect_1[0] * vect_1[0] + vect_1[1] * vect_1[1] + vect_1[2] * vect_1[2]) *
+					Math.sqrt(vect_2[0] * vect_2[0] + vect_2[1] * vect_2[1] + vect_2[2] * vect_2[2]),
+					angle = Math.acos(numerator / denominator);
+
+				return [axis, angle];
+			}
 
 			function tplEngine(tpl, data) {
 				var re = /{#(\w+)?}/;
-				while(match = re.exec(tpl)) {
-					tpl = tpl.replace(match[0],data[match[1]]);
+				while (match = re.exec(tpl)) {
+					tpl = tpl.replace(match[0], data[match[1]]);
 				}
 				return tpl;
 			}
