@@ -131,8 +131,6 @@
 			$('#view').style.width = document.body.offsetWidth + "px";
 			$('#view').style.height = document.body.offsetHeight + "px";
 
-			var radius = document.body.offsetHeight;
-
 			document.onmousewheel = function(e) {
 				layout.z += e.wheelDelta;
 				var ro = toMatrix3d(layout);
@@ -365,7 +363,6 @@
 			}
 			/* track ball */
 			var THIS = this,
-				radius,
 				stage,
 				axis = [],
 				mouseDownVect = [],
@@ -375,8 +372,20 @@
 				pos, angle;
 
 			var trackball = {
-				center: [document.body.offsetWidth * 0.5, document.body.offsetHeight * 0.5, 0],
-				radius: 400
+				cx: document.body.offsetWidth * 0.5,
+				cy: document.body.offsetHeight * 0.5,
+				radius: 200,
+				setCenter: function(x, y) {
+					this.cx = x;
+					this.cy = y;
+				},
+				mapping: function(x, y) {
+					x = x - this.cx;
+					y = y - this.cy;
+					var z = this.radius * this.radius - x * x - y * y;
+					z = z > 0 ? Math.sqrt(z) : 0;
+					return [x, y, z];
+				}
 			}
 
 			stage = $("#view");
@@ -384,8 +393,6 @@
 			pos = [0, 0, 0];
 
 			angle = 0;
-
-			radius = 250;
 
 			THIS.box = $("#main");
 
@@ -400,7 +407,7 @@
 
 			function startrotation(e) {
 
-				mouseDownVect = calcVector([e.pageX, e.pageY]);
+				mouseDownVect = trackball.mapping(e.pageX, e.pageY);
 
 				document.removeEventListener("mousedown", startrotation);
 				document.addEventListener("mousemove", rotate);
@@ -419,24 +426,21 @@
 			}
 
 			function rotate(e) {
-				mouseMoveVect = calcVector([e.pageX, e.pageY]);
+				mouseMoveVect = trackball.mapping(e.pageX, e.pageY);
 
 				var r3d = calcAngle(mouseDownVect, mouseMoveVect);
 				axis = r3d[0];
 				angle = r3d[1];
 
 				THIS.box.style["transform"] = "rotate3d(" + axis + "," + angle + "rad) matrix3d(" + startMatrix + ")";
-			}
 
-			function calcVector(coords) {
-				var x = coords[0] - trackball.center[0],
-					y = coords[1] - trackball.center[1],
-					z = radius * radius - x * x - y * y - trackball.center[2];
-
-				z = z > 0 ? Math.sqrt(z) : 0;
-				// z = toward % 2 == 0 ? -z : z;
-
-				return [x, y, z];
+				// global rotating
+				if(mouseMoveVect[2] == 0) {
+					trackball.setCenter(e.pageX, e.pageY);
+					mouseDownVect = trackball.mapping(e.pageX, e.pageY);
+					stopMatrix = toMatrix3d(axis, pos, angle);
+					startMatrix = matrixX([startMatrix, stopMatrix]);
+				}
 			}
 
 			function calcAngle(vect_1, vect_2) {
@@ -446,7 +450,6 @@
 				axis[2] = vect_1[0] * vect_2[1] - vect_1[1] * vect_2[0];
 
 				var length = Math.sqrt(axis[0] * axis[0] + axis[1] * axis[1] + axis[2] * axis[2]);
-
 				axis[0] /= length;
 				axis[1] /= length;
 				axis[2] /= length;
