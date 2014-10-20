@@ -374,13 +374,18 @@
 				delta = 0,
 				pos, angle;
 
+			var trackball = {
+				center: [document.body.offsetWidth * 0.5, document.body.offsetHeight * 0.5, 0],
+				radius: 400
+			}
+
 			stage = $("#view");
 
 			pos = [0, 0, 0];
 
 			angle = 0;
 
-			radius = stage.offsetWidth / 2;
+			radius = 250;
 
 			THIS.box = $("#main");
 
@@ -395,7 +400,7 @@
 
 			function startrotation(e) {
 
-				mouseDownVect = calcZvector([e.pageX, e.pageY]);
+				mouseDownVect = calcVector([e.pageX, e.pageY]);
 
 				document.removeEventListener("mousedown", startrotation);
 				document.addEventListener("mousemove", rotate);
@@ -414,7 +419,7 @@
 			}
 
 			function rotate(e) {
-				mouseMoveVect = calcZvector([e.pageX, e.pageY]);
+				mouseMoveVect = calcVector([e.pageX, e.pageY]);
 
 				var r3d = calcAngle(mouseDownVect, mouseMoveVect);
 				axis = r3d[0];
@@ -423,15 +428,15 @@
 				THIS.box.style["transform"] = "rotate3d(" + axis + "," + angle + "rad) matrix3d(" + startMatrix + ")";
 			}
 
-			function calcZvector(coords) {
-				var x = coords[0],
-					y = coords[1],
-					vector = [(x / radius - 1), (y / radius - 1)],
-					z = 1 - vector[0] * vector[0] - vector[1] * vector[1];
+			function calcVector(coords) {
+				var x = coords[0] - trackball.center[0],
+					y = coords[1] - trackball.center[1],
+					z = radius * radius - x * x - y * y - trackball.center[2];
 
-				vector[2] = z > 0 ? Math.sqrt(z) : 0;
+				z = z > 0 ? Math.sqrt(z) : 0;
+				// z = toward % 2 == 0 ? -z : z;
 
-				return vector;
+				return [x, y, z];
 			}
 
 			function calcAngle(vect_1, vect_2) {
