@@ -363,104 +363,112 @@
 			}
 			/* track ball */
 			var THIS = this,
-				stage,
 				axis = [],
 				mouseDownVect = [],
 				mouseMoveVect = [],
-				startMatrix = [],
-				delta = 0,
-				pos, angle;
+				startMatrix = [];
 
-			var trackball = {
-				cx: document.body.offsetWidth * 0.5,
-				cy: document.body.offsetHeight * 0.5,
-				radius: 200,
-				setCenter: function(x, y) {
-					this.cx = x;
-					this.cy = y;
-				},
-				mapping: function(x, y) {
-					x = x - this.cx;
-					y = y - this.cy;
-					var z = this.radius * this.radius - x * x - y * y;
+			var trackball = (function() {
+				var cx = document.body.offsetWidth * 0.5;
+				var cy = document.body.offsetHeight * 0.5;
+				var radius = 200;
+
+				var box = $("#main");
+				var mouseDownVect = [];
+				var mouseMoveVect = [];
+				var pos = [0, 0, 0];
+				var axis = [1, 0, 0];
+				var angle = 0;
+				var startMatrix = toMatrix3d(axis, pos, angle);
+
+				var setCenter = function(x, y) {
+					cx = x;
+					cy = y;
+				}
+
+				var mapping = function(x, y) {
+					x = x - cx;
+					y = y - cy;
+					var z = radius * radius - x * x - y * y;
 					z = z > 0 ? Math.sqrt(z) : 0;
 					return [x, y, z];
 				}
-			}
+				muxy = [0, 0];
+				var mouseDown = function(e) {
+					mouseDownVect = mapping(e.pageX, e.pageY);
+					mdxy = [e.pageX, e.pageY];
 
-			stage = $("#view");
-
-			pos = [0, 0, 0];
-
-			angle = 0;
-
-			THIS.box = $("#main");
-
-			axis = [1, 0, 0];
-			angle = 0;
-
-			startMatrix = toMatrix3d(axis, pos, angle);
-
-			THIS.box.style["transform"] = "matrix3d(" + startMatrix + ")";
-
-			document.addEventListener("mousedown", startrotation);
-
-			function startrotation(e) {
-
-				mouseDownVect = trackball.mapping(e.pageX, e.pageY);
-
-				document.removeEventListener("mousedown", startrotation);
-				document.addEventListener("mousemove", rotate);
-				document.addEventListener("mouseup", finishrotation);
-			}
-
-			function finishrotation(e) {
-				var stopMatrix;
-
-				document.addEventListener("mousedown", startrotation);
-				document.removeEventListener("mousemove", rotate);
-				document.removeEventListener("mouseup", finishrotation);
-
-				stopMatrix = toMatrix3d(axis, pos, angle);
-				startMatrix = matrixX([startMatrix, stopMatrix]);
-			}
-
-			function rotate(e) {
-				mouseMoveVect = trackball.mapping(e.pageX, e.pageY);
-
-				var r3d = calcAngle(mouseDownVect, mouseMoveVect);
-				axis = r3d[0];
-				angle = r3d[1];
-
-				THIS.box.style["transform"] = "rotate3d(" + axis + "," + angle + "rad) matrix3d(" + startMatrix + ")";
-
-				// global rotating
-				if(mouseMoveVect[2] == 0) {
-					trackball.setCenter(e.pageX, e.pageY);
-					mouseDownVect = trackball.mapping(e.pageX, e.pageY);
-					stopMatrix = toMatrix3d(axis, pos, angle);
-					startMatrix = matrixX([startMatrix, stopMatrix]);
+					document.addEventListener("mousemove", mouseMove);
 				}
-			}
 
-			function calcAngle(vect_1, vect_2) {
-				var axis = [];
-				axis[0] = vect_1[1] * vect_2[2] - vect_1[2] * vect_2[1];
-				axis[1] = vect_1[2] * vect_2[0] - vect_1[0] * vect_2[2];
-				axis[2] = vect_1[0] * vect_2[1] - vect_1[1] * vect_2[0];
+				var mouseUp = function(e) {
+					if(e.which == 1) {
+						var stopMatrix;
+						stopMatrix = toMatrix3d(axis, [0, 0, 0], angle);
+						startMatrix = matrixX([startMatrix, stopMatrix]);
+					} else {
+						muxy[0] = pos[0];
+						muxy[1] = pos[1];
+					}
 
-				var length = Math.sqrt(axis[0] * axis[0] + axis[1] * axis[1] + axis[2] * axis[2]);
-				axis[0] /= length;
-				axis[1] /= length;
-				axis[2] /= length;
+					document.removeEventListener("mousemove", mouseMove);
+				}
 
-				var numerator = vect_1[0] * vect_2[0] + vect_1[1] * vect_2[1] + vect_1[2] * vect_2[2],
-					denominator = Math.sqrt(vect_1[0] * vect_1[0] + vect_1[1] * vect_1[1] + vect_1[2] * vect_1[2]) *
-					Math.sqrt(vect_2[0] * vect_2[0] + vect_2[1] * vect_2[1] + vect_2[2] * vect_2[2]),
-					angle = Math.acos(numerator / denominator);
+				var mouseMove = function(e) {
+					if(e.which == 1) {
+						rotate(e);
+					} else {
+						move(e);
+					}
+				}
 
-				return [axis, angle];
-			}
+				var rotate = function(e) {
+					mouseMoveVect = mapping(e.pageX, e.pageY);
+
+					var r3d = calcAngle(mouseDownVect, mouseMoveVect);
+					axis = r3d[0];
+					angle = r3d[1];
+
+					box.style["transform"] = "rotate3d(" + axis + "," + angle + "rad) matrix3d(" + startMatrix + ")";
+
+					// whole sphere rotating
+					if(mouseMoveVect[2] == 0) {
+						setCenter(e.pageX, e.pageY);
+						mouseDownVect = mapping(e.pageX, e.pageY);
+						stopMatrix = toMatrix3d(axis, pos, angle);
+						startMatrix = matrixX([startMatrix, stopMatrix]);
+					}
+				}
+
+				var move = function(e) {
+					pos[0] = muxy[0] + e.pageX - mdxy[0];
+					pos[1] = muxy[1] + e.pageY - mdxy[1];
+					startMatrix = toMatrix3d(axis, pos, angle);
+					box.style["transform"] = "matrix3d(" + startMatrix + ")";
+				}
+
+				function calcAngle(v1, v2) {
+					var axis = [];
+					axis[0] = v1[1] * v2[2] - v1[2] * v2[1];
+					axis[1] = v1[2] * v2[0] - v1[0] * v2[2];
+					axis[2] = v1[0] * v2[1] - v1[1] * v2[0];
+
+					var length = Math.sqrt(axis[0] * axis[0] + axis[1] * axis[1] + axis[2] * axis[2]);
+					axis[0] /= length;
+					axis[1] /= length;
+					axis[2] /= length;
+
+					var numerator = v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2],
+						denominator = Math.sqrt(v1[0] * v1[0] + v1[1] * v1[1] + v1[2] * v1[2]) *
+						Math.sqrt(v2[0] * v2[0] + v2[1] * v2[1] + v2[2] * v2[2]),
+						angle = Math.acos(numerator / denominator);
+
+					return [axis, angle];
+				}
+
+				document.addEventListener("mousedown", mouseDown);
+				document.addEventListener("mouseup", mouseUp);
+			}());
 
 			function tplEngine(tpl, data) {
 				var re = /{#(\w+)?}/;
