@@ -131,12 +131,6 @@
 			$('#view').style.width = document.body.offsetWidth + "px";
 			$('#view').style.height = document.body.offsetHeight + "px";
 
-			document.onmousewheel = function(e) {
-				layout.z += e.wheelDelta;
-				var ro = toMatrix3d(layout);
-				$main.style.transform = "matrix3d(" + ro.join(",") + ")";
-			}
-
 			/* init layout */
 			var $content = $('#content');
 			var $navi = $('.navi');
@@ -150,8 +144,8 @@
 				switchState($navi, 1);
 			}, 100);
 			var l1 = function(){
-				l1_items = initHTML('#main', 12);
-				circle(l1_items, 550, 10);
+				l1_items = initHTML('#main', 100);
+				scat(l1_items, 550, 1);
 			}
 
 			l1();
@@ -239,14 +233,7 @@
 				return dom.querySelectorAll('.item');
 			}
 
-			function circle(items, r, t, callback){
-				if(typeof(arguments[2]) == 'function'){
-					var callback = arguments[2];
-					var t = 100;
-				}else{
-					var callback = callback || function(){};
-					var t = t || 100;
-				}
+			function circle(items, r, t){
 				var cir = {};
 				(function fn(i){
 					if(i < items.length){
@@ -256,42 +243,75 @@
 							var theta = Math.sqrt( items.length * Math.PI ) * phi;
 
 							var pos = [];
-							pos[0] = 250 * Math.cos( theta ) * Math.sin( phi );
-							pos[1] = 250 * Math.sin( theta ) * Math.sin( phi );
-							pos[2] = 250 * Math.cos( phi );
+							pos[0] = 400 * Math.cos( theta ) * Math.sin( phi );
+							pos[1] = 400 * Math.sin( theta ) * Math.sin( phi );
+							pos[2] = 400 * Math.cos( phi );
 
 							var axis = [];
-							axis[0] = Math.atan2(cir.y, cir.z);
-							axis[1] = Math.atan2(cir.z, cir.x) - Math.PI * 0.5;
-							axis[2] = Math.atan2(cir.x, cir.y);
+							axis[0] = pos[0];
+							axis[1] = pos[1] * 2;
+							axis[2] = pos[2];
 
-							var ro = toMatrix3d(axis, pos, 0);
+							var ro = toMatrix3d(axis, pos, Math.PI);
 
 							items[i].style.transform = "matrix3d(" + ro + ")";
 
 							fn(i + 1);
 						}, t);
-					}else{
-						callback();
 					}
 				}(0));
 			}
 
-			function scat(items, col, callback){
-				var callback = callback || function(){};
-				var col = col || 6;
-				var row = items.length / col;
-				var w = window.innerWidth / col;
-				var h = window.innerHeight / row;
+			function ring(items, r, t){
 				(function fn(i){
 					if(i < items.length){
-						var x = (i % col - col / 2) * w;
-						var y = (i % row - row / 2) * h;
-						var z = (Math.random() * 500 - 250);
-						items[i].style.transform = 'translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px)';
+						setTimeout(function(){
+
+							var phi = i / items.length * Math.PI * 2;
+
+							var pos = [];
+							pos[0] = 250 * Math.sin( phi );
+							pos[1] = -250 * Math.cos( phi );
+							pos[2] = 0;
+
+							var axis = [];
+							axis[0] = 0;
+							axis[1] = 0;
+							axis[2] = -1;
+
+							var ro = toMatrix3d(axis, pos, phi);
+
+							items[i].style.transform = "matrix3d(" + ro + ")";
+
+							fn(i + 1);
+						}, t);
+					}
+				}(0));
+			}
+
+			function scat(items, col){
+				var w = window.innerWidth;
+				var h = window.innerHeight;
+				(function fn(i){
+					if(i < items.length){
+
+						var phi = Math.random() * Math.PI * 2;
+
+						var pos = [];
+						pos[0] = (Math.random() - 0.5) * w;
+						pos[1] = (Math.random() - 0.5) * h;
+						pos[2] = (Math.random() - 0.5) * 2000;
+						var axis = [];
+						axis[0] = Math.random() - 0.5;
+						axis[1] = Math.random() - 0.5;
+						axis[2] = Math.random() - 0.5;
+
+						var ro = toMatrix3d(axis, pos, phi);
+						var t = Math.random() * 2000;
+						setTimeout(function() {
+							items[i].style.transform = "matrix3d(" + ro + ")";
+						}, t);
 						fn(i + 1);
-					}else{
-						callback();
 					}
 				}(0));
 			}
@@ -430,21 +450,20 @@
 					}
 				}
 
-				function calcAngle(v1, v2) {
+				var calcAngle = function(v1, v2) {
 					var axis = [];
-					axis[0] = v1[1] * v2[2] - v1[2] * v2[1];
-					axis[1] = v1[2] * v2[0] - v1[0] * v2[2];
-					axis[2] = v1[0] * v2[1] - v1[1] * v2[0];
+						axis[0] = v1[1] * v2[2] - v1[2] * v2[1];
+						axis[1] = v1[2] * v2[0] - v1[0] * v2[2];
+						axis[2] = v1[0] * v2[1] - v1[1] * v2[0];
 
 					var length = Math.sqrt(axis[0] * axis[0] + axis[1] * axis[1] + axis[2] * axis[2]);
-					axis[0] /= length;
-					axis[1] /= length;
-					axis[2] /= length;
+						axis[0] /= length;
+						axis[1] /= length;
+						axis[2] /= length;
 
-					var numerator = v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2],
-						denominator = Math.sqrt(v1[0] * v1[0] + v1[1] * v1[1] + v1[2] * v1[2]) *
-						Math.sqrt(v2[0] * v2[0] + v2[1] * v2[1] + v2[2] * v2[2]),
-						angle = Math.acos(numerator / denominator);
+					var numerator = v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
+					var denominator = Math.sqrt(v1[0] * v1[0] + v1[1] * v1[1] + v1[2] * v1[2]) * Math.sqrt(v2[0] * v2[0] + v2[1] * v2[1] + v2[2] * v2[2]);
+					var	angle = Math.acos(numerator / denominator) * 0.5;	// 0.5 for sensitivity
 
 					return [axis, angle];
 				}
