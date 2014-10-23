@@ -393,7 +393,6 @@
 					z = z > 0 ? Math.sqrt(z) : 0;
 					return [x, y, z];
 				}
-				muxy = [0, 0];
 				var mouseDown = function(e) {
 					mouseDownVect = mapping(e.pageX, e.pageY);
 					mdxy = [e.pageX, e.pageY];
@@ -402,24 +401,15 @@
 				}
 
 				var mouseUp = function(e) {
-					if(e.which == 1) {
-						var stopMatrix;
-						stopMatrix = toMatrix3d(axis, [0, 0, 0], angle);
-						startMatrix = matrixX([startMatrix, stopMatrix]);
-					} else {
-						muxy[0] = pos[0];
-						muxy[1] = pos[1];
-					}
+					var stopMatrix;
+					stopMatrix = toMatrix3d(axis, pos, angle);
+					startMatrix = matrixX([startMatrix, stopMatrix]);
 
 					document.removeEventListener("mousemove", mouseMove);
 				}
 
 				var mouseMove = function(e) {
-					if(e.which == 1) {
-						rotate(e);
-					} else {
-						move(e);
-					}
+					rotate(e);
 				}
 
 				var rotate = function(e) {
@@ -438,13 +428,6 @@
 						stopMatrix = toMatrix3d(axis, pos, angle);
 						startMatrix = matrixX([startMatrix, stopMatrix]);
 					}
-				}
-
-				var move = function(e) {
-					pos[0] = muxy[0] + e.pageX - mdxy[0];
-					pos[1] = muxy[1] + e.pageY - mdxy[1];
-					startMatrix = toMatrix3d(axis, pos, angle);
-					box.style["transform"] = "matrix3d(" + startMatrix + ")";
 				}
 
 				function calcAngle(v1, v2) {
