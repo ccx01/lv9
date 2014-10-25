@@ -101,7 +101,7 @@
 				<p>数据正在接入</p>	
 			</div>
 		</div>
-		<template id="layout-tpl">
+		<template id="content-tpl">
 			<h2 class="title">{#words}</h2>
 			<p class="info" data-info='{"id": {#id}, "toid": {#tid}}'>{#name} @ {#time}</p>
 			<div class="media">{#other}</div>
@@ -118,22 +118,14 @@
 				var ret = document.querySelectorAll(elem);
 				return ret.length == 1 ? ret[0] : ret;
 			}
-			document.onselectstart = function() {
-				return false;
-			}
+			
 			document.oncontextmenu = function() {
 				return false;
 			}
 
-			/* gesture */
-			var $main = $('#main');
-
-			$('#view').style.width = document.body.offsetWidth + "px";
-			$('#view').style.height = document.body.offsetHeight + "px";
-
-			// var $navi = $('.navi');
-			// switchState($navi, 1);
-
+			document.onselectstart = function() {
+				return false;
+			}
 
 			/* matrix calculate */
 			var matrix = (function() {
@@ -211,42 +203,8 @@
 				return I;
 
 			}());
-			/* init layout */
-			var $content = $('#content');
-			var item_tpl = $('#item-tpl').innerHTML;
-			var sign = ["Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ"];
-
-			var $l1 = $('.l1');
-			var items;
-
-			items = initItems('#main', 100);
-
-			function initItems(layer, num) {
-				// generate items
-				var dom = $(layer);
-				var html = '';
-				for (var i = 0; i < num; i++) {
-					data = {
-						index: i,
-						n: sign[i % sign.length]
-					}
-					html += tplEngine(item_tpl, data);
-				}
-				dom.innerHTML = html;
-				return dom.querySelectorAll('.item');
-			}
 
 			/* items state */
-
-			function switchState(elems, num){
-				if(elems.length){
-					for(var i = 0; i < elems.length; i++){
-						elems[i].dataset['state'] = num;
-					}
-				}else{
-					elems.dataset['state'] = num;
-				}
-			}
 
 			var pattern = (function() {
 
@@ -327,6 +285,7 @@
 							setTimeout(function() {
 								items[i].style.transform = "matrix3d(" + ro + ")";
 							}, t);
+
 							fn(i + 1);
 						}
 					}(0));
@@ -341,43 +300,24 @@
 
 			}());
 
-
-			pattern.scat(items, 550, 1);
-
-			/* data */
-			var ajax_data = {
-				'l1': [],
-				'l2': []
-			};
-			var l1_tpl = $('#layout-tpl').innerHTML;
-			$l1.onclick = function(e){
-				var ajax_index = e.target.dataset['index'];
-				if(ajax_data.l1[ajax_index]) {
-					$('#content .wrap').innerHTML = e.target.innerText + ':<br>' + ajax_data.l1[ajax_index];
-					switchState([$content], 1);
-				} else {
-					ajax("sort=words&index=" + ajax_index, function(data) {
-						data = tplEngine(l1_tpl, data);
-						ajax_data.l1[ajax_index] = data;
-						$('#content .wrap').innerHTML = e.target.innerText + ':<br>' + data;
-						switchState([$content], 1);
-					});
-				}
-			}
-
 			/* track ball */
 			var trackball = (function() {
+
 				var cx = document.body.offsetWidth * 0.5;
 				var cy = document.body.offsetHeight * 0.5;
 				var radius = 200;
 
-				var box = $("#main");
+				var box = document.body;
 				var mouseDownVect = [];
 				var mouseMoveVect = [];
 				var pos = [0, 0, 0];
 				var axis = [1, 0, 0];
 				var angle = 0;
 				var startMatrix = matrix.get3d(axis, pos, angle);
+
+				var setBox = function(b) {
+					box = b;
+				}
 
 				var setCenter = function(x, y) {
 					cx = x;
@@ -396,6 +336,7 @@
 					mdxy = [e.pageX, e.pageY];
 
 					document.addEventListener("mousemove", mouseMove);
+					box.dataset['rotating'] = 1;
 				}
 
 				var mouseUp = function(e) {
@@ -404,6 +345,7 @@
 					startMatrix = matrix.multi([startMatrix, stopMatrix]);
 
 					document.removeEventListener("mousemove", mouseMove);
+					box.dataset['rotating'] = 0;
 				}
 
 				var mouseMove = function(e) {
@@ -446,52 +388,131 @@
 					return [axis, angle];
 				}
 
-				document.addEventListener("mousedown", mouseDown);
-				document.addEventListener("mouseup", mouseUp);
+				var I = {};
+				I.setBox = setBox;
+				I.mouseDown = mouseDown;
+				I.mouseUp = mouseUp;
+
+				return I;
 			}());
 
-			function ajax(data, callback) {
-				var url = "/data/data.php?" + data;
-				var xmlhttp = new XMLHttpRequest();
-					xmlhttp.open("POST", url, true);
-					xmlhttp.send();
+			/* main */
+			var stage = (function() {
 
-				xmlhttp.onreadystatechange = function() {
-					if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-						callback && callback(JSON.parse(xmlhttp.responseText));
+				var $view = $('#view');
+				$view.style.width = document.body.offsetWidth + "px";
+				$view.style.height = document.body.offsetHeight + "px";
+
+				$view.addEventListener("mousedown", trackball.mouseDown);
+				document.addEventListener("mouseup", trackball.mouseUp);
+
+				var $main = $('#main');
+				trackball.setBox($main);
+
+				var $navi = $('.navi');
+				switchState($navi, 1);
+
+				var $content = $('#content');
+				var item_tpl = $('#item-tpl').innerHTML;
+				var sign = ["Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ"];
+
+				var items;
+
+				items = initItems('#main', 100);
+
+				function initItems(layer, num) {
+					// generate items
+					var dom = $(layer);
+					var html = '';
+					for (var i = 0; i < num; i++) {
+						data = {
+							index: i,
+							n: sign[i % sign.length]
+						}
+						html += tplEngine(item_tpl, data);
+					}
+					dom.innerHTML = html;
+					return dom.querySelectorAll('.item');
+				}
+
+				pattern.scat(items, 550, 1);
+				/* data */
+				var ajax_data = {};
+				var content_tpl = $('#content-tpl').innerHTML;
+				$main.onclick = function(e){
+					var ajax_index = e.target.dataset['index'];
+					
+					if(!ajax_index) return;
+
+					if(ajax_data[ajax_index]) {
+						$('#content .wrap').innerHTML = e.target.innerText + ':<br>' + ajax_data[ajax_index];
+						switchState([$content], 1);
+					} else {
+						ajax("sort=words&index=" + ajax_index, function(data) {
+							data = tplEngine(content_tpl, data);
+							ajax_data[ajax_index] = data;
+							$('#content .wrap').innerHTML = e.target.innerText + ':<br>' + data;
+							switchState([$content], 1);
+						});
 					}
 				}
-			}
 
-			function callPage(page){
-				switchState([$l1, $l2, $l3, $l4], 2);
-				switch(page){
-					case 'nothing':
-						alert('I told u.');
-						break;
-					case 'recent':
-						switchState($l2, 1);
-						switchState($navi, 'recent');
-						scat(l2_items, 6, function(){
-							setTimeout(function(){
-								switchState($l2, 3);
-							}, 1000);
-						});
-						break;
-					case 'about':
-						switchState($l1, 1);
-						switchState($navi, 'about');
-						break;
+				function switchState(elems, num){
+					if(elems.length){
+						for(var i = 0; i < elems.length; i++){
+							elems[i].dataset['state'] = num;
+						}
+					}else{
+						elems.dataset['state'] = num;
+					}
 				}
-			}
+				function ajax(data, callback) {
+					var url = "/data/data.php?" + data;
+					var xmlhttp = new XMLHttpRequest();
+						xmlhttp.open("POST", url, true);
+						xmlhttp.send();
 
-			function tplEngine(tpl, data) {
-				var re = /{#(\w+)?}/;
-				while (match = re.exec(tpl)) {
-					tpl = tpl.replace(match[0], data[match[1]]);
+						callback = callback || function() {};
+
+					xmlhttp.onreadystatechange = function() {
+						if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+							callback(JSON.parse(xmlhttp.responseText));
+						}
+					}
 				}
-				return tpl;
-			}
+
+				function callPage(page){
+					switchState([$l1, $l2, $l3, $l4], 2);
+					switch(page){
+						case 'nothing':
+							alert('I told u.');
+							break;
+						case 'recent':
+							switchState($l2, 1);
+							switchState($navi, 'recent');
+							scat(l2_items, 6, function(){
+								setTimeout(function(){
+									switchState($l2, 3);
+								}, 1000);
+							});
+							break;
+						case 'about':
+							switchState($l1, 1);
+							switchState($navi, 'about');
+							break;
+					}
+				}
+
+				function tplEngine(tpl, data) {
+					var re = /{#(\w+)?}/;
+					while (match = re.exec(tpl)) {
+						tpl = tpl.replace(match[0], data[match[1]]);
+					}
+					return tpl;
+				}
+
+			}());
+
 		</script>
 	</body>
 </html>
