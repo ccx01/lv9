@@ -14,14 +14,17 @@
 	}
 	-webkit-animation: $animations;
 	-moz-animation: $animations;
-	-o-animation: $animations;
 	animation: $animations;
 }
 @mixin state($state) {
 	-webkit-animation-play-state: $state;
 	-moz-animation-play-state: $state;
-	-o-animation-play-state: $state;
 	animation-play-state: $state;
+}
+@mixin transform-origin($origin) {
+	-webkit-transform-origin: $origin;
+	-moz-transform-origin: $origin;
+	transform-origin: $origin;
 }
 @mixin keyframes($animationName) {
 	@-webkit-keyframes #{$animationName} {
@@ -30,10 +33,6 @@
 	}
 	@-moz-keyframes #{$animationName} {
 		$browser: '-moz-';
-		@content;
-	}
-	@-o-keyframes #{$animationName} {
-		$browser: '-o-';
 		@content;
 	}
 	@keyframes #{$animationName} {
@@ -65,8 +64,8 @@ body {
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
-	@include perspective(1000px);
 	@include transform-style(preserve-3d);
+	@include perspective(1000px);
 }
 
 #main {
@@ -88,45 +87,60 @@ body {
 /* navi */
 .navi {
 	position: fixed;
-	top: 0;
-	left: -1px;
-	width: 200px;
-	height: 1600px;
+	bottom: -30px;
+	left: 0;
+	width: 100%;
+	height: 80px;
+	text-align: center;
 
-	z-index: 99;
-
-	border-right: 1px solid rgba(127, 255, 255, 0.7);
-	background: rgba(0, 0, 0, 0.3);
+	z-index: 9999;
 
 	cursor: default;
 
 	@include transition(.3s cubic-bezier(.58,.24,.84,.61));
-	@include transform-origin(0%, 0%);
-	
-	&[data-state='0'] {
-		opacity: 0;
-		height: 0%;
+	@include transform-style(preserve-3d);
+	@include perspective(1000px);
+
+	&:hover {
+		bottom: 0px;
+		.navi-border {
+			border: 1px solid rgba(127, 255, 255, 0.3);
+		}
+		ul {
+			top: -10px;
+		}
 	}
-	&[data-state='1'] {
-		opacity: 1;
-		height: 100%;
+
+	.navi-border {
+		position: relative;
+		margin: -60px auto 0;
+		width: 60%;
+		height: 80px;
+		border: 1px solid rgba(127, 255, 255, 0.7);
+		background: rgba(0, 0, 0, 0.3);
+		z-index: 9;
+		@include transform(rotateX(30deg));
+		@include transform-origin(50% 100%);
 	}
+
+	ul {
+		position: relative;
+		top: 20px;
+		@include transition(0.3s cubic-bezier(.58,.24,.84,.61));
+	}
+
 	.item {
-		margin-bottom: 1px;
-		width: 100%;
+		position: relative;
+		@include inline-block;
+		width: 10%;
+		height: 60px;
 		padding: 20px 0;
 		background: rgba(255, 255, 255, 0.1);
 		box-sizing: border-box;
 		text-align: center;
 		white-space: nowrap;
 		padding: 20px;
-		opacity: 0;
-		margin-left: 0px;
-		@for $i from 1 through 4 {
-			&:nth-child(#{$i}) {
-				@include animation(0.3s $i * 0.2s navi 1 forwards);
-			}
-		}
+		z-index: 99;
 		@include transition(0.3s cubic-bezier(.58,.24,.84,.61));
 		
 		&:hover {
@@ -134,16 +148,6 @@ body {
 			text-shadow: 0 0 20px rgba(0, 255, 255, 0.95);
 			background: rgba(255, 255, 255, 0.3);
 		}
-	}
-}
-@include keyframes(navi) {
-	0% {
-		margin-left: 1920px;
-		opacity: 0;
-	}
-	100% {
-		margin-left: 0px;
-		opacity: 1;
 	}
 }
 

@@ -9,20 +9,23 @@
 	</head>
 	<body>
 		<!-- <div class="loading">loading</div> -->
-
-		<ul class="navi" data-state="0">
-			<!-- <li class="item" data-page="nothing">nothing</li>
-			<li class="item" data-page="random"><strong>time & space</strong></li> -->
-			<li class="item" data-page="recent">recent</li>
-			<li class="item" data-page="about"><h1>hi, I'm <strong>Sign</strong></h1></li>
-			<li class="item close">
-				X
-			</li>
-		</ul>
+		<div class="navi">
+			<ul>
+				<!-- <li class="item" data-page="nothing">nothing</li>
+				<li class="item" data-page="random"><strong>time & space</strong></li> -->
+				<li class="item" data-page="recent">recent</li>
+				<li class="item" data-page="about"><h1>hi, I'm <strong>Sign</strong></h1></li>
+				<li class="item close">
+					X
+				</li>
+			</ul>
+			<!-- <div class="navi-border"></div> -->
+		</div>
 		<div id="view">
 			<div id="main" class="layer"></div>
 		</div>
 		<!-- test -->
+		<!--
 		<div class="test" style=" position: fixed; z-index: 99; bottom: 0;">
 			rx: <input type="number" value="0">
 			ry: <input type="number" value="0">
@@ -91,6 +94,7 @@
 			}
 
 		</script>
+		-->
 
 		<!-- tamplate -->
 		<div id="content">
@@ -119,9 +123,9 @@
 				return ret.length == 1 ? ret[0] : ret;
 			}
 			
-			document.oncontextmenu = function() {
+			/*document.oncontextmenu = function() {
 				return false;
-			}
+			}*/
 
 			document.onselectstart = function() {
 				return false;
