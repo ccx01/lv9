@@ -348,14 +348,14 @@
 				}
 
 				var mouseUp = function(e) {
-					if(box.dataset['rotating'] != 1) return;
+					if(box.dataset['rotating'] == 1) {
+						var stopMatrix;
+						stopMatrix = matrix.get3d(axis, pos, angle);
+						startMatrix = matrix.multi([startMatrix, stopMatrix]);
 
-					var stopMatrix;
-					stopMatrix = matrix.get3d(axis, pos, angle);
-					startMatrix = matrix.multi([startMatrix, stopMatrix]);
-
-					document.removeEventListener("mousemove", mouseMove);
-					box.dataset['rotating'] = 0;
+						document.removeEventListener("mousemove", mouseMove);
+						box.dataset['rotating'] = 0;
+					}
 				}
 
 				var mouseMove = function(e) {
