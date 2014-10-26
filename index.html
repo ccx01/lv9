@@ -8,18 +8,27 @@
 		<link rel="stylesheet" href="/lv9/css/main.css">
 	</head>
 	<body>
-		<!-- <div class="loading">loading</div> -->
+		<!-- <div class="loading">loading...</div> -->
+		<!-- this paragraph is exists for search engine -->
+		<strong id="seo">Hi, I'm Sign. this is a place where I record my mind. nothing else.</strong>
 		<div class="navi">
 			<ul>
-				<!-- <li class="item" data-page="nothing">nothing</li>
-				<li class="item" data-page="random"><strong>time & space</strong></li> -->
-				<li class="item" data-page="recent">recent</li>
-				<li class="item" data-page="about"><h1>hi, I'm <strong>Sign</strong></h1></li>
-				<li class="item close">
-					X
+				<li>
+					<div class="item" data-page="nothing">nothing</div>
+				</li>
+				<li>
+					<div class="item" data-page="scat">time & space</div>
+				</li>
+				<li>
+					<div class="item" data-page="ring">recent</div></li>
+				<li>
+					<h1 class="item" data-page="ball">hi, I'm Sign</h1>
+				</li>
+				<li>
+					<div class="item" data-page="X">X</div></li>
 				</li>
 			</ul>
-			<!-- <div class="navi-border"></div> -->
+			<div class="avatar"></div>
 		</div>
 		<div id="view">
 			<div id="main" class="layer"></div>
@@ -97,18 +106,16 @@
 		-->
 
 		<!-- tamplate -->
-		<div id="content">
-			<svg class="icon icon-close" viewBox="0 0 32 32">
-				<use xlink:href="#icon-close"></use>
-			</svg>
-			<div class="wrap">
-				<p>数据正在接入</p>	
-			</div>
-		</div>
+		<div id="dialog"></div>
 		<template id="content-tpl">
-			<h2 class="title">{#words}</h2>
-			<p class="info" data-info='{"id": {#id}, "toid": {#tid}}'>{#name} @ {#time}</p>
-			<div class="media">{#other}</div>
+			<div class="content">
+				<div class="bar"></div>
+				<div class="wrap">
+					<h2 class="title">{#words}</h2>
+					<p class="info" data-info='{"id": {#id}, "toid": {#tid}}'>{#name} @ {#time}</p>
+					<div class="media">{#other}</div>
+				</div>
+			</div>
 		</template>
 		<template id="item-tpl">
 			<div class="item">
@@ -221,9 +228,9 @@
 								var theta = Math.sqrt( items.length * Math.PI ) * phi;
 
 								var pos = [];
-								pos[0] = 400 * Math.cos( theta ) * Math.sin( phi );
-								pos[1] = 400 * Math.sin( theta ) * Math.sin( phi );
-								pos[2] = 400 * Math.cos( phi );
+								pos[0] = r * Math.cos( theta ) * Math.sin( phi );
+								pos[1] = r * Math.sin( theta ) * Math.sin( phi );
+								pos[2] = r * Math.cos( phi );
 
 								var axis = [];
 								axis[0] = pos[0];
@@ -240,34 +247,31 @@
 					}(0));
 				}
 
-				function ring(items, r, t){
+				function ring(items, r, z){
 					(function fn(i){
 						if(i < items.length){
-							setTimeout(function(){
+							var phi = i / items.length * Math.PI * 2;
 
-								var phi = i / items.length * Math.PI * 2;
+							var pos = [];
+							pos[0] = r * Math.sin( phi );
+							pos[1] = -r * Math.cos( phi );
+							pos[2] = z;
 
-								var pos = [];
-								pos[0] = 250 * Math.sin( phi );
-								pos[1] = -250 * Math.cos( phi );
-								pos[2] = 0;
+							var axis = [];
+							axis[0] = 0;
+							axis[1] = 0;
+							axis[2] = -1;
 
-								var axis = [];
-								axis[0] = 0;
-								axis[1] = 0;
-								axis[2] = -1;
+							var ro = matrix.get3d(axis, pos, phi);
 
-								var ro = matrix.get3d(axis, pos, phi);
+							items[i].style.transform = "matrix3d(" + ro + ")";
 
-								items[i].style.transform = "matrix3d(" + ro + ")";
-
-								fn(i + 1);
-							}, t);
+							fn(i + 1);
 						}
 					}(0));
 				}
 
-				function scat(items, col){
+				function scat(items){
 					var w = window.innerWidth;
 					var h = window.innerHeight;
 					(function fn(i){
@@ -344,6 +348,8 @@
 				}
 
 				var mouseUp = function(e) {
+					if(box.dataset['rotating'] != 1) return;
+
 					var stopMatrix;
 					stopMatrix = matrix.get3d(axis, pos, angle);
 					startMatrix = matrix.multi([startMatrix, stopMatrix]);
@@ -400,29 +406,15 @@
 				return I;
 			}());
 
-			/* main */
-			var stage = (function() {
-
-				var $view = $('#view');
-				$view.style.width = document.body.offsetWidth + "px";
-				$view.style.height = document.body.offsetHeight + "px";
-
-				$view.addEventListener("mousedown", trackball.mouseDown);
-				document.addEventListener("mouseup", trackball.mouseUp);
+			/* data */
+			var layout = (function() {
 
 				var $main = $('#main');
-				trackball.setBox($main);
-
-				var $navi = $('.navi');
-				switchState($navi, 1);
-
 				var $content = $('#content');
 				var item_tpl = $('#item-tpl').innerHTML;
 				var sign = ["Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ"];
 
-				var items;
-
-				items = initItems('#main', 100);
+				var items = initItems('#main', 100);
 
 				function initItems(layer, num) {
 					// generate items
@@ -438,8 +430,8 @@
 					dom.innerHTML = html;
 					return dom.querySelectorAll('.item');
 				}
+				pattern.scat(items);
 
-				pattern.scat(items, 550, 1);
 				/* data */
 				var ajax_data = {};
 				var content_tpl = $('#content-tpl').innerHTML;
@@ -449,13 +441,13 @@
 					if(!ajax_index) return;
 
 					if(ajax_data[ajax_index]) {
-						$('#content .wrap').innerHTML = e.target.innerText + ':<br>' + ajax_data[ajax_index];
+						$('#dialog').innerHTML = ajax_data[ajax_index];
 						switchState([$content], 1);
 					} else {
 						ajax("sort=words&index=" + ajax_index, function(data) {
 							data = tplEngine(content_tpl, data);
 							ajax_data[ajax_index] = data;
-							$('#content .wrap').innerHTML = e.target.innerText + ':<br>' + data;
+							$('#dialog').innerHTML = data;
 							switchState([$content], 1);
 						});
 					}
@@ -485,28 +477,6 @@
 					}
 				}
 
-				function callPage(page){
-					switchState([$l1, $l2, $l3, $l4], 2);
-					switch(page){
-						case 'nothing':
-							alert('I told u.');
-							break;
-						case 'recent':
-							switchState($l2, 1);
-							switchState($navi, 'recent');
-							scat(l2_items, 6, function(){
-								setTimeout(function(){
-									switchState($l2, 3);
-								}, 1000);
-							});
-							break;
-						case 'about':
-							switchState($l1, 1);
-							switchState($navi, 'about');
-							break;
-					}
-				}
-
 				function tplEngine(tpl, data) {
 					var re = /{#(\w+)?}/;
 					while (match = re.exec(tpl)) {
@@ -514,6 +484,56 @@
 					}
 					return tpl;
 				}
+
+			}());
+
+			/* menu */
+			var menu = (function() {
+				/* require data */
+				var $navi = $('.navi');
+				var $item = $('#main .item');
+				var $ring = $item;
+
+				$navi.onclick = function(e){
+					if(!e.target.dataset['page']) return;
+
+					switch(e.target.dataset['page']) {
+						case "scat":
+							pattern.scat($item);
+						break;
+						case "ball":
+							pattern.ball($item, 450, 10);
+						break;
+						case "ring":
+							$ring = getRingData();
+							var z = (Math.random() - 0.5) * 1000 | 0;
+							pattern.ring($ring, 300, z);
+						break;
+					}
+				}
+
+				function getRingData() {
+					var ring = [];
+					for(var i = 0; i < 12; i++) {
+						ring.push($item[Math.random() * 100 | 0]);
+					}
+					return ring;
+				}
+
+			}());
+
+			/* main */
+			var stage = (function() {
+
+				var $view = $('#view');
+				$view.style.width = document.body.offsetWidth + "px";
+				$view.style.height = document.body.offsetHeight + "px";
+
+				$view.addEventListener("mousedown", trackball.mouseDown);
+				document.addEventListener("mouseup", trackball.mouseUp);
+
+				var $main = $('#main');
+				trackball.setBox($main);
 
 			}());
 
