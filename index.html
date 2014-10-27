@@ -341,28 +341,24 @@
 				}
 				var mouseDown = function(e) {
 					mouseDownVect = mapping(e.pageX, e.pageY);
-					mdxy = [e.pageX, e.pageY];
+					mouseMoveVect = [];
 
 					document.addEventListener("mousemove", mouseMove);
 					box.dataset['rotating'] = 1;
 				}
 
 				var mouseUp = function(e) {
-					if(box.dataset['rotating'] == 1) {
+					document.removeEventListener("mousemove", mouseMove);
+					box.dataset['rotating'] = 0;
+					if(mouseMoveVect.length > 0) {
+						mouseMoveVect = [];
 						var stopMatrix;
 						stopMatrix = matrix.get3d(axis, pos, angle);
 						startMatrix = matrix.multi([startMatrix, stopMatrix]);
-
-						document.removeEventListener("mousemove", mouseMove);
-						box.dataset['rotating'] = 0;
 					}
 				}
 
 				var mouseMove = function(e) {
-					rotate(e);
-				}
-
-				var rotate = function(e) {
 					mouseMoveVect = mapping(e.pageX, e.pageY);
 
 					var r3d = calcAngle(mouseDownVect, mouseMoveVect);
