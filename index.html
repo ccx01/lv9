@@ -25,7 +25,7 @@
 					<h1 class="item" data-page="ball">hi, I'm Sign</h1>
 				</li>
 				<li>
-					<div class="item" data-page="X">X</div></li>
+					<div class="item" data-page="close">X</div></li>
 				</li>
 			</ul>
 			<div class="avatar"></div>
@@ -108,8 +108,11 @@
 		<!-- tamplate -->
 		<div id="dialog"></div>
 		<template id="content-tpl">
-			<div class="content">
-				<div class="bar"></div>
+			<div class="content" style="top:{#top}px;left:{#left}px;">
+				<div class="bar">
+					<i class="min"></i>
+					<i class="close"></i>
+				</div>
 				<div class="wrap">
 					<h2 class="title">{#words}</h2>
 					<p class="info" data-info='{"id": {#id}, "toid": {#tid}}'>{#name} @ {#time}</p>
@@ -128,8 +131,52 @@
 			var $ = function(elem){
 				var ret = document.querySelectorAll(elem);
 				return ret.length == 1 ? ret[0] : ret;
+			}			
+
+			function parseDom(html){
+				var div_tmp = document.createElement("div");
+				div_tmp.innerHTML = html;
+				return div_tmp.childNodes;
 			}
 			
+			HTMLElement.prototype.appendHTML = function(html) {
+				var nodes = parseDom(html);
+				var fragment = document.createDocumentFragment();
+				var i = 0;
+				while(nodes[i]){
+					// console.log(nodes[i].nodeType);
+					fragment.appendChild(nodes[i].cloneNode(true));
+					i++;
+				}
+				this.appendChild(fragment);
+			}
+
+			function genNode(html) {
+				var div_tmp = document.createElement("div");
+					div_tmp.innerHTML = html;
+				var nodes = div_tmp.childNodes;
+
+				var new_node = div_tmp;
+				var i = 0;
+				while(nodes[i]){
+					if(nodes[i].nodeType == 1) {
+					// console.log(nodes[i].nodeType,nodes[i])
+						return  nodes[i];
+					}
+					// div_tmp.appendChild(nodes[i].cloneNode(true));
+					i++;
+				}
+				return new_node;
+			}
+
+			function tplEngine(tpl, data) {
+				var re = /{#(\w+)?}/;
+				while (match = re.exec(tpl)) {
+					tpl = tpl.replace(match[0], data[match[1]]);
+				}
+				return tpl;
+			}
+
 			/*document.oncontextmenu = function() {
 				return false;
 			}*/
@@ -260,7 +307,7 @@
 							var axis = [];
 							axis[0] = 0;
 							axis[1] = 0;
-							axis[2] = -1;
+							axis[2] = 1;
 
 							var ro = matrix.get3d(axis, pos, phi);
 
@@ -431,33 +478,82 @@
 				/* data */
 				var ajax_data = {};
 				var content_tpl = $('#content-tpl').innerHTML;
+				var $dialog = $('#dialog');
+				var z_index = 1000;
+				var active_node;
 				$main.onclick = function(e){
 					var ajax_index = e.target.dataset['index'];
 					
 					if(!ajax_index) return;
 
 					if(ajax_data[ajax_index]) {
-						$('#dialog').innerHTML = ajax_data[ajax_index];
-						switchState([$content], 1);
+						var node = ajax_data[ajax_index];
+						node.style['left'] = e.pageX + "px";
+						node.style['top'] = e.pageY + "px";
+						node.style["display"] = "block";
+
+						active_node.dataset['active'] = 0;
+						active_node = node;
+						setTimeout(function() {
+							// ensure the animation is running
+							active_node.dataset['active'] = 1;
+						}, 100);
 					} else {
 						ajax("sort=words&index=" + ajax_index, function(data) {
+							data.top = e.pageY;
+							data.left = e.pageX;
 							data = tplEngine(content_tpl, data);
-							ajax_data[ajax_index] = data;
-							$('#dialog').innerHTML = data;
-							switchState([$content], 1);
+							var node = genNode(data);
+
+							$dialog.appendChild(node);
+
+							if(e.pageX  - 0.5 * node.offsetWidth > 0) {
+								node.style['marginLeft'] = -0.5 * node.offsetWidth + "px";
+							}
+							if(e.pageY  - 0.5 * node.offsetHeight > 0) {
+								node.style['marginTop'] = -0.5 * node.offsetHeight + "px";
+							}
+
+							ajax_data[ajax_index] = node;
+
+							active_node && (active_node.dataset['active'] = 0);
+							active_node = node;
+							active_node.dataset['active'] = 1;
 						});
 					}
 				}
 
-				function switchState(elems, num){
-					if(elems.length){
-						for(var i = 0; i < elems.length; i++){
-							elems[i].dataset['state'] = num;
-						}
-					}else{
-						elems.dataset['state'] = num;
+				var start_move = [];
+				$dialog.addEventListener("mousedown", mouseDown);
+				document.addEventListener("mouseup", mouseUp);
+
+				function mouseDown(e) {
+					switch(e.target.className) {
+						case "min":
+							e.target.parentNode.parentNode.style["display"] = "none";
+						break;
+						case "bar":
+							active_node && (active_node.dataset['active'] = 0);
+							active_node = e.target.parentNode;
+							active_node.dataset['active'] = 1;
+							start_move = [e.pageX, e.pageY, parseInt(active_node.style["left"]), parseInt(active_node.style["top"])];
+							$dialog.addEventListener("mousemove", mouseMove);
+						break;
 					}
 				}
+
+				function mouseUp(e) {
+					$dialog.removeEventListener("mousemove", mouseMove);
+				}
+
+				function mouseMove(e) {
+					var left = start_move[2] - start_move[0] + e.pageX;
+					var top = start_move[3] - start_move[1] + e.pageY;
+					active_node.style['left'] = left + "px";
+					active_node.style['top'] = top + "px";
+				}
+
+
 				function ajax(data, callback) {
 					var url = "/data/data.php?" + data;
 					var xmlhttp = new XMLHttpRequest();
@@ -473,14 +569,6 @@
 					}
 				}
 
-				function tplEngine(tpl, data) {
-					var re = /{#(\w+)?}/;
-					while (match = re.exec(tpl)) {
-						tpl = tpl.replace(match[0], data[match[1]]);
-					}
-					return tpl;
-				}
-
 			}());
 
 			/* menu */
@@ -489,6 +577,9 @@
 				var $navi = $('.navi');
 				var $item = $('#main .item');
 				var $ring = $item;
+				var $dialog = $('#dialog');
+				var active_menu = "scat";
+				var on_dialog = 1;
 
 				$navi.onclick = function(e){
 					if(!e.target.dataset['page']) return;
@@ -496,14 +587,26 @@
 					switch(e.target.dataset['page']) {
 						case "scat":
 							pattern.scat($item);
+							active_menu = "scat";
 						break;
 						case "ball":
 							pattern.ball($item, 450, 10);
+							active_menu = "ball";
 						break;
 						case "ring":
 							$ring = getRingData();
 							var z = (Math.random() - 0.5) * 1000 | 0;
 							pattern.ring($ring, 300, z);
+							active_menu = "ring";
+						break;
+						case "close":
+							if(on_dialog) {
+								$dialog.style["display"] = "none";
+								on_dialog = 0;
+							} else {
+								$dialog.style["display"] = "block";
+								on_dialog = 1;
+							}
 						break;
 					}
 				}
