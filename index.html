@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>the day of sign lv9</title>
+		<title>the day of sign lv9.1</title>
 		<meta name ="keywords" content="Sign,ccx01,sign,the day of sign,signXday,沙因,游戏,银河,宇宙,时间">
 		<meta name="description" content="just for fun,及时行乐,核心思路是以时间空间为基础元素进行制作">
 		<link rel="stylesheet" href="/lv9/css/main.css">
@@ -10,7 +10,7 @@
 	<body>
 		<!-- <div class="loading">loading...</div> -->
 		<!-- this paragraph is exists for search engine -->
-		<strong id="seo">Hi, I'm Sign. this is a place where I record my mind. nothing else.</strong>
+		<strong id="seo">Hi, I'm Sign. this is a place where I record my mind. it is not a blog or not a normal website, everything just for fun. nothing else.</strong>
 		<div class="navi">
 			<ul>
 				<li>
@@ -30,6 +30,7 @@
 			</ul>
 			<div class="avatar"></div>
 		</div>
+		<!-- <ul class="list"></ul> -->
 		<div id="view">
 			<div id="main" class="layer"></div>
 		</div>
@@ -488,6 +489,8 @@
 
 					if(ajax_data[ajax_index]) {
 						var node = ajax_data[ajax_index];
+						$dialog.appendChild(node);
+
 						node.style['left'] = e.pageX + "px";
 						node.style['top'] = e.pageY + "px";
 						node.style["display"] = "block";
@@ -530,7 +533,7 @@
 				function mouseDown(e) {
 					switch(e.target.className) {
 						case "min":
-							e.target.parentNode.parentNode.style["display"] = "none";
+							e.target.parentNode.parentNode.remove();
 						break;
 						case "bar":
 							active_node && (active_node.dataset['active'] = 0);
@@ -601,10 +604,10 @@
 						break;
 						case "close":
 							if(on_dialog) {
-								$dialog.style["display"] = "none";
+								$dialog.className = "list";
 								on_dialog = 0;
 							} else {
-								$dialog.style["display"] = "block";
+								$dialog.className = "";
 								on_dialog = 1;
 							}
 						break;

@@ -167,6 +167,38 @@ body {
 		box-shadow: 1px -1px 6px rgba(127, 255, 255, 1);
 	}
 }
+.list {
+	position: fixed;
+	bottom: 31px;
+	left: 0;
+	padding: 40px 0;
+	width: 260px;
+	height: 100%;
+	border-right: 1px solid rgba(127, 255, 255, 1);
+	box-sizing: border-box;
+	.content {
+		position: relative;
+		max-width: 100%;
+		max-height: 100%;
+		width: 240px;
+		height: 40px;
+		opacity: 1;
+		box-sizing: border-box;
+		box-shadow: none;
+		top: 0 !important;
+		left: 0 !important;
+		margin: 10px 10px !important;
+		.wrap {
+			padding: 0 10px;
+			line-height: 40px;
+			overflow: hidden;
+		}
+		.bar,
+		.media {
+			display: none;
+		}
+	}
+}
 
 /* layer */
 .layer {
