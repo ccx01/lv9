@@ -30,7 +30,7 @@
 			</ul>
 			<div class="avatar"></div>
 		</div>
-		<!-- <ul class="list"></ul> -->
+		<ul class="list"></ul>
 		<div id="view">
 			<div id="main" class="layer"></div>
 		</div>
@@ -62,21 +62,12 @@
 				var ret = document.querySelectorAll(elem);
 				return ret.length == 1 ? ret[0] : ret;
 			}			
-
-			function parseDom(html){
-				var div_tmp = document.createElement("div");
-				div_tmp.innerHTML = html;
-				return div_tmp.childNodes;
-			}
 			
-			HTMLElement.prototype.appendHTML = function(html) {
-				var nodes = parseDom(html);
+			HTMLElement.prototype.appendNodes = function(nodes) {
 				var fragment = document.createDocumentFragment();
-				var i = 0;
-				while(nodes[i]){
-					// console.log(nodes[i].nodeType);
-					fragment.appendChild(nodes[i].cloneNode(true));
-					i++;
+				var length = nodes.length;
+				for(var i = 0; i < length; i++) {
+					fragment.appendChild(nodes[0]);
 				}
 				this.appendChild(fragment);
 			}
@@ -90,10 +81,8 @@
 				var i = 0;
 				while(nodes[i]){
 					if(nodes[i].nodeType == 1) {
-					// console.log(nodes[i].nodeType,nodes[i])
-						return  nodes[i];
+						new_node = nodes[i];
 					}
-					// div_tmp.appendChild(nodes[i].cloneNode(true));
 					i++;
 				}
 				return new_node;
@@ -533,10 +522,12 @@
 						break;
 						case "close":
 							if(on_dialog) {
-								$dialog.className = "list";
+								$('.list').appendNodes($dialog.childNodes);
+								// $dialog.className = "list";
 								on_dialog = 0;
 							} else {
-								$dialog.className = "";
+								$dialog.appendNodes($('.list').childNodes);
+								// $dialog.className = "";
 								on_dialog = 1;
 							}
 						break;
