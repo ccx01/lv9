@@ -17,12 +17,12 @@
 					<div class="item" data-page="nothing">nothing</div>
 				</li>
 				<li>
-					<div class="item" data-page="scat">time & space</div>
+					<div class="item" data-page="words">time & space</div>
 				</li>
 				<li>
-					<div class="item" data-page="ring">recent</div></li>
+					<div class="item" data-page="video">recent</div></li>
 				<li>
-					<h1 class="item" data-page="ball">hi, I'm Sign</h1>
+					<h1 class="item" data-page="article">hi, I'm Sign</h1>
 				</li>
 				<li>
 					<div class="item" data-page="close">X</div></li>
@@ -394,6 +394,55 @@
 				}
 				pattern.scat(items);
 
+				/* menu */
+				var $navi = $('.navi');
+				var $item = $('#main .item');
+				var $ring = $item;
+				var $dialog = $('#dialog');
+				var $list = $('.list');
+				var active_menu = "words";
+				var on_dialog = 1;
+
+				$navi.onclick = function(e){
+					if(!e.target.dataset['page']) return;
+
+					switch(e.target.dataset['page']) {
+						case "words":
+							pattern.scat($item);
+							active_menu = "words";
+						break;
+						case "video":
+							pattern.ball($item, 450, 10);
+							active_menu = "video";
+						break;
+						case "article":
+							$ring = getRingData();
+							var z = (Math.random() - 0.5) * 1000 | 0;
+							pattern.ring($ring, 300, z);
+							active_menu = "article";
+						break;
+						case "close":
+							if(on_dialog) {
+								$list.appendNodes($dialog.childNodes);
+								$list.dataset['active'] = 1;
+								on_dialog = 0;
+							} else {
+								$dialog.appendNodes($('.list').childNodes);
+								$list.dataset['active'] = 0;
+								on_dialog = 1;
+							}
+						break;
+					}
+				}
+
+				function getRingData() {
+					var ring = [];
+					for(var i = 0; i < 12; i++) {
+						ring.push($item[Math.random() * 100 | 0]);
+					}
+					return ring;
+				}
+
 				/* data */
 				var ajax_data = {};
 				var content_tpl = $('#content-tpl').innerHTML;
@@ -420,7 +469,7 @@
 							active_node.dataset['active'] = 1;
 						}, 100);
 					} else {
-						ajax("sort=words&index=" + ajax_index, function(data) {
+						ajax("sort=" + active_menu + "&index=" + ajax_index, function(data) {
 							data.top = e.pageY;
 							data.left = e.pageX;
 							data = tplEngine(content_tpl, data);
@@ -488,58 +537,6 @@
 							callback(JSON.parse(xmlhttp.responseText));
 						}
 					}
-				}
-
-			}());
-
-			/* menu */
-			var menu = (function() {
-				/* require data */
-				var $navi = $('.navi');
-				var $item = $('#main .item');
-				var $ring = $item;
-				var $dialog = $('#dialog');
-				var active_menu = "scat";
-				var on_dialog = 1;
-
-				$navi.onclick = function(e){
-					if(!e.target.dataset['page']) return;
-
-					switch(e.target.dataset['page']) {
-						case "scat":
-							pattern.scat($item);
-							active_menu = "scat";
-						break;
-						case "ball":
-							pattern.ball($item, 450, 10);
-							active_menu = "ball";
-						break;
-						case "ring":
-							$ring = getRingData();
-							var z = (Math.random() - 0.5) * 1000 | 0;
-							pattern.ring($ring, 300, z);
-							active_menu = "ring";
-						break;
-						case "close":
-							if(on_dialog) {
-								$('.list').appendNodes($dialog.childNodes);
-								// $dialog.className = "list";
-								on_dialog = 0;
-							} else {
-								$dialog.appendNodes($('.list').childNodes);
-								// $dialog.className = "";
-								on_dialog = 1;
-							}
-						break;
-					}
-				}
-
-				function getRingData() {
-					var ring = [];
-					for(var i = 0; i < 12; i++) {
-						ring.push($item[Math.random() * 100 | 0]);
-					}
-					return ring;
 				}
 
 			}());
