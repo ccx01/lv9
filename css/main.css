@@ -128,6 +128,10 @@ body {
   transition: 0s;
 }
 
+.tpl {
+  display: none;
+}
+
 /* navi */
 .navi {
   position: fixed;
@@ -144,16 +148,6 @@ body {
   -moz-transition: 0.3s cubic-bezier(0.58, 0.24, 0.84, 0.61);
   -o-transition: 0.3s cubic-bezier(0.58, 0.24, 0.84, 0.61);
   transition: 0.3s cubic-bezier(0.58, 0.24, 0.84, 0.61);
-  -webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  -ms-transform-style: preserve-3d;
-  -o-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-  -webkit-perspective: 1000px;
-  -moz-perspective: 1000px;
-  -ms-perspective: 1000px;
-  -o-perspective: 1000px;
-  perspective: 1000px;
 }
 .navi:hover {
   border-top: 1px solid rgba(127, 255, 255, 0.3);
@@ -245,9 +239,11 @@ body {
   transition: 0.5s 1s cubic-bezier(0.34, 0.16, 0.38, 1.81);
 }
 .navi .item {
+  display: block;
   width: 100%;
   height: 100%;
   padding: 20px 0;
+  color: white;
   background: rgba(255, 255, 255, 0.1);
   box-sizing: border-box;
   text-align: center;
@@ -255,7 +251,6 @@ body {
   padding: 20px;
 }
 .navi .item:hover {
-  color: white;
   text-shadow: 0 0 20px rgba(0, 255, 255, 0.95);
   background: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 0px 2px rgba(127, 255, 255, 0.9);

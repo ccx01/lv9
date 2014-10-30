@@ -27,6 +27,10 @@
 				<li>
 					<div class="item" data-page="close">X</div></li>
 				</li>
+
+				<li>
+					<a href="http://ccx01.github.io" target="_blank" class="item">code</a></li>
+				</li>
 			</ul>
 			<div class="avatar"></div>
 		</div>
@@ -37,7 +41,7 @@
 
 		<!-- tamplate -->
 		<div id="dialog"></div>
-		<template id="content-tpl">
+		<template id="content-tpl" class="tpl">
 			<div class="content" style="top:{#top}px;left:{#left}px;">
 				<div class="bar">
 					<i class="min"></i>
@@ -50,7 +54,7 @@
 				</div>
 			</div>
 		</template>
-		<template id="item-tpl">
+		<template id="item-tpl" class="tpl">
 			<div class="item">
 				<span class="num" data-index="{#index}">{#n}</span>
 			</div>
@@ -96,9 +100,9 @@
 				return tpl;
 			}
 
-			/*document.oncontextmenu = function() {
+			document.oncontextmenu = function() {
 				return false;
-			}*/
+			}
 
 			document.onselectstart = function() {
 				return false;
@@ -205,7 +209,8 @@
 
 								var ro = matrix.get3d(axis, pos, Math.PI);
 
-								items[i].style.transform = "matrix3d(" + ro + ")";
+								items[i].style["transform"] = "matrix3d(" + ro + ")";
+								items[i].style["webkitTransform"] = "matrix3d(" + ro + ")";
 
 								fn(i + 1);
 							}, t);
@@ -230,7 +235,8 @@
 
 							var ro = matrix.get3d(axis, pos, phi);
 
-							items[i].style.transform = "matrix3d(" + ro + ")";
+							items[i].style["transform"] = "matrix3d(" + ro + ")";
+							items[i].style["webkitTransform"] = "matrix3d(" + ro + ")";
 
 							fn(i + 1);
 						}
@@ -257,7 +263,8 @@
 							var ro = matrix.get3d(axis, pos, phi);
 							var t = Math.random() * 1000;
 							setTimeout(function() {
-								items[i].style.transform = "matrix3d(" + ro + ")";
+								items[i].style["transform"] = "matrix3d(" + ro + ")";
+								items[i].style["webkitTransform"] = "matrix3d(" + ro + ")";
 							}, t);
 
 							fn(i + 1);
@@ -332,6 +339,7 @@
 					angle = r3d[1];
 
 					box.style["transform"] = "rotate3d(" + axis + "," + angle + "rad) matrix3d(" + startMatrix + ")";
+					box.style["-webkit-transform"] = "rotate3d(" + axis + "," + angle + "rad) matrix3d(" + startMatrix + ")";
 
 					// whole sphere rotating
 					if(mouseMoveVect[2] == 0) {
@@ -545,8 +553,8 @@
 			var stage = (function() {
 
 				var $view = $('#view');
-				$view.style.width = document.body.offsetWidth + "px";
-				$view.style.height = document.body.offsetHeight + "px";
+				$view.style["width"] = document.body.offsetWidth + "px";
+				$view.style["height"] = document.body.offsetHeight + "px";
 
 				$view.addEventListener("mousedown", trackball.mouseDown);
 				document.addEventListener("mouseup", trackball.mouseUp);
