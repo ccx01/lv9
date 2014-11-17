@@ -95,18 +95,19 @@ body {
   background-color: #2d2d2d;
   background-size: 100% 100%;
   overflow: hidden;
+  font: 14px/2em Arial;
   background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjEwMCUiIGN5PSIxMCUiIHI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMzNzU2NTEiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMDAwMDAiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWQpIiAvPjwvc3ZnPiA=');
   background: -moz-radial-gradient(100% 10%, ellipse, #375651, #000000);
   background: -webkit-radial-gradient(100% 10%, ellipse, #375651, #000000);
   background: radial-gradient(ellipse at 100% 10%, #375651, #000000);
 }
 
-/* line 76, ../sass/main.scss */
+/* line 77, ../sass/main.scss */
 #seo {
   display: none;
 }
 
-/* line 79, ../sass/main.scss */
+/* line 80, ../sass/main.scss */
 #view {
   width: 100%;
   height: 100%;
@@ -119,7 +120,7 @@ body {
   perspective: 1000px;
 }
 
-/* line 87, ../sass/main.scss */
+/* line 88, ../sass/main.scss */
 #main {
   -moz-transition: 10s;
   -o-transition: 10s;
@@ -131,7 +132,7 @@ body {
   width: 100%;
   height: 100%;
 }
-/* line 92, ../sass/main.scss */
+/* line 93, ../sass/main.scss */
 #main[data-rotating='1'] {
   -moz-transition: 0s;
   -o-transition: 0s;
@@ -139,13 +140,13 @@ body {
   transition: 0s;
 }
 
-/* line 96, ../sass/main.scss */
+/* line 97, ../sass/main.scss */
 .tpl {
   display: none;
 }
 
 /* navi */
-/* line 100, ../sass/main.scss */
+/* line 101, ../sass/main.scss */
 .navi {
   position: fixed;
   bottom: 0;
@@ -162,16 +163,16 @@ body {
   -webkit-transition: cubic-bezier(0.58, 0.24, 0.84, 0.61) 0.3s;
   transition: cubic-bezier(0.58, 0.24, 0.84, 0.61) 0.3s;
 }
-/* line 117, ../sass/main.scss */
+/* line 118, ../sass/main.scss */
 .navi:hover {
   border-top: 1px solid rgba(127, 255, 255, 0.3);
   background: rgba(0, 0, 0, 0.7);
 }
-/* line 120, ../sass/main.scss */
+/* line 121, ../sass/main.scss */
 .navi:hover li {
   top: -55px;
 }
-/* line 125, ../sass/main.scss */
+/* line 126, ../sass/main.scss */
 .navi .avatar {
   position: fixed;
   left: 5px;
@@ -182,13 +183,13 @@ body {
   box-shadow: 1px -1px 1px rgba(127, 255, 255, 0.7);
   background: rgba(0, 0, 0, 0.9);
 }
-/* line 134, ../sass/main.scss */
+/* line 135, ../sass/main.scss */
 .navi .avatar:hover {
   -webkit-animation: 2s avatar infinite;
   -moz-animation: 2s avatar infinite;
   animation: 2s avatar infinite;
 }
-/* line 139, ../sass/main.scss */
+/* line 140, ../sass/main.scss */
 .navi li {
   display: inline-block;
   position: relative;
@@ -196,7 +197,7 @@ body {
   width: 10%;
   height: 60px;
 }
-/* line 146, ../sass/main.scss */
+/* line 147, ../sass/main.scss */
 .navi li:nth-child(1) {
   -moz-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.1s;
   -o-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.1s;
@@ -204,7 +205,7 @@ body {
   -webkit-transition-delay: 0.1s;
   transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.1s;
 }
-/* line 146, ../sass/main.scss */
+/* line 147, ../sass/main.scss */
 .navi li:nth-child(2) {
   -moz-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.2s;
   -o-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.2s;
@@ -212,7 +213,7 @@ body {
   -webkit-transition-delay: 0.2s;
   transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.2s;
 }
-/* line 146, ../sass/main.scss */
+/* line 147, ../sass/main.scss */
 .navi li:nth-child(3) {
   -moz-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.3s;
   -o-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.3s;
@@ -220,7 +221,7 @@ body {
   -webkit-transition-delay: 0.3s;
   transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.3s;
 }
-/* line 146, ../sass/main.scss */
+/* line 147, ../sass/main.scss */
 .navi li:nth-child(4) {
   -moz-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.4s;
   -o-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.4s;
@@ -228,7 +229,7 @@ body {
   -webkit-transition-delay: 0.4s;
   transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.4s;
 }
-/* line 146, ../sass/main.scss */
+/* line 147, ../sass/main.scss */
 .navi li:nth-child(5) {
   -moz-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.5s;
   -o-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.5s;
@@ -236,7 +237,7 @@ body {
   -webkit-transition-delay: 0.5s;
   transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.5s;
 }
-/* line 146, ../sass/main.scss */
+/* line 147, ../sass/main.scss */
 .navi li:nth-child(6) {
   -moz-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.6s;
   -o-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.6s;
@@ -244,7 +245,7 @@ body {
   -webkit-transition-delay: 0.6s;
   transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.6s;
 }
-/* line 146, ../sass/main.scss */
+/* line 147, ../sass/main.scss */
 .navi li:nth-child(7) {
   -moz-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.7s;
   -o-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.7s;
@@ -252,7 +253,7 @@ body {
   -webkit-transition-delay: 0.7s;
   transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.7s;
 }
-/* line 146, ../sass/main.scss */
+/* line 147, ../sass/main.scss */
 .navi li:nth-child(8) {
   -moz-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.8s;
   -o-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.8s;
@@ -260,7 +261,7 @@ body {
   -webkit-transition-delay: 0.8s;
   transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.8s;
 }
-/* line 146, ../sass/main.scss */
+/* line 147, ../sass/main.scss */
 .navi li:nth-child(9) {
   -moz-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.9s;
   -o-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.9s;
@@ -268,7 +269,7 @@ body {
   -webkit-transition-delay: 0.9s;
   transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 0.9s;
 }
-/* line 146, ../sass/main.scss */
+/* line 147, ../sass/main.scss */
 .navi li:nth-child(10) {
   -moz-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 1s;
   -o-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 1s;
@@ -276,7 +277,7 @@ body {
   -webkit-transition-delay: 1s;
   transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s 1s;
 }
-/* line 152, ../sass/main.scss */
+/* line 153, ../sass/main.scss */
 .navi .item {
   display: block;
   width: 100%;
@@ -289,7 +290,7 @@ body {
   white-space: nowrap;
   padding: 20px;
 }
-/* line 163, ../sass/main.scss */
+/* line 164, ../sass/main.scss */
 .navi .item:hover {
   text-shadow: 0 0 20px rgba(0, 255, 255, 0.95);
   background: rgba(255, 255, 255, 0.5);
@@ -323,7 +324,7 @@ body {
     box-shadow: 1px -1px 6px #7fffff;
   }
 }
-/* line 179, ../sass/main.scss */
+/* line 180, ../sass/main.scss */
 .list {
   position: fixed;
   bottom: 31px;
@@ -340,12 +341,12 @@ body {
   -webkit-transition: 1s;
   transition: 1s;
 }
-/* line 191, ../sass/main.scss */
+/* line 192, ../sass/main.scss */
 .list[data-active="1"] {
   height: 100%;
   opacity: 1;
 }
-/* line 195, ../sass/main.scss */
+/* line 196, ../sass/main.scss */
 .list .content {
   position: relative;
   max-width: 100%;
@@ -360,20 +361,20 @@ body {
   margin: 10px 10px !important;
   cursor: default;
 }
-/* line 208, ../sass/main.scss */
+/* line 209, ../sass/main.scss */
 .list .content .wrap {
   padding: 0 10px;
   line-height: 40px;
   overflow: hidden;
 }
-/* line 213, ../sass/main.scss */
+/* line 214, ../sass/main.scss */
 .list .content .bar,
 .list .content .media {
   display: none;
 }
 
 /* layer */
-/* line 221, ../sass/main.scss */
+/* line 222, ../sass/main.scss */
 .layer {
   position: absolute;
   top: 0;
@@ -382,7 +383,7 @@ body {
   height: 100%;
   pointer-events: painted;
 }
-/* line 229, ../sass/main.scss */
+/* line 230, ../sass/main.scss */
 .layer .item {
   position: absolute;
   top: 50%;
@@ -398,7 +399,7 @@ body {
   -webkit-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 1s;
   transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 1s;
 }
-/* line 240, ../sass/main.scss */
+/* line 241, ../sass/main.scss */
 .layer .item .num {
   font-size: 60px;
   line-height: 60px;
@@ -406,14 +407,14 @@ body {
   color: rgba(255, 255, 255, 0.75);
   text-shadow: 0 0 10px rgba(0, 255, 255, 0.95);
 }
-/* line 247, ../sass/main.scss */
+/* line 248, ../sass/main.scss */
 .layer .item:hover .num {
   color: white;
   text-shadow: 0 0 20px rgba(0, 255, 255, 0.95);
 }
 
 /* content */
-/* line 255, ../sass/main.scss */
+/* line 256, ../sass/main.scss */
 .content {
   position: absolute;
   top: 0;
@@ -435,7 +436,7 @@ body {
   -webkit-transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s;
   transition: cubic-bezier(0.34, 0.16, 0.38, 1.81) 0.5s;
 }
-/* line 271, ../sass/main.scss */
+/* line 272, ../sass/main.scss */
 .content[data-active="1"] {
   box-shadow: 0px 0px 12px cyan;
   opacity: 1;
@@ -445,7 +446,7 @@ body {
   -webkit-transition: 0s;
   transition: 0s;
 }
-/* line 277, ../sass/main.scss */
+/* line 278, ../sass/main.scss */
 .content .bar {
   width: 100%;
   height: 30px;
@@ -454,7 +455,7 @@ body {
   background: rgba(0, 0, 0, 0.9);
   cursor: move;
 }
-/* line 285, ../sass/main.scss */
+/* line 286, ../sass/main.scss */
 .content .min {
   display: inline-block;
   width: 20px;
@@ -464,12 +465,12 @@ body {
   background: rgba(127, 255, 255, 0.3);
   cursor: pointer;
 }
-/* line 293, ../sass/main.scss */
+/* line 294, ../sass/main.scss */
 .content .min:hover {
   border: 1px solid rgba(127, 255, 255, 0.8);
   background: rgba(127, 255, 255, 0.5);
 }
-/* line 298, ../sass/main.scss */
+/* line 299, ../sass/main.scss */
 .content .wrap {
   max-height: 500px;
   padding: 20px;

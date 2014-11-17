@@ -69,6 +69,7 @@ body {
 	background-color: #2d2d2d;
 	background-size: 100% 100%;
 	overflow: hidden;
+	font: 14px/2em Arial;
 	@include background(
 		radial-gradient(100% 10%, ellipse, #375651, #000)
 	);
